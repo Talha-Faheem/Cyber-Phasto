@@ -1,0 +1,184 @@
+import React from 'react';
+import { X, ChevronRight, Sparkles } from 'lucide-react';
+
+export default function PathFinderQuizModal({
+  isOpen,
+  onClose,
+  quizStep,
+  handleQuizAnswer,
+  quizResult,
+  applyQuizRecommendation,
+  resetQuiz
+}) {
+  if (!isOpen) return null;
+
+  return (
+    <div className="quizModalOverlay" onClick={onClose}>
+      <div className="quizModalContent" onClick={(e) => e.stopPropagation()}>
+        <button onClick={onClose} className="quizCloseBtn" aria-label="Close quiz">
+          <X size={18} />
+        </button>
+
+        {quizStep < 4 && (
+          <div className="mono" style={{ fontSize: '11px', color: 'var(--accent)', letterSpacing: '0.15em', marginBottom: '8px', fontWeight: 700 }}>
+            QUESTION 0{quizStep} OF 03
+          </div>
+        )}
+
+        {quizStep === 1 && (
+          <div>
+            <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#fff', marginBottom: '8px' }}>
+              What is your current coding background?
+            </h3>
+            <p style={{ color: '#888', fontSize: '13.5px', marginBottom: '22px' }}>
+              We'll calibrate where your roadmap milestone starts.
+            </p>
+
+            <div className="quizOptionCard" onClick={() => handleQuizAnswer('level', 'beginner')}>
+              <div>
+                <strong style={{ color: '#fff', display: 'block', fontSize: '15px', marginBottom: '3px' }}>Complete Beginner (Level 00)</strong>
+                <span style={{ fontSize: '12px', color: '#888' }}>Zero prior coding or cybersecurity experience</span>
+              </div>
+              <ChevronRight size={18} style={{ color: '#666' }} />
+            </div>
+
+            <div className="quizOptionCard" onClick={() => handleQuizAnswer('level', 'intermediate')}>
+              <div>
+                <strong style={{ color: '#fff', display: 'block', fontSize: '15px', marginBottom: '3px' }}>Some Basic Coding Knowledge</strong>
+                <span style={{ fontSize: '12px', color: '#888' }}>Know HTML/CSS/Python basics or enrolled in a CS degree</span>
+              </div>
+              <ChevronRight size={18} style={{ color: '#666' }} />
+            </div>
+
+            <div className="quizOptionCard" onClick={() => handleQuizAnswer('level', 'advanced')}>
+              <div>
+                <strong style={{ color: '#fff', display: 'block', fontSize: '15px', marginBottom: '3px' }}>Working Developer / Career Switcher</strong>
+                <span style={{ fontSize: '12px', color: '#888' }}>Looking to switch to AI, Offensive Security, or High-Ticket Freelance</span>
+              </div>
+              <ChevronRight size={18} style={{ color: '#666' }} />
+            </div>
+          </div>
+        )}
+
+        {quizStep === 2 && (
+          <div>
+            <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#fff', marginBottom: '8px' }}>
+              Which technology domain excites you most?
+            </h3>
+            <p style={{ color: '#888', fontSize: '13.5px', marginBottom: '22px' }}>
+              Select the domain you want to master.
+            </p>
+
+            <div className="quizOptionCard" onClick={() => handleQuizAnswer('interest', 'web')}>
+              <div>
+                <strong style={{ color: '#fff', display: 'block', fontSize: '15px', marginBottom: '3px' }}>Web &amp; Full Stack Development</strong>
+                <span style={{ fontSize: '12px', color: '#888' }}>React 19, Node.js, SaaS platforms &amp; APIs</span>
+              </div>
+              <ChevronRight size={18} style={{ color: '#666' }} />
+            </div>
+
+            <div className="quizOptionCard" onClick={() => handleQuizAnswer('interest', 'cyber')}>
+              <div>
+                <strong style={{ color: '#fff', display: 'block', fontSize: '15px', marginBottom: '3px' }}>Cybersecurity &amp; Ethical Hacking</strong>
+                <span style={{ fontSize: '12px', color: '#888' }}>Penetration testing, Kali Linux, Bug bounty &amp; SOC defense</span>
+              </div>
+              <ChevronRight size={18} style={{ color: '#666' }} />
+            </div>
+
+            <div className="quizOptionCard" onClick={() => handleQuizAnswer('interest', 'ai')}>
+              <div>
+                <strong style={{ color: '#fff', display: 'block', fontSize: '15px', marginBottom: '3px' }}>Artificial Intelligence &amp; GenAI</strong>
+                <span style={{ fontSize: '12px', color: '#888' }}>LLMs, RAG, multi-agent workflows &amp; Python</span>
+              </div>
+              <ChevronRight size={18} style={{ color: '#666' }} />
+            </div>
+
+            <div className="quizOptionCard" onClick={() => handleQuizAnswer('interest', 'swe')}>
+              <div>
+                <strong style={{ color: '#fff', display: 'block', fontSize: '15px', marginBottom: '3px' }}>Software Engineering &amp; DSA</strong>
+                <span style={{ fontSize: '12px', color: '#888' }}>C++, DSA, memory management &amp; system architecture</span>
+              </div>
+              <ChevronRight size={18} style={{ color: '#666' }} />
+            </div>
+          </div>
+        )}
+
+        {quizStep === 3 && (
+          <div>
+            <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#fff', marginBottom: '8px' }}>
+              What is your primary career goal?
+            </h3>
+            <p style={{ color: '#888', fontSize: '13.5px', marginBottom: '22px' }}>
+              What outcome are you working toward?
+            </p>
+
+            <div className="quizOptionCard" onClick={() => handleQuizAnswer('goal', 'freelance')}>
+              <div>
+                <strong style={{ color: '#fff', display: 'block', fontSize: '15px', marginBottom: '3px' }}>Global Freelancing (USD / Remote)</strong>
+                <span style={{ fontSize: '12px', color: '#888' }}>Upwork, direct international clients &amp; flexible hours</span>
+              </div>
+              <ChevronRight size={18} style={{ color: '#666' }} />
+            </div>
+
+            <div className="quizOptionCard" onClick={() => handleQuizAnswer('goal', 'job')}>
+              <div>
+                <strong style={{ color: '#fff', display: 'block', fontSize: '15px', marginBottom: '3px' }}>High-Paying Engineering Job</strong>
+                <span style={{ fontSize: '12px', color: '#888' }}>Join tech companies, software houses, or enterprise SOC</span>
+              </div>
+              <ChevronRight size={18} style={{ color: '#666' }} />
+            </div>
+
+            <div className="quizOptionCard" onClick={() => handleQuizAnswer('goal', 'startup')}>
+              <div>
+                <strong style={{ color: '#fff', display: 'block', fontSize: '15px', marginBottom: '3px' }}>Build My Own Startup / Products</strong>
+                <span style={{ fontSize: '12px', color: '#888' }}>Engineer and launch commercial digital platforms</span>
+              </div>
+              <ChevronRight size={18} style={{ color: '#666' }} />
+            </div>
+          </div>
+        )}
+
+        {quizStep === 4 && quizResult && (
+          <div style={{ textAlign: 'center', padding: '10px 0' }}>
+            <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'rgba(255, 59, 48, 0.15)', border: '1px solid rgba(255, 59, 48, 0.4)', display: 'grid', placeItems: 'center', margin: '0 auto 16px', color: 'var(--accent)' }}>
+              <Sparkles size={26} />
+            </div>
+
+            <div className="mono" style={{ fontSize: '11px', color: 'var(--accent)', letterSpacing: '0.15em', marginBottom: '6px', fontWeight: 700 }}>
+              RECOMMENDED LEARNING ROADMAP
+            </div>
+
+            <h3 style={{ fontSize: '26px', fontWeight: 800, color: '#fff', marginBottom: '10px' }}>
+              {quizResult.title}
+            </h3>
+
+            <p style={{ color: '#999', fontSize: '14px', maxWidth: '440px', margin: '0 auto 24px', lineHeight: 1.6 }}>
+              Target Role: <strong style={{ color: '#fff' }}>{quizResult.finalRole}</strong> • Estimated Duration: <strong style={{ color: '#fff' }}>{quizResult.duration}</strong>
+            </p>
+
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <button onClick={applyQuizRecommendation} className="destination-cta">
+                Open Recommended Roadmap →
+              </button>
+              <button 
+                onClick={resetQuiz} 
+                style={{
+                  background: '#150a0a',
+                  border: '1px solid #333',
+                  color: '#fff',
+                  padding: '14px 24px',
+                  borderRadius: '999px',
+                  fontWeight: 700,
+                  fontSize: '14px',
+                  cursor: 'pointer'
+                }}
+              >
+                Retake Quiz
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
