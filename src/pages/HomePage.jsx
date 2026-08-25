@@ -37,16 +37,20 @@ export default function HomePage({ onOpenContact, onNavigate }) {
     gsap.registerPlugin(ScrollTrigger);
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const isMobile = window.innerWidth <= 850;
 
-    if (reduceMotion || isMobile) {
+    if (reduceMotion) {
       return;
     }
 
     const ctx = gsap.context(() => {
+      const isMobile = window.innerWidth <= 850;
+      const stackOffset1 = isMobile ? -18 : -30;
+      const stackOffset2 = isMobile ? -36 : -58;
+      const stackOffset3 = isMobile ? -54 : -84;
+
       const expSection = experienceSectionRef.current;
       const expTrack = galleryRef.current;
-      if (expSection && expTrack) {
+      if (expSection && expTrack && !isMobile) {
         gsap.fromTo(
           expTrack,
           { x: 220 },
@@ -77,7 +81,7 @@ export default function HomePage({ onOpenContact, onNavigate }) {
       gsap.set(card3, { y: "114%", scale: 0.96, filter: "brightness(0.86)", zIndex: 30 });
       gsap.set(card4, { y: "126%", scale: 0.94, filter: "brightness(0.80)", zIndex: 40 });
 
-      const totalDistance = window.innerHeight * 2.6;
+      const totalDistance = window.innerHeight * (isMobile ? 2.2 : 2.6);
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -99,7 +103,7 @@ export default function HomePage({ onOpenContact, onNavigate }) {
         ease: "power2.out"
       }, "step1")
       .to(card1, {
-        y: -30,
+        y: stackOffset1,
         scale: 0.97,
         filter: "brightness(0.88)",
         duration: 1.2,
@@ -115,14 +119,14 @@ export default function HomePage({ onOpenContact, onNavigate }) {
         ease: "power2.out"
       }, "step2")
       .to(card2, {
-        y: -30,
+        y: stackOffset1,
         scale: 0.97,
         filter: "brightness(0.88)",
         duration: 1.2,
         ease: "power2.out"
       }, "step2")
       .to(card1, {
-        y: -58,
+        y: stackOffset2,
         scale: 0.94,
         filter: "brightness(0.74)",
         duration: 1.2,
@@ -138,21 +142,21 @@ export default function HomePage({ onOpenContact, onNavigate }) {
         ease: "power2.out"
       }, "step3")
       .to(card3, {
-        y: -30,
+        y: stackOffset1,
         scale: 0.97,
         filter: "brightness(0.88)",
         duration: 1.2,
         ease: "power2.out"
       }, "step3")
       .to(card2, {
-        y: -58,
+        y: stackOffset2,
         scale: 0.94,
         filter: "brightness(0.74)",
         duration: 1.2,
         ease: "power2.out"
       }, "step3")
       .to(card1, {
-        y: -84,
+        y: stackOffset3,
         scale: 0.91,
         filter: "brightness(0.60)",
         duration: 1.2,

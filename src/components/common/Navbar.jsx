@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 
 export default function Navbar({ onOpenContact }) {
   const [isVisible, setIsVisible] = useState(true);
@@ -8,7 +8,6 @@ export default function Navbar({ onOpenContact }) {
   const lastScrollY = useRef(0);
   const scrollThreshold = 8;
   const navigate = useNavigate();
-  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,11 +40,7 @@ export default function Navbar({ onOpenContact }) {
 
   const handleApplyClick = () => {
     setMobileOpen(false);
-    if (onOpenContact) {
-      onOpenContact();
-    } else {
-      navigate('/courses');
-    }
+    navigate('/contact');
   };
 
   return (
@@ -70,7 +65,6 @@ export default function Navbar({ onOpenContact }) {
             <NavLink to="/" end className={({ isActive }) => isActive ? 'active' : ''}>Home</NavLink>
             <NavLink to="/courses" className={({ isActive }) => isActive ? 'active' : ''}>Courses</NavLink>
             <NavLink to="/roadmap" className={({ isActive }) => isActive ? 'active' : ''}>Roadmap</NavLink>
-            <NavLink to="/about" className={({ isActive }) => isActive ? 'active' : ''}>About</NavLink>
             <NavLink to="/contact" className={({ isActive }) => isActive ? 'active' : ''}>Contact Us</NavLink>
           </nav>
 
@@ -98,7 +92,6 @@ export default function Navbar({ onOpenContact }) {
           <NavLink to="/" end onClick={() => setMobileOpen(false)}>Home</NavLink>
           <NavLink to="/courses" onClick={() => setMobileOpen(false)}>Courses</NavLink>
           <NavLink to="/roadmap" onClick={() => setMobileOpen(false)}>Roadmap &amp; Journey</NavLink>
-          <NavLink to="/about" onClick={() => setMobileOpen(false)}>About Us</NavLink>
           <NavLink to="/contact" onClick={() => setMobileOpen(false)}>Contact Us</NavLink>
           <button 
             onClick={handleApplyClick} 

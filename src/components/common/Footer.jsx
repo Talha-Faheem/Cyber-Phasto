@@ -214,8 +214,8 @@ export default function Footer({ onOpenContact, onNavigate }) {
                 </a>
               </li>
               <li>
-                <Link to="/about" className="footer-link-clean">
-                  About Us
+                <Link to="/roadmap" className="footer-link-clean">
+                  Roadmap
                 </Link>
               </li>
               <li>

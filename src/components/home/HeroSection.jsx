@@ -52,9 +52,9 @@ export default function HeroSection({ onOpenContact }) {
             </Link>
             <Link 
               className="btn secondary" 
-              to="/about"
+              to="/roadmap"
             >
-              Discover CyberPashto
+              Explore Roadmaps
             </Link>
           </div>
 

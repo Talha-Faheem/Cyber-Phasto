@@ -2464,8 +2464,26 @@ footer a:hover {
   .mobileNav, .sheryians-mobile-drawer {
     display: grid;
   }
+  .sheryians-header,
+  .sheryians-header.header-scrolled {
+    border-bottom: none !important;
+    border: none !important;
+  }
+  .sheryians-mobile-inner a,
+  .sheryians-mobile-inner button {
+    border-bottom: none !important;
+  }
+  .sheryians-mobile-drawer {
+    border: none !important;
+  }
+  .scrollHint,
+  .scrollLine {
+    display: none !important;
+  }
   .sheryians-header-inner {
     padding: 14px 20px;
+    border: none !important;
+    border-bottom: none !important;
   }
   .hero {
     padding-top: 125px;
@@ -2492,32 +2510,37 @@ footer a:hover {
     transform: none;
   }
   .coursesPinnedSection {
-    min-height: auto;
-    padding: 90px 0;
-  }
-  .courseStackStage {
-    height: auto;
+    min-height: 100vh;
+    padding: 60px 0 50px;
+    margin: 20px 0;
+    border-radius: 24px;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    justify-content: center;
+  }
+  .courseStackStage {
+    position: relative;
+    width: 100%;
+    height: 480px;
+    min-height: 440px;
+    margin: 10px auto 0;
   }
   .courseStackCard {
-    position: relative !important;
-    top: auto !important;
-    left: auto !important;
-    right: auto !important;
-    bottom: auto !important;
-    transform: none !important;
-    filter: none !important;
-    opacity: 1 !important;
+    position: absolute !important;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 22px;
     grid-template-columns: 1fr;
-    padding: 28px;
-    height: auto;
-    min-height: 0;
+    padding: 24px 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
   }
   .courseVisualBox {
-    height: 280px;
-    order: -1;
+    display: none;
   }
   .pathGrid {
     grid-template-columns: 1fr 1fr;
@@ -2560,8 +2583,46 @@ footer a:hover {
   .pathGrid {
     grid-template-columns: 1fr;
   }
-  .about, .courses, .faq {
+  .about, .courses, .faq, .coursesPinnedSection {
     border-radius: 22px;
+  }
+  .coursesPinnedSection {
+    padding: 40px 0 30px;
+  }
+  .courseStackStage {
+    height: 440px;
+    min-height: 400px;
+  }
+  .courseStackCard {
+    padding: 20px 16px;
+    border-radius: 18px;
+  }
+  .courseStackCard h3 {
+    font-size: 20px;
+    line-height: 1.1;
+    margin: 4px 0 6px;
+  }
+  .courseStackCard p {
+    font-size: 12px;
+    line-height: 1.45;
+  }
+  .coursePriceRow {
+    font-size: 20px;
+    margin: 6px 0 8px;
+  }
+  .courseActionBtn {
+    width: 100%;
+    text-align: center;
+    padding: 9px 16px;
+    font-size: 12px;
+  }
+  .courseMetaPills {
+    margin: 8px 0;
+    gap: 4px;
+  }
+  .courseMetaPills span {
+    padding: 4px 9px;
+    font-size: 9.5px;
   }
   .aboutVisual {
     height: 360px;

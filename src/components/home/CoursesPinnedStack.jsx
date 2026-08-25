@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function CoursesPinnedStack({
   coursesSectionRef,
@@ -175,13 +176,13 @@ export default function CoursesPinnedStack({
         </div>
 
         <div style={{ textAlign: 'center', marginTop: '28px', marginBottom: '8px' }}>
-          <button 
-            onClick={() => onNavigate && onNavigate('courses')} 
+          <Link 
+            to="/courses" 
             className="btn primary"
             style={{ padding: '14px 32px', fontSize: '14px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
           >
             Explore All Courses (24+ Tracks) →
-          </button>
+          </Link>
         </div>
       </div>
     </section>
