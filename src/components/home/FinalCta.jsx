@@ -41,7 +41,6 @@ export default function FinalCta({ handleAction }) {
       <div className="finalVignette" aria-hidden="true" />
 
       <div className="container finalContent">
-        <div className="tag">Get moving</div>
         <h2>
           YOUR NEXT<br />
           <span>BUILD</span> STARTS HERE.

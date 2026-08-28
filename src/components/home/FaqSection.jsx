@@ -27,7 +27,6 @@ export default function FaqSection({ openFaq, toggleFaq }) {
   return (
     <section className="faq" id="faq">
       <div className="container">
-        <div className="tag">Faq</div>
         <h2 className="title">
           Questions?<br />
           We've got <span className="red">answers.</span>

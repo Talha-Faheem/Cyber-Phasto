@@ -40,8 +40,8 @@ export default function Footer({ onOpenContact, onNavigate }) {
       style={{
         backgroundColor: '#000000',
         position: 'relative',
-        paddingTop: '1rem',
-        paddingBottom: '2.5rem',
+        paddingTop: '0',
+        paddingBottom: '3.5rem',
         overflow: 'hidden',
         borderTop: '1px solid #1A1A1A'
       }}
@@ -57,6 +57,7 @@ export default function Footer({ onOpenContact, onNavigate }) {
         }}
       />
 
+      {/* Full-width Interactive CYBER PASHTO Laser Spotlight Watermark at Top of Footer */}
       <div 
         ref={watermarkRef}
         onMouseEnter={() => setIsHovered(true)}
@@ -83,10 +84,10 @@ export default function Footer({ onOpenContact, onNavigate }) {
             right: 0,
             height: '1px',
             background: isHovered
-              ? `linear-gradient(90deg, transparent 0%, rgba(229, 0, 0, 0.15) ${Math.max(0, mousePos.x - 30)}%, rgba(229, 0, 0, 0.95) ${mousePos.x}%, rgba(229, 0, 0, 0.15) ${Math.min(100, mousePos.x + 30)}%, transparent 100%)`
+              ? `linear-gradient(90deg, transparent 0%, rgba(229, 0, 0, 0.15) ${Math.max(0, mousePos.x - 25)}%, rgba(255, 2, 5, 0.95) ${mousePos.x}%, rgba(229, 0, 0, 0.15) ${Math.min(100, mousePos.x + 25)}%, transparent 100%)`
               : 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 25%, rgba(229, 0, 0, 0.35) 50%, rgba(255, 255, 255, 0.08) 75%, transparent 100%)',
             boxShadow: isHovered
-              ? '0 0 15px rgba(229, 0, 0, 0.85), 0 0 30px rgba(229, 0, 0, 0.45)'
+              ? '0 0 15px rgba(255, 2, 5, 0.85), 0 0 30px rgba(255, 2, 5, 0.45)'
               : '0 0 10px rgba(229, 0, 0, 0.2)',
             transition: 'box-shadow 0.3s ease'
           }}
@@ -101,7 +102,9 @@ export default function Footer({ onOpenContact, onNavigate }) {
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
             WebkitBackgroundClip: 'text',
-            backgroundImage: `radial-gradient(320px at ${mousePos.x}% ${mousePos.y}%, rgba(229, 0, 0, 0.95) 0%, rgba(229, 0, 0, 0.55) 22%, rgba(229, 40, 0, 0.25) 45%, rgba(255, 255, 255, 0.07) 70%, transparent 100%)`,
+            backgroundImage: isHovered
+              ? `radial-gradient(350px at ${mousePos.x}% ${mousePos.y}%, rgba(229, 0, 0, 0.95) 0%, rgba(229, 0, 0, 0.55) 22%, rgba(229, 40, 0, 0.25) 45%, rgba(255, 255, 255, 0.07) 70%, transparent 100%)`
+              : `radial-gradient(1.90776e-44px at 27.1302% 67.9663%, rgba(229, 0, 0, 0) 0%, rgba(229, 0, 0, 0) 22%, rgba(229, 40, 0, 0) 45%, rgba(255, 255, 255, 0.07) 70%, transparent 100%)`,
             WebkitTextStroke: '1px rgba(255, 255, 255, 0.18)',
             textAlign: 'center',
             whiteSpace: 'nowrap',
@@ -111,7 +114,7 @@ export default function Footer({ onOpenContact, onNavigate }) {
             maxWidth: '100vw',
             opacity: 1,
             transform: 'none',
-            fontFamily: 'var(--font-mono)'
+            fontFamily: 'var(--font-sans)'
           }}
         >
           CYBER PASHTO
@@ -125,10 +128,10 @@ export default function Footer({ onOpenContact, onNavigate }) {
             right: 0,
             height: '1px',
             background: isHovered
-              ? `linear-gradient(90deg, transparent 0%, rgba(229, 0, 0, 0.15) ${Math.max(0, mousePos.x - 30)}%, rgba(229, 0, 0, 0.95) ${mousePos.x}%, rgba(229, 0, 0, 0.15) ${Math.min(100, mousePos.x + 30)}%, transparent 100%)`
+              ? `linear-gradient(90deg, transparent 0%, rgba(229, 0, 0, 0.15) ${Math.max(0, mousePos.x - 25)}%, rgba(255, 2, 5, 0.95) ${mousePos.x}%, rgba(229, 0, 0, 0.15) ${Math.min(100, mousePos.x + 25)}%, transparent 100%)`
               : 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 25%, rgba(229, 0, 0, 0.35) 50%, rgba(255, 255, 255, 0.08) 75%, transparent 100%)',
             boxShadow: isHovered
-              ? '0 0 15px rgba(229, 0, 0, 0.85), 0 0 30px rgba(229, 0, 0, 0.45)'
+              ? '0 0 15px rgba(255, 2, 5, 0.85), 0 0 30px rgba(255, 2, 5, 0.45)'
               : '0 0 10px rgba(229, 0, 0, 0.2)',
             transition: 'box-shadow 0.3s ease'
           }}

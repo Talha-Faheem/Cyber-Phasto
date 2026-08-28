@@ -4,7 +4,6 @@ export default function LearnerProjects({ handleAction }) {
   return (
     <section className="projects" id="projects">
       <div className="container">
-        <div className="tag">Built by learners</div>
         <h2 className="title">
           Learn it.<br />
           <span className="red">Build it.</span>

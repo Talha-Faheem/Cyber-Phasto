@@ -4,7 +4,6 @@ export default function ImpactSection({ handleAction }) {
   return (
     <section className="section" id="impact">
       <div className="container">
-        <div className="tag">Where to begin</div>
         <h2 className="title">
           From <span className="red">curiosity</span> to capability.
         </h2>

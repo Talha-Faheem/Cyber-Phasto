@@ -17,7 +17,6 @@ export default function PopularTracksPaperSection({ onSelectCourse }) {
       }}
     >
       <div className="container">
-        <div className="tag" style={{ color: '#a70002' }}>CURATED HIGHLIGHTS</div>
         <h2 className="title" style={{ fontSize: 'clamp(32px, 4vw, 48px)', color: '#070707' }}>
           Popular &amp; High-Demand Tracks
         </h2>

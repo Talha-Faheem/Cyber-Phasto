@@ -7,7 +7,6 @@ export default function CoursesFinalCta({
   return (
     <section className="section" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', padding: '120px 0' }}>
       <div className="container" style={{ textAlign: 'center' }}>
-        <div className="tag">BEGIN YOUR EVOLUTION</div>
         <h2 className="title" style={{ maxWidth: '850px' }}>
           Your career doesn't start with knowing everything.<br />
           <span className="red">It starts with learning the next thing.</span>

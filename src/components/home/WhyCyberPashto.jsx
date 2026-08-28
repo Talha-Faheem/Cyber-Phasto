@@ -5,7 +5,6 @@ export default function WhyCyberPashto() {
   return (
     <section className="section" id="future">
       <div className="container">
-        <div className="tag">Why CyberPashto</div>
         <h2 className="title">
           A community built for the <span className="red">next generation.</span>
         </h2>

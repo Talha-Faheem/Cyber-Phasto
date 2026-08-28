@@ -16,7 +16,6 @@ export default function LearningPaths() {
   return (
     <section className="paths" id="paths">
       <div className="container">
-        <div className="tag">Learning paths</div>
         <h2 className="title">
           Don't know where to <span className="red">start?</span>
         </h2>

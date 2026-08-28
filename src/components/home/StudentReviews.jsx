@@ -178,7 +178,6 @@ export default function StudentReviews() {
   return (
     <section className="reviews" id="stories">
       <div className="container" style={{ position: 'relative', zIndex: 2 }}>
-        <div className="tag">Student stories</div>
         <h2 className="title">
           People don't just <span className="red">watch.</span><br />
           They build.

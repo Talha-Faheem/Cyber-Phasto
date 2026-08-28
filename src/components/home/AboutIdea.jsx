@@ -7,7 +7,6 @@ export default function AboutIdea() {
       <div className="container">
         <div className="aboutGrid">
           <div>
-            <div className="tag">The idea</div>
             <h2>
               Technology should be <span className="red">accessible.</span>
             </h2>

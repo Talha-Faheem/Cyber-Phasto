@@ -58,21 +58,6 @@ export default function HeroSection({ onOpenContact }) {
             </Link>
           </div>
 
-          <div className="socialProof">
-            <div className="faces">
-              <div className="face">CP</div>
-              <div className="face">AI</div>
-              <div className="face">JS</div>
-              <div className="face">+</div>
-            </div>
-            <span>
-              <b>Growing community</b> of learners, builders &amp; creators
-            </span>
-          </div>
-
-          <div className="scrollHint">
-            <span className="scrollLine" /> SCROLL TO EXPLORE
-          </div>
         </div>
       </div>
     </section>

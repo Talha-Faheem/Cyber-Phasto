@@ -13,7 +13,6 @@ export default function CoursesPinnedStack({
   return (
     <section className="coursesPinnedSection" id="courses" ref={coursesSectionRef}>
       <div className="container" style={{ width: '100%' }}>
-        <div className="tag">Courses</div>
         <h2 className="title">
           Choose your path.<br />
           Then <span className="red">build.</span>
@@ -175,11 +174,11 @@ export default function CoursesPinnedStack({
           </article>
         </div>
 
-        <div style={{ textAlign: 'center', marginTop: '28px', marginBottom: '8px' }}>
+        <div style={{ textAlign: 'center', marginTop: '24px', marginBottom: '4px' }}>
           <Link 
             to="/courses" 
             className="btn primary"
-            style={{ padding: '14px 32px', fontSize: '14px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+            style={{ padding: '13px 30px', fontSize: '13.5px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
           >
             Explore All Courses (24+ Tracks) →
           </Link>

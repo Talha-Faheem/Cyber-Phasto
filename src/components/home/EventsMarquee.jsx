@@ -79,7 +79,6 @@ export default function EventsMarquee({ handleAction }) {
   return (
     <section className="events" id="events">
       <div className="container">
-        <div className="tag">Events & workshops</div>
         <h2 className="title">
           Learn beyond the <span className="red">classroom.</span>
         </h2>

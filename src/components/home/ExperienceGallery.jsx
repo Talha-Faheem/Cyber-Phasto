@@ -62,7 +62,6 @@ export default function ExperienceGallery({
       <div className="experienceGlowCyan" />
 
       <div className="container" style={{ position: 'relative', zIndex: 2 }}>
-        <div className="tag" style={{ color: '#ff5a5c' }}>CYBERPASHTO / EXPERIENCE</div>
         <h2 className="title">
           Learn beyond the <span className="red">screen.</span>
         </h2>
