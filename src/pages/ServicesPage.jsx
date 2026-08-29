@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import HomeBackground from '../components/home/HomeBackground';
 import GeometricDivider from '../components/common/GeometricDivider';
 import { 
   Terminal, 
@@ -113,7 +114,8 @@ export default function ServicesPage({ onOpenContact }) {
   };
 
   return (
-    <div className="bg-[#0B0D10] pt-28 pb-24 text-white w-full">
+    <div className="servicesPageWrapper bg-[#040404] pt-28 pb-24 min-h-screen text-white w-full relative overflow-x-hidden">
+      <HomeBackground />
       <section className="container" style={{ textAlign: 'center', maxWidth: '850px', marginBottom: '4.5rem' }}>
         <h1 style={{ fontSize: 'clamp(2.4rem, 5vw, 4.2rem)', fontWeight: 800, marginBottom: '1.25rem', lineHeight: 1.15 }}>
           Enterprise Cybersecurity <span className="gradient-text">Services</span>

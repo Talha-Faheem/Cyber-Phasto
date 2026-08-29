@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import HomeBackground from '../components/home/HomeBackground';
 import Counter from '../components/common/Counter';
 import { 
   CheckCircle2, 
@@ -113,7 +114,8 @@ export default function AboutPage() {
   }, []);
 
   return (
-    <div className="bg-black pt-28 pb-24 text-white w-full">
+    <div className="aboutPageWrapper bg-[#040404] pt-28 pb-24 min-h-screen text-white w-full relative overflow-x-hidden">
+      <HomeBackground />
       <section className="container" style={{ textAlign: 'center', maxWidth: '900px', marginBottom: '4.5rem' }}>
         <h1 style={{ fontSize: 'clamp(2.4rem, 5.5vw, 4.4rem)', fontWeight: 800, marginBottom: '1.25rem', lineHeight: 1.15, color: '#FFFFFF' }}>
           EMPOWERING THE <span className="text-gradient-red">NEXT GENERATION.</span>

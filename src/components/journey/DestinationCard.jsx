@@ -7,6 +7,7 @@ export default function DestinationCard({
 }) {
   return (
     <div className="destination-card" id="destinationCard" ref={destinationCardRef}>
+      <div className="destination-marker" />
       <div className="destination-title">Destination Reached</div>
       <p className="destination-desc">
         Complete all sequential levels in this roadmap and you go from zero knowledge to a professional, portfolio-backed <strong style={{ color: '#070707' }}>{activePath.finalRole}</strong> skillset.

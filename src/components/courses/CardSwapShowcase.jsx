@@ -232,11 +232,6 @@ export default function CardSwapShowcase({ courses = [], onEnroll }) {
                     borderBottom: '1px solid #292929'
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <span style={{ width: '9px', height: '9px', borderRadius: '50%', backgroundColor: '#FF0000' }} />
-                    <span style={{ width: '9px', height: '9px', borderRadius: '50%', backgroundColor: '#FFBD2E' }} />
-                    <span style={{ width: '9px', height: '9px', borderRadius: '50%', backgroundColor: '#27C93F' }} />
-                  </div>
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
                     <span 

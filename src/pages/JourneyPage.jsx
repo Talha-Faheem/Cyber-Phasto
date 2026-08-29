@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { careerPathsData } from '../data/coursesData';
+import HomeBackground from '../components/home/HomeBackground';
 import JourneyHero from '../components/journey/JourneyHero';
 import TrackSelector from '../components/journey/TrackSelector';
 import JourneyTimeline from '../components/journey/JourneyTimeline';
@@ -69,25 +70,6 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
 
   const activePath = careerPathsData.find(p => p.id === selectedPathId) || careerPathsData[0];
 
-  const smoothPathThrough = (points) => {
-    if (points.length < 2) return '';
-    let d = `M ${points[0].x} ${points[0].y} `;
-    for (let i = 0; i < points.length - 1; i++) {
-      const p0 = points[i - 1] || points[i];
-      const p1 = points[i];
-      const p2 = points[i + 1];
-      const p3 = points[i + 2] || p2;
-
-      const cp1x = p1.x + (p2.x - p0.x) / 6;
-      const cp1y = p1.y + (p2.y - p0.y) / 6;
-      const cp2x = p2.x - (p3.x - p1.x) / 6;
-      const cp2y = p2.y - (p3.y - p1.y) / 6;
-
-      d += `C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2.x} ${p2.y} `;
-    }
-    return d;
-  };
-
   const buildPath = useCallback(() => {
     if (!trackRef.current || !svgRef.current || !pathIdleRef.current || !pathGlowRef.current || !pathActiveRef.current) return;
 
@@ -99,26 +81,109 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
 
     svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
 
-    const stepElements = track.querySelectorAll('[data-step]');
+    const stepElements = Array.from(track.querySelectorAll('[data-step]'));
     if (!stepElements.length) return;
 
-    const dotPoints = Array.from(stepElements).map((step) => {
+    const isMobile = window.innerWidth <= 860;
+
+    // Collect entry and exit coordinates for each step
+    const stepsData = stepElements.map((step) => {
+      const entryAnchor = step.querySelector('.step-entry-anchor');
       const marker = step.querySelector('.step-marker');
-      if (!marker) return { x: w / 2, y: 0 };
-      const r = marker.getBoundingClientRect();
+      const card = step.querySelector('.step-card-box');
+
+      const cardRect = card ? card.getBoundingClientRect() : step.getBoundingClientRect();
+      const markerRect = marker ? marker.getBoundingClientRect() : cardRect;
+
+      const entryX = entryAnchor 
+        ? entryAnchor.getBoundingClientRect().left - trackRect.left + (entryAnchor.getBoundingClientRect().width / 2)
+        : cardRect.left - trackRect.left + (cardRect.width / 2);
+      const entryY = entryAnchor 
+        ? entryAnchor.getBoundingClientRect().top - trackRect.top
+        : cardRect.top - trackRect.top;
+
+      const exitX = markerRect.left - trackRect.left + (markerRect.width / 2);
+      const exitY = markerRect.top - trackRect.top + (markerRect.height / 2);
+
       return {
-        x: r.left - trackRect.left + r.width / 2,
-        y: r.top - trackRect.top + r.height / 2
+        entry: { x: entryX, y: entryY },
+        exit: { x: exitX, y: exitY }
       };
     });
 
-    const wavePoints = [
-      { x: dotPoints[0].x, y: Math.max(0, dotPoints[0].y - 80) },
-      ...dotPoints,
-      { x: dotPoints[dotPoints.length - 1].x, y: h }
-    ];
+    let d = '';
 
-    const d = smoothPathThrough(wavePoints);
+    if (isMobile) {
+      // Mobile vertical alignment
+      const first = stepsData[0];
+      d = `M ${first.exit.x} ${Math.max(0, first.entry.y - 40)} `;
+      d += `L ${first.exit.x} ${first.exit.y} `;
+
+      for (let i = 1; i < stepsData.length; i++) {
+        const curr = stepsData[i];
+        d += `L ${curr.exit.x} ${curr.exit.y} `;
+      }
+
+      if (destinationCardRef.current) {
+        const destRect = destinationCardRef.current.getBoundingClientRect();
+        const destX = stepsData[stepsData.length - 1].exit.x;
+        const destY = destRect.top - trackRect.top;
+        d += `L ${destX} ${destY} `;
+      }
+    } else {
+      // 2D Map multi-directional laser track connecting steps
+      const first = stepsData[0];
+      d = `M ${first.entry.x} ${Math.max(0, first.entry.y - 30)} `;
+      d += `L ${first.entry.x} ${first.entry.y} `;
+      d += `L ${first.exit.x} ${first.exit.y} `;
+
+      for (let i = 0; i < stepsData.length - 1; i++) {
+        const currExit = stepsData[i].exit;
+        const nextEntry = stepsData[i + 1].entry;
+        const nextExit = stepsData[i + 1].exit;
+
+        const dx = nextEntry.x - currExit.x;
+        const dy = nextEntry.y - currExit.y;
+
+        if (Math.abs(dx) < 40) {
+          // Direct downward connection (e.g. Course 03 Left -> Course 04 Left)
+          d += `L ${nextEntry.x} ${nextEntry.y} `;
+        } else {
+          // Smooth S-curve transition across columns
+          // Exits current card going downwards, sweeps across horizontally, and lands vertically into next card
+          const cp1x = currExit.x;
+          const cp1y = currExit.y + dy * 0.5;
+          const cp2x = nextEntry.x;
+          const cp2y = nextEntry.y - dy * 0.5;
+
+          d += `C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${nextEntry.x} ${nextEntry.y} `;
+        }
+
+        // Trace through the next card from its entry to its exit marker
+        d += `L ${nextExit.x} ${nextExit.y} `;
+      }
+
+      // Connect last step to Destination Card
+      const lastExit = stepsData[stepsData.length - 1].exit;
+      if (destinationCardRef.current) {
+        const destRect = destinationCardRef.current.getBoundingClientRect();
+        const destX = destRect.left - trackRect.left + (destRect.width / 2);
+        const destY = destRect.top - trackRect.top;
+        const dy = destY - lastExit.y;
+
+        if (Math.abs(destX - lastExit.x) < 40) {
+          d += `L ${destX} ${destY} `;
+        } else {
+          const cp1x = lastExit.x;
+          const cp1y = lastExit.y + dy * 0.5;
+          const cp2x = destX;
+          const cp2y = destY - dy * 0.4;
+          d += `C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${destX} ${destY} `;
+        }
+      } else {
+        d += `L ${lastExit.x} ${h} `;
+      }
+    }
 
     pathIdleRef.current.setAttribute('d', d);
     pathGlowRef.current.setAttribute('d', d);
@@ -134,8 +199,7 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           p.style.strokeDashoffset = `${length}`;
         }
       });
-    } catch (e) {
-    }
+    } catch (e) {}
   }, []);
 
   const updateProgress = useCallback(() => {
@@ -201,7 +265,8 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
   }, [selectedPathId]);
 
   return (
-    <div className="bg-[#0a0505] min-h-screen text-white pb-24 overflow-x-hidden w-full">
+    <div className="journeyPageWrapper bg-[#040404] min-h-screen text-white pb-24 overflow-x-hidden w-full relative">
+      <HomeBackground />
       <JourneyHero onOpenQuiz={() => {
         resetQuiz();
         setIsQuizOpen(true);
@@ -257,8 +322,8 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
 
         .roadmap-section {
           position: relative;
-          padding: 40px 24px 40px;
-          max-width: 1100px;
+          padding: 30px 20px 40px;
+          max-width: 1160px;
           margin: 0 auto;
         }
 
@@ -294,32 +359,35 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
         }
 
         .trackPill {
-          background: #120909;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          color: #bbb;
-          padding: 10px 18px;
+          background: #ffffff;
+          border: 1px solid #ffffff;
+          color: #000000;
+          padding: 10px 20px;
           border-radius: 999px;
-          font-size: 13px;
+          font-size: 13.5px;
           font-weight: 700;
           cursor: pointer;
           display: inline-flex;
           align-items: center;
           gap: 8px;
-          transition: all 0.25s ease;
+          transition: all 0.25s var(--ease-soft);
           font-family: inherit;
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
         }
 
         .trackPill:hover {
-          border-color: rgba(255, 59, 48, 0.4);
-          color: #fff;
-          background: #180d0d;
+          background: #f0f0f0;
+          border-color: #ffffff;
+          color: #000000;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(255, 255, 255, 0.25);
         }
 
         .trackPill.active {
           background: var(--accent);
           border-color: var(--accent);
           color: #fff;
-          box-shadow: 0 0 20px rgba(255, 59, 48, 0.5);
+          box-shadow: 0 0 22px rgba(255, 59, 48, 0.6);
         }
 
         .selectedPathSummaryBox {
@@ -350,8 +418,8 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
 
         .journey-track {
           position: relative;
-          min-height: 1200px;
-          margin-top: 40px;
+          min-height: 800px;
+          margin-top: 30px;
         }
 
         .journey-svg {
@@ -362,108 +430,89 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           height: 100%;
           overflow: visible;
           pointer-events: none;
+          z-index: 1;
         }
 
         .path-idle {
           fill: none;
-          stroke: var(--line-idle);
+          stroke: rgba(255, 255, 255, 0.14);
           stroke-width: 2.5;
+          stroke-dasharray: 6 6;
           vector-effect: non-scaling-stroke;
         }
         .path-glow {
           fill: none;
-          stroke: var(--accent);
-          stroke-width: 14;
-          opacity: 0.35;
+          stroke: #ff3b30;
+          stroke-width: 12;
+          opacity: 0.4;
           filter: blur(8px);
           stroke-linecap: round;
           vector-effect: non-scaling-stroke;
         }
         .path-active {
           fill: none;
-          stroke: var(--line-active);
-          stroke-width: 2.5;
+          stroke: #ff3b30;
+          stroke-width: 3;
           stroke-linecap: round;
           vector-effect: non-scaling-stroke;
+        }
+
+        .journey-2d-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          column-gap: 56px;
+          row-gap: 32px;
+          position: relative;
+          z-index: 2;
         }
 
         .journey-step {
           position: relative;
           display: flex;
-          width: 100%;
-          min-height: 220px;
+          flex-direction: column;
           align-items: center;
-          margin-bottom: 120px;
+          width: 100%;
           opacity: 0;
-          transform: translateY(30px);
-          transition: opacity 0.6s ease, transform 0.6s ease;
+          transform: translateY(24px);
+          transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .journey-step:last-child { 
-          margin-bottom: 80px; 
-        }
+
         .journey-step.is-visible {
           opacity: 1;
           transform: translateY(0);
         }
 
-        .journey-step:nth-child(odd) .step-marker { 
-          left: 78%; 
-        }
-        .journey-step:nth-child(odd) .step-content {
-          margin-right: 26%;
-          margin-left: auto;
-          text-align: right;
-          padding-right: 40px;
-        }
-        .journey-step:nth-child(odd) .step-card-box {
-          margin-left: auto;
-        }
-        .journey-step:nth-child(odd) .step-skills-wrap {
-          justify-content: flex-end;
-        }
-
-        .journey-step:nth-child(even) .step-marker { 
-          left: 22%; 
-        }
-        .journey-step:nth-child(even) .step-content {
-          margin-left: 26%;
-          margin-right: auto;
-          text-align: left;
-          padding-left: 40px;
-        }
-        .journey-step:nth-child(even) .step-card-box {
-          margin-right: auto;
-        }
-        .journey-step:nth-child(even) .step-skills-wrap {
-          justify-content: flex-start;
-        }
-
-        .step-marker {
-          position: absolute;
-          top: 50%;
-          transform: translate(-50%, -50%);
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          background: #000;
-          border: 4px solid var(--accent);
-          box-shadow: 0 0 16px var(--accent-glow);
-          z-index: 5;
-        }
-
-        .step-content {
-          width: 55%;
-          position: relative;
-          z-index: 6;
+        .step-entry-anchor {
+          width: 2px;
+          height: 2px;
+          opacity: 0;
+          margin-bottom: 2px;
         }
 
         .step-card-box {
-          background: var(--card-bg);
-          border: 1px solid var(--card-border);
-          border-radius: var(--radius);
+          background: #110707;
+          background: linear-gradient(180deg, #150909 0%, #0d0404 100%);
+          border: 1px solid rgba(255, 59, 48, 0.28);
+          border-radius: 16px;
           padding: 24px 28px;
-          max-width: 440px;
-          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+          width: 100%;
+          max-width: 520px;
+          box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65), 0 0 15px rgba(255, 59, 48, 0.05);
+          position: relative;
+          transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .step-card-box:hover {
+          transform: translateY(-3px);
+          border-color: rgba(255, 59, 48, 0.65);
+          box-shadow: 0 16px 45px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 59, 48, 0.2);
+        }
+
+        .step-card-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 10px;
         }
 
         .step-eyebrow {
@@ -473,15 +522,26 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           background: linear-gradient(
             180deg,
             rgb(255, 2, 5) 28.05%,
-            rgb(67, 11, 11) 100%
+            rgb(255, 100, 100) 100%
           );
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
           display: inline-block;
           letter-spacing: 0.1em;
-          margin-bottom: 8px;
         }
+
+        .step-index-badge {
+          font-family: var(--font-mono);
+          font-size: 11px;
+          font-weight: 800;
+          color: rgba(255, 255, 255, 0.35);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 6px;
+          padding: 2px 6px;
+          background: rgba(255, 255, 255, 0.03);
+        }
+
         .step-title {
           font-size: 20px;
           font-weight: 800;
@@ -489,6 +549,7 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           margin: 0 0 8px;
           line-height: 1.3;
         }
+
         .step-desc {
           color: var(--text-muted);
           font-size: 13.5px;
@@ -515,6 +576,7 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           gap: 6px;
           margin-bottom: 12px;
         }
+
         .step-skill-pill {
           background: rgba(255, 255, 255, 0.05);
           border: 1px solid rgba(255, 255, 255, 0.1);
@@ -534,22 +596,105 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           border: 1px dashed rgba(255, 59, 48, 0.3);
         }
 
+        .step-marker {
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: 10px;
+          margin-bottom: 4px;
+          z-index: 5;
+        }
+
+        .step-marker-dot {
+          width: 18px;
+          height: 18px;
+          border-radius: 50%;
+          background: #000;
+          border: 3.5px solid var(--accent);
+          box-shadow: 0 0 14px var(--accent-glow);
+          position: relative;
+          z-index: 2;
+        }
+
+        .step-marker-pulse {
+          position: absolute;
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          background: rgba(255, 59, 48, 0.25);
+          animation: markerPulse 2.4s infinite ease-out;
+          z-index: 1;
+        }
+
+        @keyframes markerPulse {
+          0% { transform: scale(0.7); opacity: 0.9; }
+          70% { transform: scale(1.4); opacity: 0; }
+          100% { transform: scale(1.4); opacity: 0; }
+        }
+
+        .step-direction-hint {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          font-family: var(--font-mono);
+          font-size: 10px;
+          font-weight: 700;
+          color: #ff8a80;
+          background: rgba(255, 59, 48, 0.12);
+          border: 1px solid rgba(255, 59, 48, 0.3);
+          padding: 2px 8px;
+          border-radius: 999px;
+          white-space: nowrap;
+          pointer-events: none;
+        }
+
+        .hint-right {
+          left: 28px;
+        }
+
+        .hint-left {
+          right: 28px;
+        }
+
+        .hint-down {
+          top: 24px;
+          left: 50%;
+          transform: translateX(-50%);
+          padding: 2px 6px;
+        }
+
         .destination-card {
           background: #ffffff;
           color: #070707;
           border-radius: 24px;
-          padding: 48px 32px;
+          padding: 44px 32px;
           text-align: center;
           max-width: 680px;
-          margin: 60px auto 0;
+          margin: 48px auto 0;
           box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 59, 48, 0.2);
           opacity: 0;
           transform: translateY(30px);
           transition: opacity 0.7s ease, transform 0.7s ease;
+          position: relative;
+          z-index: 3;
         }
         .destination-card.is-visible {
           opacity: 1;
           transform: translateY(0);
+        }
+
+        .destination-marker {
+          width: 14px;
+          height: 14px;
+          border-radius: 50%;
+          background: #ff3b30;
+          border: 3px solid #fff;
+          box-shadow: 0 0 14px rgba(255, 59, 48, 0.8);
+          margin: -52px auto 20px;
         }
 
         .destination-title {
@@ -564,7 +709,7 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           font-size: 15px;
           line-height: 1.6;
           max-width: 520px;
-          margin: 0 auto 28px;
+          margin: 0 auto 24px;
         }
         .destination-cta {
           background: var(--accent);
@@ -636,34 +781,21 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           transform: translateX(4px);
         }
 
-        @media (max-width: 820px) {
-          .journey-step:nth-child(odd) .step-marker,
-          .journey-step:nth-child(even) .step-marker {
-            left: 24px !important;
+        @media (max-width: 860px) {
+          .journey-2d-grid {
+            grid-template-columns: 1fr !important;
+            row-gap: 28px !important;
           }
-          .journey-step:nth-child(odd) .step-content,
-          .journey-step:nth-child(even) .step-content {
-            margin-left: 60px !important;
-            margin-right: 0 !important;
-            width: calc(100% - 60px) !important;
-            text-align: left !important;
-            padding: 0 !important;
+          .journey-step {
+            grid-column: 1 !important;
+            grid-row: auto !important;
+            max-width: 100% !important;
           }
-          .journey-step:nth-child(odd) .step-skills-wrap,
-          .journey-step:nth-child(even) .step-skills-wrap {
-            justify-content: flex-start !important;
+          .step-card-box {
+            max-width: 100% !important;
           }
-          .journey-svg {
-            display: none;
-          }
-          .journey-track::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 24px;
-            width: 2px;
-            background: rgba(255, 59, 48, 0.3);
+          .step-direction-hint {
+            display: none !important;
           }
         }
       `}</style>

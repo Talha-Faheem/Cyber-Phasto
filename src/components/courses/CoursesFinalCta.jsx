@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function CoursesFinalCta({
   onOpenContact,
@@ -12,21 +13,20 @@ export default function CoursesFinalCta({
           <span className="red">It starts with learning the next thing.</span>
         </h2>
         
-        <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', marginTop: '36px', flexWrap: 'wrap' }}>
-          <button onClick={onOpenContact} className="btn primary" style={{ padding: '16px 32px', fontSize: '15px' }}>
-            Start Your Journey →
-          </button>
+        <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', marginTop: '36px', flexWrap: 'wrap', alignItems: 'center' }}>
+          <Link 
+            to="/roadmap" 
+            className="btn primary" 
+            style={{ padding: '16px 32px', fontSize: '15px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+          >
+            Explore Learning Roadmaps →
+          </Link>
           <button 
-            onClick={() => {
-              if (searchInputRef.current) {
-                searchInputRef.current.focus();
-                searchInputRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              }
-            }} 
-            className="btn secondary" 
+            onClick={onOpenContact} 
+            className="btn white" 
             style={{ padding: '16px 32px', fontSize: '15px' }}
           >
-            Explore All Courses
+            Start Your Journey
           </button>
         </div>
       </div>

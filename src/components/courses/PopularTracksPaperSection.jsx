@@ -36,11 +36,6 @@ export default function PopularTracksPaperSection({ onSelectCourse }) {
               }}
             >
               <div className="cardBrowserBar" style={{ background: '#f5f5f5', borderBottom: '1px solid #ebebeb' }}>
-                <div className="browserDots">
-                  <div className="browserDot" style={{ background: '#ff5f56' }} />
-                  <div className="browserDot" style={{ background: '#ffbd2e' }} />
-                  <div className="browserDot" style={{ background: '#27c93f' }} />
-                </div>
                 <span className="cardCodeTag" style={{ color: '#888' }}>{course.code}</span>
               </div>
 

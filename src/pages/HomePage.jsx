@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import HomeBackground from '../components/home/HomeBackground';
 import HeroSection from '../components/home/HeroSection';
 import WhyCyberPashto from '../components/home/WhyCyberPashto';
 import AboutIdea from '../components/home/AboutIdea';
@@ -270,7 +271,8 @@ export default function HomePage({ onOpenContact, onNavigate }) {
   };
 
   return (
-    <div id="top" className="relative overflow-x-hidden w-full">
+    <div id="top" className="homePageWrapper relative overflow-x-hidden w-full bg-[#050505]">
+      <HomeBackground />
       <HeroSection onOpenContact={onOpenContact} />
 
       <WhyCyberPashto />

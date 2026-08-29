@@ -49,11 +49,6 @@ export default function CourseCardGrid({
               currentCourses.map((course) => (
                 <div key={course.id} className="cyberCourseCard">
                   <div className="cardBrowserBar">
-                    <div className="browserDots">
-                      <div className="browserDot" />
-                      <div className="browserDot" />
-                      <div className="browserDot" />
-                    </div>
                     <span className="cardCodeTag">{course.code}</span>
                   </div>
 

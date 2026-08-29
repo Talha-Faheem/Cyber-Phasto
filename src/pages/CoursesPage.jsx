@@ -1,14 +1,14 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { coursesData } from '../data/coursesData';
-import CoursesHero from '../components/courses/CoursesHero';
-import CourseSearchBar from '../components/courses/CourseSearchBar';
-import CourseFilterBar from '../components/courses/CourseFilterBar';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import HomeBackground from '../components/home/HomeBackground';
 import CourseCardGrid from '../components/courses/CourseCardGrid';
-import CoursePagination from '../components/courses/CoursePagination';
-import PathFinderBanner from '../components/courses/PathFinderBanner';
-import PopularTracksPaperSection from '../components/courses/PopularTracksPaperSection';
-import CoursesFinalCta from '../components/courses/CoursesFinalCta';
 import CourseDetailModal from '../components/courses/CourseDetailModal';
+import CourseFilterBar from '../components/courses/CourseFilterBar';
+import CoursePagination from '../components/courses/CoursePagination';
+import CourseSearchBar from '../components/courses/CourseSearchBar';
+import CoursesFinalCta from '../components/courses/CoursesFinalCta';
+import CoursesHero from '../components/courses/CoursesHero';
+import PopularTracksPaperSection from '../components/courses/PopularTracksPaperSection';
+import { coursesData } from '../data/coursesData';
 
 export default function CoursesPage({ onOpenContact, onNavigate }) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -76,9 +76,11 @@ export default function CoursesPage({ onOpenContact, onNavigate }) {
   };
 
   return (
-    <div className="coursesPageWrapper min-h-screen bg-[#050505] text-white pt-24 pb-20 w-full">
+    <div className="coursesPageWrapper min-h-screen bg-[#040404] text-white pb-20 w-full relative overflow-x-hidden">
+      <HomeBackground />
       <CoursesHero />
 
+      <PopularTracksPaperSection onSelectCourse={setSelectedCourseDetail} />
       <CourseSearchBar 
         searchInputRef={searchInputRef}
         searchQuery={searchQuery}
@@ -107,10 +109,6 @@ export default function CoursesPage({ onOpenContact, onNavigate }) {
         totalPages={totalPages}
         handlePageChange={handlePageChange}
       />
-
-      <PathFinderBanner />
-
-      <PopularTracksPaperSection onSelectCourse={setSelectedCourseDetail} />
 
       <CoursesFinalCta 
         onOpenContact={onOpenContact}

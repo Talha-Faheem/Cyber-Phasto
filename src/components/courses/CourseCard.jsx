@@ -95,11 +95,6 @@ export default function CourseCard({ course, variant = 'grid', onEnroll, index =
           zIndex: 3
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <span style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: '#FF0000', display: 'inline-block' }} />
-          <span style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: '#FFBD2E', display: 'inline-block' }} />
-          <span style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: '#27C93F', display: 'inline-block' }} />
-        </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           {badgeText && (

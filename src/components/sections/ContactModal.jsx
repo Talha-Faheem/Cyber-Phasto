@@ -4,17 +4,19 @@ import { X, ShieldCheck, Send, CheckCircle2 } from 'lucide-react';
 const labelStyle = {
   display: 'block',
   fontSize: '0.8rem',
-  color: '#ccc',
+  color: '#e4e4e7',
   marginBottom: '0.35rem',
-  fontWeight: 600,
+  fontWeight: 700,
   fontFamily: 'var(--font-mono)'
 };
 
 const inputStyle = {
   width: '100%',
   padding: '0.7rem 0.9rem',
-  backgroundColor: '#050505',
-  border: '1px solid #292929',
+  backgroundColor: 'rgba(255, 255, 255, 0.05)',
+  backdropFilter: 'blur(10px)',
+  WebkitBackdropFilter: 'blur(10px)',
+  border: '1px solid rgba(255, 255, 255, 0.12)',
   borderRadius: '10px',
   color: '#FFFFFF',
   fontFamily: 'var(--font-sans)',
@@ -50,7 +52,7 @@ export default function ContactModal({ isOpen, onClose }) {
         position: 'fixed',
         inset: 0,
         zIndex: 99999,
-        backgroundColor: 'rgba(5, 5, 5, 0.92)',
+        backgroundColor: 'rgba(5, 5, 5, 0.88)',
         backdropFilter: 'blur(18px)',
         WebkitBackdropFilter: 'blur(18px)',
         display: 'flex',
@@ -64,11 +66,14 @@ export default function ContactModal({ isOpen, onClose }) {
         style={{
           maxWidth: '580px',
           width: '100%',
-          backgroundColor: '#090909',
-          border: '1px solid rgba(255, 2, 5, 0.35)',
+          backgroundColor: 'rgba(18, 12, 14, 0.75)',
+          backgroundImage: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%)',
+          backdropFilter: 'blur(24px)',
+          WebkitBackdropFilter: 'blur(24px)',
+          border: '1px solid rgba(255, 255, 255, 0.15)',
           borderRadius: '22px',
           overflow: 'hidden',
-          boxShadow: '0 25px 60px rgba(0,0,0,0.95), 0 0 35px rgba(255, 2, 5, 0.15)',
+          boxShadow: '0 25px 60px rgba(0,0,0,0.95), inset 0 1px 1px rgba(255, 255, 255, 0.2), 0 0 35px rgba(255, 2, 5, 0.15)',
           position: 'relative'
         }}
         onClick={(e) => e.stopPropagation()}
@@ -76,19 +81,19 @@ export default function ContactModal({ isOpen, onClose }) {
         <div 
           style={{
             padding: '1.25rem 1.75rem',
-            backgroundColor: '#050505',
-            borderBottom: '1px solid #252525',
+            backgroundColor: 'rgba(255, 255, 255, 0.03)',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between'
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div style={{ padding: '0.45rem', borderRadius: '8px', backgroundColor: 'rgba(255, 2, 5, 0.12)', color: '#FF0205' }}>
+            <div style={{ padding: '0.45rem', borderRadius: '8px', backgroundColor: 'rgba(255, 2, 5, 0.15)', border: '1px solid rgba(255, 2, 5, 0.3)', color: '#FF0205' }}>
               <ShieldCheck size={20} />
             </div>
             <div>
-              <h3 style={{ fontSize: '1.15rem', color: '#FFFFFF', margin: 0, fontWeight: 700 }}>Admission & Inquiry</h3>
+              <h3 style={{ fontSize: '1.15rem', color: '#FFFFFF', margin: 0, fontWeight: 700 }}>Admission &amp; Inquiry</h3>
               <span className="gradient-text font-mono text-[0.72rem] tracking-wider font-bold">
                 CYBERPASHTO ECOSYSTEM
               </span>
@@ -114,11 +119,11 @@ export default function ContactModal({ isOpen, onClose }) {
         <div style={{ padding: '1.75rem' }}>
           {submitted ? (
             <div style={{ textAlign: 'center', padding: '2rem 1rem' }}>
-              <div style={{ width: '65px', height: '65px', borderRadius: '50%', backgroundColor: 'rgba(255, 2, 5, 0.12)', border: '2px solid #FF0205', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FF0205', margin: '0 auto 1.25rem auto' }}>
+              <div style={{ width: '65px', height: '65px', borderRadius: '50%', backgroundColor: 'rgba(255, 2, 5, 0.15)', border: '2px solid #FF0205', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FF0205', margin: '0 auto 1.25rem auto' }}>
                 <CheckCircle2 size={36} />
               </div>
               <h3 style={{ fontSize: '1.45rem', marginBottom: '0.65rem', color: '#FFFFFF' }}>Inquiry Received</h3>
-              <p style={{ color: '#888', fontSize: '0.92rem', marginBottom: '1.75rem', lineHeight: 1.6 }}>
+              <p style={{ color: '#a1a1aa', fontSize: '0.92rem', marginBottom: '1.75rem', lineHeight: 1.6 }}>
                 Thank you for reaching out to CyberPashto. An academic advisor will contact you within 12 hours.
               </p>
               <button onClick={resetForm} className="btn primary" style={{ padding: '0.75rem 2rem' }}>
@@ -170,7 +175,7 @@ export default function ContactModal({ isOpen, onClose }) {
                   <select 
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    style={{ ...inputStyle, appearance: 'none', backgroundColor: '#050505' }}
+                    style={{ ...inputStyle, appearance: 'none', backgroundColor: '#140a0c', cursor: 'pointer' }}
                   >
                     <option value="Course Enrollment / Admission">Course Enrollment / Admission</option>
                     <option value="Full Stack Web Development">Full Stack Web Development</option>
@@ -184,8 +189,8 @@ export default function ContactModal({ isOpen, onClose }) {
               <div>
                 <label style={labelStyle}>Message / Questions *</label>
                 <textarea 
-                  rows={3}
-                  required
+                  rows={3} 
+                  required 
                   placeholder="Ask about syllabus details, prerequisite guidance, or batch timing..."
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
