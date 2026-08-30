@@ -218,7 +218,7 @@ export default function Footer({ onOpenContact, onNavigate }) {
               </li>
               <li>
                 <Link to="/roadmap" className="footer-link-clean">
-                  Roadmap
+                  Journey
                 </Link>
               </li>
               <li>

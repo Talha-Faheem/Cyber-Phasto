@@ -12,7 +12,7 @@ export default function JourneyHero({ onOpenQuiz }) {
 
       <div className="container" style={{ position: 'relative', zIndex: 2, textAlign: 'center' }}>
         <h1 className="roadmap-title">
-          Explore Your <span className="gradient-text">Roadmap</span>
+          Explore Your <span className="gradient-text">Journey</span>
         </h1>
 
         <p className="roadmap-subtitle">
@@ -21,14 +21,19 @@ export default function JourneyHero({ onOpenQuiz }) {
 
         <div style={{ marginTop: '22px' }}>
           <button
-            onClick={onOpenQuiz}
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (onOpenQuiz) onOpenQuiz();
+            }}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               gap: '8px',
-              background: '#ffffff',
-              border: '1px solid #ffffff',
-              color: '#000000',
+              background: '#FF0205',
+              border: '1px solid #FF0205',
+              color: '#ffffff',
               padding: '12px 28px',
               borderRadius: '999px',
               fontSize: '14px',
@@ -36,19 +41,19 @@ export default function JourneyHero({ onOpenQuiz }) {
               cursor: 'pointer',
               fontFamily: 'var(--font-sans)',
               transition: 'all 0.25s cubic-bezier(0.19, 1, 0.22, 1)',
-              boxShadow: '0 4px 20px rgba(255, 255, 255, 0.2)'
+              boxShadow: '0 4px 20px rgba(255, 2, 5, 0.35)'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#f0f0f0';
-              e.currentTarget.style.borderColor = '#ffffff';
+              e.currentTarget.style.background = '#d90003';
+              e.currentTarget.style.borderColor = '#d90003';
               e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 8px 30px rgba(255, 255, 255, 0.45)';
+              e.currentTarget.style.boxShadow = '0 8px 30px rgba(255, 2, 5, 0.55)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = '#ffffff';
-              e.currentTarget.style.borderColor = '#ffffff';
+              e.currentTarget.style.background = '#FF0205';
+              e.currentTarget.style.borderColor = '#FF0205';
               e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 4px 20px rgba(255, 255, 255, 0.2)';
+              e.currentTarget.style.boxShadow = '0 4px 20px rgba(255, 2, 5, 0.35)';
             }}
           >
             Not sure which track? Take 3-Question Quiz →

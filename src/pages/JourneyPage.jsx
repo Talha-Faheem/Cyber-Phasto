@@ -20,18 +20,19 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
     setQuizAnswers(nextAnswers);
 
     if (quizStep < 3) {
-      setQuizStep(quizStep + 1);
+      setQuizStep(prev => prev + 1);
     } else {
       let matchedPath = careerPathsData[0];
-      if (nextAnswers.interest === 'cyber') {
+      const interest = nextAnswers.interest || value;
+      if (interest === 'cyber') {
         matchedPath = careerPathsData.find(p => p.id === 'cybersecurity') || careerPathsData[1];
-      } else if (nextAnswers.interest === 'ai') {
-        matchedPath = careerPathsData.find(p => p.id === 'ai-ml') || careerPathsData[2];
-      } else if (nextAnswers.interest === 'data') {
+      } else if (interest === 'ai') {
+        matchedPath = careerPathsData.find(p => p.id === 'artificial-intelligence' || p.id === 'ai-ml') || careerPathsData[2];
+      } else if (interest === 'data') {
         matchedPath = careerPathsData.find(p => p.id === 'data-science') || careerPathsData[3];
-      } else if (nextAnswers.interest === 'swe') {
+      } else if (interest === 'swe') {
         matchedPath = careerPathsData.find(p => p.id === 'software-engineering') || careerPathsData[4];
-      } else if (nextAnswers.interest === 'cloud') {
+      } else if (interest === 'cloud') {
         matchedPath = careerPathsData.find(p => p.id === 'cloud-devops') || careerPathsData[5];
       } else {
         matchedPath = careerPathsData.find(p => p.id === 'web-development') || careerPathsData[0];
@@ -42,15 +43,17 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
   };
 
   const applyQuizRecommendation = () => {
-    if (quizResult) {
+    if (quizResult && quizResult.id) {
       setSelectedPathId(quizResult.id);
     }
     setIsQuizOpen(false);
     setQuizStep(1);
-    const el = document.getElementById('roadmapSection');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
+    setTimeout(() => {
+      const el = document.getElementById('roadmapSection') || document.getElementById('journeyTrack');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 150);
   };
 
   const resetQuiz = () => {
@@ -114,9 +117,9 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
     let d = '';
 
     if (isMobile) {
-      // Mobile vertical alignment
+      // Mobile clean vertical laser line connecting cards
       const first = stepsData[0];
-      d = `M ${first.exit.x} ${Math.max(0, first.entry.y - 40)} `;
+      d = `M ${first.exit.x} ${Math.max(0, first.entry.y - 30)} `;
       d += `L ${first.exit.x} ${first.exit.y} `;
 
       for (let i = 1; i < stepsData.length; i++) {
@@ -131,7 +134,8 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
         d += `L ${destX} ${destY} `;
       }
     } else {
-      // 2D Map multi-directional laser track connecting steps
+      // 2D Map multi-directional circuit track connecting steps
+      // Start slightly above first card
       const first = stepsData[0];
       d = `M ${first.entry.x} ${Math.max(0, first.entry.y - 30)} `;
       d += `L ${first.entry.x} ${first.entry.y} `;
@@ -146,24 +150,33 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
         const dy = nextEntry.y - currExit.y;
 
         if (Math.abs(dx) < 40) {
-          // Direct downward connection (e.g. Course 03 Left -> Course 04 Left)
+          // Direct downward connection (e.g. Course 02 -> Course 03, Course 04 -> Course 05)
+          d += `L ${nextEntry.x} ${nextEntry.y} `;
+        } else if (dx > 40) {
+          // Turn RIGHT 90° with smooth rounded corners (e.g. Course 01 -> Course 02, Course 05 -> Course 06)
+          const yMid = currExit.y + Math.max(20, dy * 0.45);
+          const r = Math.min(18, Math.max(4, Math.abs(dx) / 4), Math.max(4, yMid - currExit.y), Math.max(4, nextEntry.y - yMid));
+          d += `L ${currExit.x} ${yMid - r} `;
+          d += `Q ${currExit.x} ${yMid} ${currExit.x + r} ${yMid} `;
+          d += `L ${nextEntry.x - r} ${yMid} `;
+          d += `Q ${nextEntry.x} ${yMid} ${nextEntry.x} ${yMid + r} `;
           d += `L ${nextEntry.x} ${nextEntry.y} `;
         } else {
-          // Smooth S-curve transition across columns
-          // Exits current card going downwards, sweeps across horizontally, and lands vertically into next card
-          const cp1x = currExit.x;
-          const cp1y = currExit.y + dy * 0.5;
-          const cp2x = nextEntry.x;
-          const cp2y = nextEntry.y - dy * 0.5;
-
-          d += `C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${nextEntry.x} ${nextEntry.y} `;
+          // Turn LEFT 90° with smooth rounded corners (e.g. Course 03 -> Course 04)
+          const yMid = currExit.y + Math.max(20, dy * 0.45);
+          const r = Math.min(18, Math.max(4, Math.abs(dx) / 4), Math.max(4, yMid - currExit.y), Math.max(4, nextEntry.y - yMid));
+          d += `L ${currExit.x} ${yMid - r} `;
+          d += `Q ${currExit.x} ${yMid} ${currExit.x - r} ${yMid} `;
+          d += `L ${nextEntry.x + r} ${yMid} `;
+          d += `Q ${nextEntry.x} ${yMid} ${nextEntry.x} ${yMid + r} `;
+          d += `L ${nextEntry.x} ${nextEntry.y} `;
         }
 
         // Trace through the next card from its entry to its exit marker
         d += `L ${nextExit.x} ${nextExit.y} `;
       }
 
-      // Connect last step to Destination Card
+      // Connect last step (Course 06) to Destination Card
       const lastExit = stepsData[stepsData.length - 1].exit;
       if (destinationCardRef.current) {
         const destRect = destinationCardRef.current.getBoundingClientRect();
@@ -175,9 +188,9 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           d += `L ${destX} ${destY} `;
         } else {
           const cp1x = lastExit.x;
-          const cp1y = lastExit.y + dy * 0.5;
+          const cp1y = lastExit.y + dy * 0.45;
           const cp2x = destX;
-          const cp2y = destY - dy * 0.4;
+          const cp2y = destY - dy * 0.3;
           d += `C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${destX} ${destY} `;
         }
       } else {
@@ -221,10 +234,15 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
   }, []);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const timer1 = setTimeout(() => {
       buildPath();
       updateProgress();
-    }, 80);
+    }, 60);
+
+    const timer2 = setTimeout(() => {
+      buildPath();
+      updateProgress();
+    }, 300);
 
     const handleResize = () => {
       buildPath();
@@ -235,7 +253,8 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
     window.addEventListener('scroll', updateProgress, { passive: true });
 
     return () => {
-      clearTimeout(timer);
+      clearTimeout(timer1);
+      clearTimeout(timer2);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('scroll', updateProgress);
     };
@@ -322,9 +341,11 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
 
         .roadmap-section {
           position: relative;
-          padding: 30px 20px 40px;
-          max-width: 1160px;
+          padding: 24px 16px 40px;
+          max-width: 1040px;
           margin: 0 auto;
+          width: 100%;
+          box-sizing: border-box;
         }
 
         .roadmap-eyebrow {
@@ -391,29 +412,152 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
         }
 
         .selectedPathSummaryBox {
-          background: #130a0a;
-          border: 1px solid rgba(255, 59, 48, 0.25);
+          background: #ffffff;
+          color: #090909;
+          border: 1px solid #ffffff;
           border-radius: 20px;
           padding: 24px 28px;
           display: flex;
           align-items: center;
           justify-content: space-between;
           flex-wrap: wrap;
-          gap: 16px;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+          gap: 20px;
+          box-shadow: 0 16px 45px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 255, 255, 0.08);
+          position: relative;
+          overflow: hidden;
+          transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
 
-        .summaryMetaBadge {
-          background: rgba(0, 0, 0, 0.6);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 8px;
-          padding: 6px 12px;
-          font-size: 12px;
-          color: #ccc;
+        .selectedPathSummaryBox:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 255, 255, 0.15);
+        }
+
+        .summaryContentLeft {
+          flex: 1 1 480px;
+          min-width: 280px;
+        }
+
+        .summaryEyebrowRow {
           display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 8px;
+        }
+
+        .summaryTrackBadge {
+          display: inline-flex;
           align-items: center;
           gap: 6px;
           font-family: var(--font-mono);
+          font-size: 10.5px;
+          font-weight: 700;
+          color: #FF0205;
+          background: rgba(255, 2, 5, 0.08);
+          border: 1px solid rgba(255, 2, 5, 0.22);
+          padding: 3px 9px;
+          border-radius: 999px;
+          letter-spacing: 0.1em;
+        }
+
+        .summaryBadgeDot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #FF0205;
+          box-shadow: 0 0 6px rgba(255, 2, 5, 0.8);
+          display: inline-block;
+        }
+
+        .summaryTrackIconBadge {
+          color: #71717a;
+          display: inline-flex;
+          align-items: center;
+        }
+
+        .summaryTitle {
+          font-size: 24px;
+          font-weight: 800;
+          color: #090909;
+          margin: 0 0 6px;
+          letter-spacing: -0.02em;
+          line-height: 1.25;
+        }
+
+        .summaryDesc {
+          color: #52525b;
+          font-size: 13.5px;
+          margin: 0;
+          max-width: 620px;
+          line-height: 1.55;
+        }
+
+        .summaryMetaContainer {
+          display: flex;
+          gap: 12px;
+          flex-wrap: wrap;
+          align-items: center;
+        }
+
+        .summaryMetaCard {
+          background: #f4f4f5;
+          border: 1px solid #e4e4e7;
+          border-radius: 12px;
+          padding: 10px 14px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+          transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .summaryMetaCard:hover {
+          border-color: #d4d4d8;
+          transform: translateY(-1px);
+        }
+
+        .metaIconWrap {
+          width: 32px;
+          height: 32px;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+
+        .metaIconRed {
+          background: rgba(255, 2, 5, 0.1);
+          color: #FF0205;
+          border: 1px solid rgba(255, 2, 5, 0.2);
+        }
+
+        .metaIconGreen {
+          background: rgba(34, 197, 94, 0.12);
+          color: #16a34a;
+          border: 1px solid rgba(34, 197, 94, 0.25);
+        }
+
+        .metaInfoCol {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+
+        .metaLabel {
+          font-family: var(--font-mono);
+          font-size: 9.5px;
+          font-weight: 700;
+          color: #71717a;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+
+        .metaValue {
+          font-size: 13px;
+          font-weight: 800;
+          color: #090909;
+          letter-spacing: -0.01em;
         }
 
         .journey-track {
@@ -460,10 +604,12 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
         .journey-2d-grid {
           display: grid;
           grid-template-columns: repeat(2, minmax(0, 1fr));
-          column-gap: 56px;
-          row-gap: 32px;
+          column-gap: 36px;
+          row-gap: 28px;
           position: relative;
           z-index: 2;
+          align-items: start;
+          width: 100%;
         }
 
         .journey-step {
@@ -472,9 +618,15 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           flex-direction: column;
           align-items: center;
           width: 100%;
+          max-width: 470px;
+          margin: 0 auto;
           opacity: 0;
           transform: translateY(24px);
           transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .journey-step-staggered {
+          margin-top: 36px;
         }
 
         .journey-step.is-visible {
@@ -493,31 +645,30 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           background: #110707;
           background: linear-gradient(180deg, #150909 0%, #0d0404 100%);
           border: 1px solid rgba(255, 59, 48, 0.28);
-          border-radius: 16px;
-          padding: 24px 28px;
+          border-radius: 14px;
+          padding: 20px 22px;
           width: 100%;
-          max-width: 520px;
-          box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65), 0 0 15px rgba(255, 59, 48, 0.05);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65), 0 0 15px rgba(255, 59, 48, 0.04);
           position: relative;
           transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
         }
 
         .step-card-box:hover {
-          transform: translateY(-3px);
+          transform: translateY(-2px);
           border-color: rgba(255, 59, 48, 0.65);
-          box-shadow: 0 16px 45px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 59, 48, 0.2);
+          box-shadow: 0 14px 40px rgba(0, 0, 0, 0.8), 0 0 22px rgba(255, 59, 48, 0.2);
         }
 
         .step-card-header {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          margin-bottom: 10px;
+          margin-bottom: 8px;
         }
 
         .step-eyebrow {
           font-family: var(--font-mono);
-          font-size: 11px;
+          font-size: 10.5px;
           font-weight: 700;
           background: linear-gradient(
             180deg,
@@ -528,72 +679,76 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           -webkit-text-fill-color: transparent;
           background-clip: text;
           display: inline-block;
-          letter-spacing: 0.1em;
+          letter-spacing: 0.08em;
         }
 
         .step-index-badge {
           font-family: var(--font-mono);
-          font-size: 11px;
+          font-size: 10.5px;
           font-weight: 800;
-          color: rgba(255, 255, 255, 0.35);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 6px;
-          padding: 2px 6px;
+          color: rgba(255, 255, 255, 0.4);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          border-radius: 5px;
+          padding: 1px 6px;
           background: rgba(255, 255, 255, 0.03);
         }
 
         .step-title {
-          font-size: 20px;
+          font-size: 17.5px;
           font-weight: 800;
           color: #fff;
-          margin: 0 0 8px;
+          margin: 0 0 6px;
           line-height: 1.3;
         }
 
         .step-desc {
           color: var(--text-muted);
-          font-size: 13.5px;
-          line-height: 1.55;
-          margin: 0 0 14px;
+          font-size: 13px;
+          line-height: 1.5;
+          margin: 0 0 12px;
         }
 
         .step-course-tag {
           display: inline-flex;
           align-items: center;
           gap: 6px;
-          background: rgba(255, 59, 48, 0.1);
-          border: 1px solid rgba(255, 59, 48, 0.25);
-          padding: 5px 10px;
+          background: rgba(255, 59, 48, 0.08);
+          border: 1px solid rgba(255, 59, 48, 0.22);
+          padding: 4px 9px;
           border-radius: 6px;
-          font-size: 12px;
+          font-size: 11.5px;
           color: #eee;
-          margin-bottom: 12px;
+          margin-bottom: 10px;
+          max-width: 100%;
         }
 
         .step-skills-wrap {
           display: flex;
           flex-wrap: wrap;
-          gap: 6px;
-          margin-bottom: 12px;
+          gap: 5px;
+          margin-bottom: 10px;
         }
 
         .step-skill-pill {
           background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          padding: 3px 8px;
+          border: 1px solid rgba(255, 255, 255, 0.09);
+          padding: 2.5px 7px;
           border-radius: 4px;
-          font-size: 11px;
+          font-size: 10.5px;
           color: #ccc;
           font-family: var(--font-mono);
         }
 
         .step-project-row {
-          font-size: 12px;
+          font-size: 11.5px;
           color: #ff8a80;
           background: rgba(0, 0, 0, 0.4);
-          padding: 6px 10px;
+          padding: 5px 9px;
           border-radius: 6px;
-          border: 1px dashed rgba(255, 59, 48, 0.3);
+          border: 1px dashed rgba(255, 59, 48, 0.28);
+          display: flex;
+          align-items: center;
+          gap: 6px;
         }
 
         .step-marker {
@@ -601,26 +756,26 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           display: flex;
           align-items: center;
           justify-content: center;
-          margin-top: 10px;
-          margin-bottom: 4px;
+          margin-top: 8px;
+          margin-bottom: 2px;
           z-index: 5;
         }
 
         .step-marker-dot {
-          width: 18px;
-          height: 18px;
+          width: 15px;
+          height: 15px;
           border-radius: 50%;
           background: #000;
-          border: 3.5px solid var(--accent);
-          box-shadow: 0 0 14px var(--accent-glow);
+          border: 3px solid var(--accent);
+          box-shadow: 0 0 12px var(--accent-glow);
           position: relative;
           z-index: 2;
         }
 
         .step-marker-pulse {
           position: absolute;
-          width: 28px;
-          height: 28px;
+          width: 24px;
+          height: 24px;
           border-radius: 50%;
           background: rgba(255, 59, 48, 0.25);
           animation: markerPulse 2.4s infinite ease-out;
@@ -645,23 +800,23 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           font-weight: 700;
           color: #ff8a80;
           background: rgba(255, 59, 48, 0.12);
-          border: 1px solid rgba(255, 59, 48, 0.3);
-          padding: 2px 8px;
+          border: 1px solid rgba(255, 59, 48, 0.28);
+          padding: 2px 7px;
           border-radius: 999px;
           white-space: nowrap;
           pointer-events: none;
         }
 
         .hint-right {
-          left: 28px;
+          left: 24px;
         }
 
         .hint-left {
-          right: 28px;
+          right: 24px;
         }
 
         .hint-down {
-          top: 24px;
+          top: 20px;
           left: 50%;
           transform: translateX(-50%);
           padding: 2px 6px;
@@ -670,14 +825,14 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
         .destination-card {
           background: #ffffff;
           color: #070707;
-          border-radius: 24px;
-          padding: 44px 32px;
+          border-radius: 20px;
+          padding: 36px 28px;
           text-align: center;
-          max-width: 680px;
-          margin: 48px auto 0;
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 59, 48, 0.2);
+          max-width: 600px;
+          margin: 40px auto 0;
+          box-shadow: 0 16px 50px rgba(0, 0, 0, 0.8), 0 0 35px rgba(255, 59, 48, 0.18);
           opacity: 0;
-          transform: translateY(30px);
+          transform: translateY(24px);
           transition: opacity 0.7s ease, transform 0.7s ease;
           position: relative;
           z-index: 3;
@@ -694,22 +849,22 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           background: #ff3b30;
           border: 3px solid #fff;
           box-shadow: 0 0 14px rgba(255, 59, 48, 0.8);
-          margin: -52px auto 20px;
+          margin: -44px auto 16px;
         }
 
         .destination-title {
-          font-size: 28px;
+          font-size: 26px;
           font-weight: 900;
           color: #070707;
-          margin-bottom: 12px;
+          margin-bottom: 10px;
           letter-spacing: -0.02em;
         }
         .destination-desc {
           color: #555;
-          font-size: 15px;
-          line-height: 1.6;
-          max-width: 520px;
-          margin: 0 auto 24px;
+          font-size: 14.5px;
+          line-height: 1.55;
+          max-width: 500px;
+          margin: 0 auto 20px;
         }
         .destination-cta {
           background: var(--accent);
@@ -734,9 +889,10 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           background: rgba(0, 0, 0, 0.88);
           backdrop-filter: blur(12px);
           -webkit-backdrop-filter: blur(12px);
-          display: grid;
-          place-items: center;
-          z-index: 9999;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 99999;
           padding: 20px;
         }
         .quizModalContent {
@@ -790,6 +946,9 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
             grid-column: 1 !important;
             grid-row: auto !important;
             max-width: 100% !important;
+          }
+          .journey-step-staggered {
+            margin-top: 0 !important;
           }
           .step-card-box {
             max-width: 100% !important;

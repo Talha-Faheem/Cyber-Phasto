@@ -49,28 +49,34 @@ export default function TrackSelector({
         </div>
 
         <div className="selectedPathSummaryBox">
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-              <span className="mono" style={{ fontSize: '11px', color: 'var(--accent)', letterSpacing: '0.15em' }}>
-                CAREER TRACK // {activePath.number}
-              </span>
-            </div>
-            <h2 style={{ fontSize: '26px', fontWeight: 800, color: '#fff', margin: '0 0 6px' }}>
+          <div className="summaryContentLeft">
+            <h2 className="summaryTitle">
               {activePath.title}
             </h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: 0, maxWidth: '600px', lineHeight: 1.5 }}>
+            <p className="summaryDesc">
               {activePath.description}
             </p>
           </div>
 
-          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
-            <div className="summaryMetaBadge">
-              <Clock size={13} style={{ color: 'var(--accent)' }} />
-              <span>{activePath.duration}</span>
+          <div className="summaryMetaContainer">
+            <div className="summaryMetaCard">
+              <div className="metaIconWrap metaIconRed">
+                <Clock size={16} />
+              </div>
+              <div className="metaInfoCol">
+                <span className="metaLabel">ESTIMATED DURATION</span>
+                <span className="metaValue">{activePath.duration}</span>
+              </div>
             </div>
-            <div className="summaryMetaBadge">
-              <GraduationCap size={13} style={{ color: '#22c55e' }} />
-              <span>Target: <strong>{activePath.finalRole}</strong></span>
+
+            <div className="summaryMetaCard">
+              <div className="metaIconWrap metaIconGreen">
+                <GraduationCap size={16} />
+              </div>
+              <div className="metaInfoCol">
+                <span className="metaLabel">TARGET OUTCOME</span>
+                <span className="metaValue">{activePath.finalRole}</span>
+              </div>
             </div>
           </div>
         </div>

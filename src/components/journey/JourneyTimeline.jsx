@@ -1,36 +1,29 @@
 import React from 'react';
-import { BookOpen, ArrowRight, ArrowDown, ArrowLeft } from 'lucide-react';
+import { BookOpen, ArrowRight, ArrowDown, ArrowLeft, Sparkles, CheckCircle2, Wrench } from 'lucide-react';
 
 export const getStepPlacement = (index, totalSteps) => {
-  if (totalSteps <= 4) {
-    const isEven = index % 2 === 0;
-    return {
-      col: isEven ? 1 : 2,
-      row: index + 1,
-      direction: index === totalSteps - 1 ? 'down' : isEven ? 'right' : 'left'
-    };
-  }
-
-  // 6-step layout matching the user path:
-  // Step 0: Col 1 (Left) -> turns Right to Course 02
-  // Step 1: Col 2 (Right) -> turns Left to Course 03
-  // Step 2: Col 1 (Left) -> goes Down to Course 04
-  // Step 3: Col 1 (Left) -> turns Right to Course 05
-  // Step 4: Col 2 (Right) -> turns Left to Course 06
-  // Step 5: Col 1 (Left) -> goes Down to Destination Reached
+  // Exact 6-course journey structure matching reference flow:
+  // Step 0 (Course 01): Col 1 (Left, Row 1) -> turns Right to Course 02
+  // Step 1 (Course 02): Col 2 (Right, Row 1) -> goes straight Down to Course 03
+  // Step 2 (Course 03): Col 2 (Right, Row 2) -> turns Left to Course 04
+  // Step 3 (Course 04): Col 1 (Left, Row 2) -> goes straight Down to Course 05
+  // Step 4 (Course 05): Col 1 (Left, Row 3) -> turns Right to Course 06
+  // Step 5 (Course 06): Col 2 (Right, Row 3) -> goes Down to Destination
   const placements = [
-    { col: 1, row: 1, direction: 'right' },
-    { col: 2, row: 2, direction: 'left' },
-    { col: 1, row: 3, direction: 'down' },
-    { col: 1, row: 4, direction: 'right' },
-    { col: 2, row: 5, direction: 'left' },
-    { col: 1, row: 6, direction: 'down' }
+    { col: 1, row: 1, direction: 'right', isStaggered: false, label: '01' },
+    { col: 2, row: 1, direction: 'down', isStaggered: true, label: '02' },
+    { col: 2, row: 2, direction: 'left', isStaggered: false, label: '03' },
+    { col: 1, row: 2, direction: 'down', isStaggered: true, label: '04' },
+    { col: 1, row: 3, direction: 'right', isStaggered: false, label: '05' },
+    { col: 2, row: 3, direction: 'down', isStaggered: true, label: '06' }
   ];
 
   return placements[index] || {
     col: index % 2 === 0 ? 1 : 2,
-    row: index + 1,
-    direction: 'down'
+    row: Math.floor(index / 2) + 1,
+    direction: 'down',
+    isStaggered: index % 2 !== 0,
+    label: `0${index + 1}`
   };
 };
 
@@ -49,8 +42,8 @@ export default function JourneyTimeline({
     <div className="journey-track" id="journeyTrack" ref={trackRef}>
       <svg className="journey-svg" id="journeySvg" ref={svgRef} preserveAspectRatio="none">
         <defs>
-          <filter id="laserGlow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="6" result="blur" />
+          <filter id="laserGlow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="7" result="blur" />
             <feComposite in="SourceGraphic" in2="blur" operator="over" />
           </filter>
         </defs>
@@ -62,12 +55,16 @@ export default function JourneyTimeline({
       <div className="journey-2d-grid" ref={stepsContainerRef}>
         {activePath.levels.map((step, idx) => {
           const isFirst = idx === 0;
+          const isLast = idx === totalLevels - 1;
           const placement = getStepPlacement(idx, totalLevels);
+          const nextIndex = idx + 2 <= totalLevels ? `0${idx + 2}` : 'END';
 
           return (
             <div
               key={idx}
-              className={`journey-step journey-step-col-${placement.col}`}
+              className={`journey-step journey-step-col-${placement.col} ${
+                placement.isStaggered ? 'journey-step-staggered' : ''
+              }`}
               data-step
               data-index={idx}
               data-col={placement.col}
@@ -80,27 +77,33 @@ export default function JourneyTimeline({
               {/* Top Entry Anchor */}
               <div className="step-entry-anchor" />
 
-              {/* Full Original Card Component */}
+              {/* Substantial, High-Quality Course Card */}
               <div className="step-card-box">
+                {/* Header with Level Label & Index Badge */}
                 <div className="step-card-header">
                   <div className="step-eyebrow">
-                    {isFirst ? '🔥 LEVEL 01 — START HERE' : `LEVEL 0${idx + 1} — ${step.phase}`}
+                    {isFirst ? '🔥 LEVEL 01 — START HERE' : `LEVEL 0${idx + 1} — ${step.phase || 'CORE TRACK'}`}
                   </div>
                   <span className="step-index-badge">
                     0{idx + 1}
                   </span>
                 </div>
 
+                {/* Course Title */}
                 <h3 className="step-title">{step.title}</h3>
+
+                {/* Course Description */}
                 <p className="step-desc">{step.desc}</p>
 
+                {/* Primary Recommended Course */}
                 {step.courses && step.courses.length > 0 && (
                   <div className="step-course-tag">
-                    <BookOpen size={13} style={{ color: 'var(--accent)' }} />
-                    <span><strong>Course:</strong> {step.courses[0]}</span>
+                    <BookOpen size={13} style={{ color: 'var(--accent)', flexShrink: 0 }} />
+                    <span className="truncate"><strong>Course:</strong> {step.courses[0]}</span>
                   </div>
                 )}
 
+                {/* Topics & Technologies Skills Pills */}
                 {step.skills && step.skills.length > 0 && (
                   <div className="step-skills-wrap">
                     {step.skills.slice(0, 4).map((skill, sIdx) => (
@@ -111,9 +114,11 @@ export default function JourneyTimeline({
                   </div>
                 )}
 
+                {/* Hands-on Project / Build Section */}
                 {step.projects && step.projects.length > 0 && (
                   <div className="step-project-row">
-                    <span>🛠 <strong>Build:</strong> {step.projects[0]}</span>
+                    <Wrench size={13} style={{ color: '#ff8a80', flexShrink: 0 }} />
+                    <span className="truncate"><strong>Build:</strong> {step.projects[0]}</span>
                   </div>
                 )}
               </div>
@@ -122,19 +127,20 @@ export default function JourneyTimeline({
               <div className="step-marker" data-direction={placement.direction}>
                 <div className="step-marker-dot" />
                 <div className="step-marker-pulse" />
+                
                 {placement.direction === 'right' && (
                   <span className="step-direction-hint hint-right">
-                    <span>Next</span> <ArrowRight size={12} />
+                    <span>Course {nextIndex}</span> <ArrowRight size={12} />
                   </span>
                 )}
                 {placement.direction === 'left' && (
                   <span className="step-direction-hint hint-left">
-                    <ArrowLeft size={12} /> <span>Next</span>
+                    <ArrowLeft size={12} /> <span>Course {nextIndex}</span>
                   </span>
                 )}
                 {placement.direction === 'down' && (
                   <span className="step-direction-hint hint-down">
-                    <ArrowDown size={12} />
+                    {isLast ? <span>Destination</span> : <span>Course {nextIndex}</span>} <ArrowDown size={12} />
                   </span>
                 )}
               </div>

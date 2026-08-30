@@ -1013,19 +1013,28 @@ export const careerPathsData = [
     icon: "database",
     levels: [
       {
-        level: "LEVEL 01",
-        phase: "FOUNDATIONS",
-        title: "Python, SQL & Data Wrangling",
-        desc: "Master relational databases, SQL queries, Python data structures, and Pandas data wrangling.",
-        skills: ["SQL (PostgreSQL/MySQL)", "Python Data Structures", "Pandas", "NumPy"],
+        level: "LEVEL 00",
+        phase: "START HERE",
+        title: "Python, Math & Analytics Foundations",
+        desc: "Master Python syntax, statistics, linear algebra, NumPy arrays, and exploratory data analysis fundamentals.",
+        skills: ["Python 3", "Statistics & Probability", "NumPy", "Jupyter Notebooks"],
         courses: ["Python for Data Science, Pandas & Visualization"],
-        projects: ["Complex SQL Data Warehouse Analysis"]
+        projects: ["Statistical Analysis & Computing Toolkit"]
+      },
+      {
+        level: "LEVEL 01",
+        phase: "DATA WRANGLING",
+        title: "SQL Databases & Pandas Wrangling",
+        desc: "Master relational databases, complex SQL queries, data cleaning, aggregation, and reshaping with Pandas.",
+        skills: ["PostgreSQL & MySQL", "Pandas DataFrames", "Data Wrangling", "Plotly & Seaborn"],
+        courses: ["Python for Data Science, Pandas & Visualization"],
+        projects: ["Enterprise SQL Data Warehouse Analysis"]
       },
       {
         level: "LEVEL 02",
         phase: "BUSINESS INTELLIGENCE",
-        title: "Executive Dashboards & BI",
-        desc: "Build corporate reporting suites with Power BI, Tableau, DAX calculations, and automated ETL pipelines.",
+        title: "Executive Dashboards & BI Suites",
+        desc: "Build enterprise reporting dashboards with Power BI, Tableau, DAX calculations, and automated ETL pipelines.",
         skills: ["Power BI", "Tableau", "DAX Formulas", "Data Modeling & ETL"],
         courses: ["Power BI, Tableau & Executive Data Storytelling"],
         projects: ["Corporate Financial Health Executive Dashboard"]
@@ -1033,20 +1042,29 @@ export const careerPathsData = [
       {
         level: "LEVEL 03",
         phase: "PREDICTIVE MODELING",
-        title: "Applied Machine Learning",
-        desc: "Construct predictive statistical models, cluster customer segments, and forecast time-series trends.",
-        skills: ["Scikit-Learn", "Regression & Time-Series", "Clustering", "Hypothesis Testing"],
+        title: "Applied Machine Learning & Forecasting",
+        desc: "Construct predictive statistical models, cluster customer segments, and forecast time-series business trends.",
+        skills: ["Scikit-Learn", "Regression & Time-Series", "Clustering & Classification", "Hypothesis Testing"],
         courses: ["Machine Learning Engineering with Scikit-Learn"],
         projects: ["Revenue Forecasting & Demand Predictor"]
       },
       {
         level: "LEVEL 04",
+        phase: "DEEP LEARNING & NLP",
+        title: "Neural Networks & Text Analytics",
+        desc: "Engineer neural networks for unstructured text and image data using PyTorch and transformer embeddings.",
+        skills: ["PyTorch", "NLP & Embeddings", "Neural Networks", "Feature Stores"],
+        courses: ["AI & GenAI Engineering: LLMs & Autonomous Agents"],
+        projects: ["Customer Sentiment & Churn Neural Classifier"]
+      },
+      {
+        level: "LEVEL 05",
         phase: "PROFESSIONAL",
-        title: "Data Storytelling & Career",
-        desc: "Present findings to executive leadership, deploy automated report bots, and consult for international companies.",
-        skills: ["Executive Presentations", "Automated Pipelines", "International Freelancing"],
+        title: "Data Storytelling & Production MLOps",
+        desc: "Deploy automated report pipelines, communicate insights to executive leadership, and win global freelance analytics clients.",
+        skills: ["MLOps & Docker", "Executive Storytelling", "FastAPI Serving", "International Consulting"],
         courses: ["Tech Freelancing & Global Client Acquisition"],
-        projects: ["Full Business Intelligence Consulting Portfolio"]
+        projects: ["Full Business Intelligence & ML Consulting Portfolio"]
       }
     ]
   },
@@ -1063,40 +1081,58 @@ export const careerPathsData = [
     icon: "cpu",
     levels: [
       {
+        level: "LEVEL 00",
+        phase: "START HERE",
+        title: "Computer Science & Logic Foundations",
+        desc: "Understand computer architecture, CPU registers, binary logic, memory models, and Linux development workflows.",
+        skills: ["C / C++ Basics", "Computer Architecture", "Linux CLI", "Git & Debugging"],
+        courses: ["Programming, Data Structures & System Design"],
+        projects: ["CLI File Utility & System Inspector"]
+      },
+      {
         level: "LEVEL 01",
         phase: "CORE CS",
-        title: "Programming & Memory Management",
-        desc: "Master pointers, memory allocation, CPU caches, and object-oriented architecture in C++ or Go.",
-        skills: ["C++ / Go", "Memory Management", "Pointers & References", "Object-Oriented Programming"],
+        title: "Memory Management & Object Architecture",
+        desc: "Master pointers, manual memory allocation, cache locality, and object-oriented architecture in C++ and Go.",
+        skills: ["C++ / Go", "Memory Management", "Pointers & References", "Object-Oriented Design"],
         courses: ["Programming, Data Structures & System Design"],
         projects: ["Custom Dynamic Memory Allocator"]
       },
       {
         level: "LEVEL 02",
         phase: "ALGORITHMS",
-        title: "Data Structures & Problem Solving",
+        title: "Data Structures & Algorithmic Problem Solving",
         desc: "Solve complex computational challenges using trees, graphs, heaps, dynamic programming, and greedy algorithms.",
         skills: ["Trees & Graphs", "Dynamic Programming", "Heap Priority Queues", "Time/Space Complexity"],
         courses: ["Programming, Data Structures & System Design"],
-        projects: ["Graph-Based Routing Engine"]
+        projects: ["Graph-Based Dijkstra Routing Engine"]
       },
       {
         level: "LEVEL 03",
         phase: "CONCURRENCY",
         title: "Concurrent Systems & Microservices",
-        desc: "Engineer high-throughput concurrent backends using Go, Goroutines, Channels, and gRPC communication.",
-        skills: ["Go Concurrency", "Goroutines & Mutexes", "gRPC & Protocol Buffers", "Redis Caching"],
+        desc: "Engineer high-throughput concurrent backends using Go, Goroutines, Channels, Mutexes, and gRPC communication.",
+        skills: ["Go Concurrency", "Goroutines & Channels", "gRPC & Protocol Buffers", "Redis Caching"],
         courses: ["Go (Golang) Microservices & Concurrency"],
         projects: ["High-Frequency Real-Time Matching Engine"]
       },
       {
         level: "LEVEL 04",
         phase: "SYSTEM DESIGN",
-        title: "Distributed System Design",
-        desc: "Architect scalable distributed systems with load balancers, database sharding, message queues, and fault tolerance.",
-        skills: ["Distributed Systems", "Kafka & RabbitMQ", "Database Sharding", "Fault Tolerance"],
+        title: "Distributed System Design & Resilience",
+        desc: "Architect scalable distributed systems with load balancers, database sharding, Kafka queues, and fault tolerance.",
+        skills: ["Distributed Systems", "Apache Kafka", "Database Sharding", "Fault Tolerance & Raft"],
         courses: ["Cloud Computing, Docker & Kubernetes DevOps"],
         projects: ["Distributed Scalable Chat Architecture"]
+      },
+      {
+        level: "LEVEL 05",
+        phase: "PROFESSIONAL",
+        title: "Scale Engineering & Technical Interview Mastery",
+        desc: "Enterprise design patterns, automated CI/CD pipelines, production monitoring, and FAANG/global remote interview mastery.",
+        skills: ["System Design", "CI/CD & Docker", "Design Patterns", "Technical Interview Prep"],
+        courses: ["Cloud Computing, Docker & Kubernetes DevOps", "Tech Freelancing & Global Client Acquisition"],
+        projects: ["Production-Grade Distributed Microservices Platform"]
       }
     ]
   },
@@ -1113,19 +1149,28 @@ export const careerPathsData = [
     icon: "cloud",
     levels: [
       {
+        level: "LEVEL 00",
+        phase: "START HERE",
+        title: "Linux Systems & Cloud Networking",
+        desc: "Master Linux system administration, Bash shell scripting, SSH keys, TCP/IP subnetting, and DNS routing.",
+        skills: ["Linux CLI & Bash", "TCP/IP & Subnetting", "SSH & Security", "DNS & Load Balancing"],
+        courses: ["Cybersecurity Fundamentals (Linux module)"],
+        projects: ["Hardened Automated Linux Server"]
+      },
+      {
         level: "LEVEL 01",
         phase: "CONTAINERS",
-        title: "Linux & Docker Containerization",
-        desc: "Master Linux system automation, multi-stage Docker builds, image security, and container networking.",
-        skills: ["Linux Automation", "Docker & Docker Compose", "Multi-stage Builds", "Container Hardening"],
+        title: "Docker Containerization & Image Security",
+        desc: "Master multi-stage Docker builds, container networking, image security scanning, and Docker Compose environments.",
+        skills: ["Docker & Dockerfile", "Multi-stage Builds", "Compose Stacks", "Container Hardening"],
         courses: ["Cloud Computing, Docker & Kubernetes DevOps"],
         projects: ["Containerized Multi-Service Microservices Stack"]
       },
       {
         level: "LEVEL 02",
         phase: "ORCHESTRATION",
-        title: "Kubernetes Cluster Management",
-        desc: "Deploy, scale, and manage self-healing Kubernetes clusters, Ingress controllers, Helm charts, and persistent storage.",
+        title: "Kubernetes Cluster Management & Helm",
+        desc: "Deploy, scale, and manage self-healing Kubernetes clusters, Ingress controllers, Helm packaging, and ConfigMaps.",
         skills: ["Kubernetes (k8s)", "Pods, Deployments & Services", "Ingress & TLS", "Helm Packaging"],
         courses: ["Cloud Computing, Docker & Kubernetes DevOps"],
         projects: ["Production Kubernetes Cluster on Cloud"]
@@ -1142,11 +1187,20 @@ export const careerPathsData = [
       {
         level: "LEVEL 04",
         phase: "AUTOMATION & OBSERVABILITY",
-        title: "CI/CD & Monitoring Operations",
-        desc: "Build automated GitHub Actions pipelines with security scans, and monitor metrics with Prometheus and Grafana.",
-        skills: ["GitHub Actions", "CI/CD Pipelines", "Prometheus & Grafana", "Zero-Downtime Deployment"],
+        title: "CI/CD GitOps & Prometheus Monitoring",
+        desc: "Build automated GitHub Actions pipelines with security scans, and monitor metrics with Prometheus, Grafana, and ArgoCD.",
+        skills: ["GitHub Actions", "GitOps & ArgoCD", "Prometheus & Grafana", "Zero-Downtime Deployment"],
         courses: ["Cloud Computing, Docker & Kubernetes DevOps"],
         projects: ["Complete Automated CI/CD GitOps Pipeline"]
+      },
+      {
+        level: "LEVEL 05",
+        phase: "PROFESSIONAL",
+        title: "Enterprise SRE & Cloud Architect Consulting",
+        desc: "Multi-cloud resilience, disaster recovery, FinOps cloud cost optimization, SOC 2 compliance, and global freelance contracts.",
+        skills: ["Site Reliability (SRE)", "FinOps Cost Optimization", "Multi-Cloud Strategy", "Global Freelance Consulting"],
+        courses: ["AWS Cloud Solutions Architect Masterclass", "Tech Freelancing & Global Client Acquisition"],
+        projects: ["Enterprise High-Availability Multi-Region Cloud Blueprint"]
       }
     ]
   }

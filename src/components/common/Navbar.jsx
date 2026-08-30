@@ -64,7 +64,7 @@ export default function Navbar({ onOpenContact }) {
           <nav className="sheryians-nav-pill" aria-label="Main Navigation">
             <NavLink to="/" end className={({ isActive }) => isActive ? 'active' : ''}>Home</NavLink>
             <NavLink to="/courses" className={({ isActive }) => isActive ? 'active' : ''}>Courses</NavLink>
-            <NavLink to="/roadmap" className={({ isActive }) => isActive ? 'active' : ''}>Roadmap</NavLink>
+            <NavLink to="/roadmap" className={({ isActive }) => isActive ? 'active' : ''}>Journey</NavLink>
             <NavLink to="/contact" className={({ isActive }) => isActive ? 'active' : ''}>Contact Us</NavLink>
           </nav>
 
@@ -91,7 +91,7 @@ export default function Navbar({ onOpenContact }) {
         <div className="sheryians-mobile-inner">
           <NavLink to="/" end onClick={() => setMobileOpen(false)}>Home</NavLink>
           <NavLink to="/courses" onClick={() => setMobileOpen(false)}>Courses</NavLink>
-          <NavLink to="/roadmap" onClick={() => setMobileOpen(false)}>Roadmap &amp; Journey</NavLink>
+          <NavLink to="/roadmap" onClick={() => setMobileOpen(false)}>Journey</NavLink>
           <NavLink to="/contact" onClick={() => setMobileOpen(false)}>Contact Us</NavLink>
           <button 
             onClick={handleApplyClick} 
