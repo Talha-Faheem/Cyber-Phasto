@@ -66,6 +66,11 @@ export default function JourneyTimeline({
         </div>
       ))}
 
+      {/* Destination End Milestone Node */}
+      <div className="node-dot end-node node-upcoming" id="endNode" ref={endDotRef}>
+        <span className="node-inner-dot" />
+      </div>
+
       {/* Alternating Course Level Rows */}
       <div id="levels">
         {levels.map((lvl, idx) => {
@@ -134,9 +139,6 @@ export default function JourneyTimeline({
 
       {/* Destination Milestone Section */}
       <div className="destination-row">
-        <div className="node-dot end-node node-upcoming" id="endNode" ref={endDotRef}>
-          <span className="node-inner-dot" />
-        </div>
         <div 
           className="destination-card card-upcoming" 
           id="destinationCard" 
@@ -161,8 +163,8 @@ export default function JourneyTimeline({
         </div>
       </div>
 
-      {/* Footer */}
-      <footer>END OF ROADMAP</footer>
+      {/* Roadmap End Indicator */}
+      <div className="roadmap-end-tag">END OF ROADMAP</div>
     </div>
   );
 }

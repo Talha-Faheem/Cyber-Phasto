@@ -801,66 +801,39 @@ export const careerPathsData = [
     number: "01",
     title: "Web Development",
     shortRole: "Full Stack Developer",
-    description: "From building clean user interfaces to architecting high-scale cloud APIs and full-stack web applications.",
-    duration: "6–12 Months",
+    description: "From building responsive reactive user interfaces to architecting backend REST APIs, databases, and full stack deployment.",
+    duration: "6–9 Months",
     startingLevel: "Beginner",
     finalRole: "Full Stack Software Engineer",
     color: "#FF0205",
     icon: "code",
     levels: [
       {
-        level: "LEVEL 00",
-        phase: "START HERE",
-        title: "Computing & Internet Basics",
-        desc: "For complete beginners. Understand computer architecture, how HTTP works, and developer command line tools.",
-        skills: ["Terminal & CLI", "Git & GitHub Basics", "HTTP/HTTPS Protocols", "Browser DevTools"],
-        courses: ["Cybersecurity Fundamentals (Linux module)"],
-        projects: ["Developer Workspace Setup", "First GitHub Repository"]
-      },
-      {
         level: "LEVEL 01",
-        phase: "FOUNDATIONS",
-        title: "Frontend Foundations",
-        desc: "Master semantic HTML, CSS Grid, Flexbox, responsive design, and core JavaScript programming.",
-        skills: ["HTML5", "CSS3 / Flexbox / Grid", "JavaScript ES6+", "DOM Manipulation", "REST APIs"],
-        courses: ["Frontend Development with React", "UI/UX Design for Developers"],
-        projects: ["Interactive Product Catalog", "Responsive Landing Page"]
+        phase: "FRONTEND",
+        title: "Frontend Development with React & Tailwind",
+        desc: "Master modern HTML5, CSS Grid, Flexbox, JavaScript (ES6+), React 19, custom Hooks, and responsive design systems with Tailwind CSS.",
+        skills: ["HTML5 & CSS3", "Modern JavaScript", "React 19 & Hooks", "Tailwind CSS", "REST API Caching"],
+        courses: ["Frontend Development with React & Tailwind"],
+        projects: ["Fintech Analytics Dashboard", "Responsive E-Commerce Storefront"]
       },
       {
         level: "LEVEL 02",
-        phase: "MODERN FRONTEND",
-        title: "Reactive UI & Component Systems",
-        desc: "Build scalable interactive applications using React, Hooks, Tailwind CSS, TypeScript, and state management.",
-        skills: ["React 19", "Tailwind CSS", "TypeScript", "State Management", "API Caching"],
-        courses: ["Frontend Development with React", "Next.js 15 Enterprise Mastery"],
-        projects: ["Fintech Dashboard", "Realtime Weather & Analytics App"]
+        phase: "BACKEND",
+        title: "Backend Development & Database Architecture",
+        desc: "Architect robust REST APIs, server-side validation, database schemas with MongoDB & PostgreSQL, and secure JWT authentication.",
+        skills: ["Node.js & Express", "PostgreSQL & Prisma", "MongoDB & Mongoose", "JWT Authentication", "Redis Caching"],
+        courses: ["Backend Development with Node.js & REST APIs"],
+        projects: ["Multi-Tenant Authentication API", "Scalable URL Shortener Service"]
       },
       {
         level: "LEVEL 03",
-        phase: "BACKEND ARCHITECTURE",
-        title: "Server & Database Systems",
-        desc: "Architect robust REST APIs, authentication security, SQL & NoSQL databases, and server-side business logic.",
-        skills: ["Node.js & Express", "PostgreSQL & Prisma", "MongoDB", "JWT & OAuth2", "Redis Caching"],
-        courses: ["Backend Development with Node.js", "Full Stack Web Development"],
-        projects: ["Multi-Tenant Authentication API", "E-Commerce REST Microservice"]
-      },
-      {
-        level: "LEVEL 04",
-        phase: "FULL STACK INTEGRATION",
-        title: "Production Application Engineering",
-        desc: "Combine frontend, backend, databases, payments, and automated deployment into cohesive commercial products.",
-        skills: ["Full Stack Architecture", "Next.js App Router", "Stripe Payments", "WebSockets", "Docker"],
-        courses: ["Full Stack Web Development", "Next.js 15 Enterprise Mastery"],
-        projects: ["Full SaaS Platform with Subscriptions", "Collaborative Workspace"]
-      },
-      {
-        level: "LEVEL 05",
-        phase: "PROFESSIONAL",
-        title: "Scale, System Design & Career Ready",
-        desc: "System design, CI/CD pipelines, cloud deployment, and global freelance client acquisition.",
-        skills: ["System Design", "AWS Deployment", "CI/CD Automation", "Client Acquisition", "Contract Negotiation"],
-        courses: ["Cloud Computing & DevOps", "Tech Freelancing & Global Client Acquisition"],
-        projects: ["High-Scale Production App", "Upwork Top-Rated Profile"]
+        phase: "FULL STACK & SKILL",
+        title: "Full Stack Next.js & Tech Freelancing",
+        desc: "Combine frontend, backend, Stripe payments, and Docker into production SaaS products, plus international client acquisition skills.",
+        skills: ["Next.js 15 App Router", "Stripe Subscriptions", "Docker Containerization", "Upwork Freelancing", "Client Acquisition"],
+        courses: ["Next.js 15 & Enterprise Full Stack", "Tech Freelancing & Global Client Acquisition"],
+        projects: ["Full SaaS Platform with Stripe Subscriptions", "Global Top-Rated Freelance Portfolio"]
       }
     ]
   },
@@ -869,66 +842,39 @@ export const careerPathsData = [
     number: "02",
     title: "Cybersecurity & Defense",
     shortRole: "Security Engineer",
-    description: "Master offensive ethical hacking, vulnerability assessments, penetration testing, and enterprise defensive SOC operations.",
-    duration: "6–12 Months",
+    description: "Master foundational systems defense, offensive ethical hacking, web pentesting, and enterprise SOC threat hunting operations.",
+    duration: "6–9 Months",
     startingLevel: "Beginner",
     finalRole: "Penetration Tester / SOC Analyst",
     color: "#FF0205",
     icon: "shield",
     levels: [
       {
-        level: "LEVEL 00",
-        phase: "START HERE",
-        title: "IT & Systems Foundations",
-        desc: "Master computer networking fundamentals, TCP/IP stack, operating systems, and virtualization.",
-        skills: ["Networking Basics", "Virtualization (VMware/VirtualBox)", "OS Architecture"],
-        courses: ["Cybersecurity Fundamentals"],
-        projects: ["Isolated Virtual Network Lab"]
-      },
-      {
         level: "LEVEL 01",
         phase: "FOUNDATIONS",
-        title: "Networking & Linux Administration",
-        desc: "Deep dive into Linux system administration, bash scripting, packet sniffing with Wireshark, and crypto basics.",
-        skills: ["Linux CLI & Permissions", "Wireshark Packet Analysis", "Subnetting & Routing", "Cryptography (PKI)"],
-        courses: ["Cybersecurity Fundamentals"],
-        projects: ["Hardened Linux Server Blueprint", "Wireshark Packet Analysis Case Study"]
+        title: "Cybersecurity Fundamentals & Linux Defense",
+        desc: "Master computer networking (TCP/IP), Wireshark packet inspection, Linux command line security hardening, and cryptography.",
+        skills: ["Networking Protocols", "Linux CLI Hardening", "Wireshark Packet Analysis", "Cryptography (PKI)"],
+        courses: ["Cybersecurity Fundamentals: Linux & Defense"],
+        projects: ["Hardened Linux Server Blueprint", "Wireshark Traffic Analysis Case Study"]
       },
       {
         level: "LEVEL 02",
-        phase: "OFFENSIVE BASICS",
-        title: "Penetration Testing & Tooling",
-        desc: "Perform target reconnaissance, vulnerability scanning, and service exploitation using Kali Linux & Metasploit.",
-        skills: ["Kali Linux", "Nmap & Scanning", "Metasploit Framework", "Password Cracking", "Vulnerability Reporting"],
-        courses: ["Ethical Hacking & Penetration Testing Level 1"],
-        projects: ["Enterprise Network Vulnerability Assessment", "Target Reconnaissance Report"]
+        phase: "OFFENSIVE PENTESTING",
+        title: "Ethical Hacking & Web Security Pentesting",
+        desc: "Perform target reconnaissance, Metasploit exploitation, and exploit OWASP Top 10 vulnerabilities with Burp Suite Pro.",
+        skills: ["Kali Linux & Metasploit", "OWASP Top 10", "Burp Suite Pro", "SQLi & XSS Exploitation", "Bug Bounty Recon"],
+        courses: ["Ethical Hacking & Penetration Testing Level 1", "Ethical Hacking Level 2: Web Security"],
+        projects: ["Full Web Application Pentest Audit", "Bug Bounty Target Recon Pipeline"]
       },
       {
         level: "LEVEL 03",
-        phase: "APPLICATION SECURITY",
-        title: "Web Security & Bug Bounty",
-        desc: "Uncover and exploit OWASP Top 10 vulnerabilities, API weaknesses, SQL injection, XSS, and SSRF.",
-        skills: ["Burp Suite Pro", "OWASP Top 10", "SQL Injection", "XSS & CSRF", "API Security Testing"],
-        courses: ["Ethical Hacking Level 2: Web Security & Bug Bounty"],
-        projects: ["Web App Security Audit Report", "Bug Bounty Target Finding"]
-      },
-      {
-        level: "LEVEL 04",
-        phase: "ENTERPRISE DEFENSE",
-        title: "SOC Operations & Threat Hunting",
-        desc: "Monitor enterprise telemetry with SIEM tools (Splunk), investigate security incidents, and defend Active Directory.",
-        skills: ["Splunk & SIEM", "Active Directory Defense", "Threat Hunting", "Incident Response (NIST)", "Digital Forensics"],
-        courses: ["Advanced Cyber Defense Level 3: SOC & Threat Hunting"],
-        projects: ["SOC Alert Triage Rulepack", "Live Ransomware Forensics Case"]
-      },
-      {
-        level: "LEVEL 05",
-        phase: "PROFESSIONAL",
-        title: "Security Advisory & Governance",
-        desc: "Enterprise compliance (ISO 27001), red teaming adversary emulation, and international security consulting.",
-        skills: ["Adversary Emulation", "Compliance & Audits", "Red Teaming", "Global Freelance Consulting"],
-        courses: ["Tech Freelancing & Global Client Acquisition"],
-        projects: ["Enterprise Zero-Trust Security Strategy", "Global Security Consulting Profile"]
+        phase: "SOC & CAREER",
+        title: "Enterprise SOC Operations & Threat Hunting",
+        desc: "Monitor telemetry with SIEM tools (Splunk), defend Active Directory, triage incident forensics, and win security consulting clients.",
+        skills: ["Splunk SIEM Analysis", "Active Directory Defense", "Incident Response (NIST)", "Digital Forensics", "Security Consulting"],
+        courses: ["Advanced Cyber Defense Level 3: SOC & Threat Hunting", "Tech Freelancing Mastery"],
+        projects: ["Enterprise SIEM Detection Rule Pack", "Live Ransomware Incident Forensics Triage"]
       }
     ]
   },
@@ -937,66 +883,39 @@ export const careerPathsData = [
     number: "03",
     title: "Artificial Intelligence",
     shortRole: "AI / ML Engineer",
-    description: "From Python data foundations to training machine learning models and engineering autonomous multi-agent GenAI systems.",
-    duration: "6–10 Months",
+    description: "From Python data foundations and classical machine learning models to production multi-agent GenAI architectures.",
+    duration: "6–8 Months",
     startingLevel: "Beginner",
     finalRole: "AI / GenAI Solutions Architect",
     color: "#FF0205",
     icon: "brain",
     levels: [
       {
-        level: "LEVEL 00",
-        phase: "START HERE",
-        title: "Python & Linear Algebra Foundations",
-        desc: "Learn Python syntax, vector mathematics, data structures, and mathematical intuition.",
-        skills: ["Python 3", "Math for AI", "NumPy", "Jupyter Notebooks"],
-        courses: ["Python for Data Science, Pandas & Visualization"],
-        projects: ["Python Math & Data Computing Toolkit"]
-      },
-      {
         level: "LEVEL 01",
-        phase: "DATA WRANGLING",
-        title: "Data Manipulation & Analytics",
-        desc: "Clean, filter, reshape, and visualize complex real-world datasets with Pandas, Seaborn, and Plotly.",
-        skills: ["Pandas", "Data Cleaning", "Exploratory Data Analysis", "Data Storytelling"],
+        phase: "PYTHON & DATA",
+        title: "Python for Data Science & Math Foundations",
+        desc: "Master Python programming, NumPy matrix mathematics, Pandas data wrangling, and interactive exploratory visualization.",
+        skills: ["Python 3", "NumPy", "Pandas DataFrames", "Data Visualization", "Linear Algebra for AI"],
         courses: ["Python for Data Science, Pandas & Visualization"],
-        projects: ["Real-World Tech Trends Analysis Dashboard"]
+        projects: ["Interactive Data Analytics Toolkit", "Exploratory Tech Trends Dashboard"]
       },
       {
         level: "LEVEL 02",
-        phase: "CLASSICAL ML",
-        title: "Machine Learning Engineering",
-        desc: "Build supervised and unsupervised predictive models, feature engineering pipelines, and evaluate performance.",
-        skills: ["Scikit-Learn", "Regression & Classification", "Random Forests & XGBoost", "Model Evaluation"],
+        phase: "MACHINE LEARNING",
+        title: "Machine Learning Engineering with Scikit-Learn",
+        desc: "Build supervised and unsupervised predictive models, feature engineering pipelines, and deploy ML models via FastAPI.",
+        skills: ["Scikit-Learn", "Regression & Classification", "Random Forests & XGBoost", "Feature Engineering", "FastAPI Model Serving"],
         courses: ["Machine Learning Engineering with Scikit-Learn"],
-        projects: ["Credit Card Fraud Detection Model", "Customer Churn Predictor"]
+        projects: ["Credit Card Fraud Detection Pipeline", "Real Estate Price Prediction Engine"]
       },
       {
         level: "LEVEL 03",
-        phase: "GEN AI & RAG",
-        title: "Large Language Models & Vector Search",
-        desc: "Build semantic search, embeddings, vector databases (Pinecone, ChromaDB), and advanced RAG architectures.",
-        skills: ["OpenAI & Claude APIs", "Embeddings & Vector DBs", "LangChain & LlamaIndex", "Production RAG Pipelines"],
-        courses: ["AI & GenAI Engineering: LLMs & Autonomous Agents"],
-        projects: ["Enterprise Document RAG Assistant", "Semantic Code Search Engine"]
-      },
-      {
-        level: "LEVEL 04",
-        phase: "AUTONOMOUS AGENTS",
-        title: "Multi-Agent Workflows & Fine-Tuning",
-        desc: "Orchestrate multi-agent teams with LangGraph and CrewAI, fine-tune open-source models, and deploy at scale.",
-        skills: ["LangGraph", "CrewAI", "Model Fine-Tuning (LoRA)", "FastAPI Model Serving", "Token Optimization"],
-        courses: ["AI & GenAI Engineering: LLMs & Autonomous Agents"],
-        projects: ["Autonomous Multi-Agent Market Analyst", "Fine-Tuned Domain LLM"]
-      },
-      {
-        level: "LEVEL 05",
-        phase: "PROFESSIONAL",
-        title: "Enterprise AI Deployment & Career",
-        desc: "Deploy AI microservices, manage API latency/costs, ensure prompt safety, and build high-value AI solutions.",
-        skills: ["AI Security & Guardrails", "Cloud Serving", "Docker Containerization", "Commercial AI SaaS"],
-        courses: ["Cloud Computing, Docker & Kubernetes DevOps", "Tech Freelancing Mastery"],
-        projects: ["Full Commercial AI SaaS Platform"]
+        phase: "GENAI & AUTONOMOUS AGENTS",
+        title: "GenAI Engineering, RAG & Autonomous Agents",
+        desc: "Engineer RAG pipelines with vector databases, orchestrate multi-agent workflows with LangGraph, and deploy AI SaaS.",
+        skills: ["OpenAI & Claude APIs", "Vector DBs (Pinecone/Chroma)", "LangChain & LangGraph", "Autonomous Agents", "Commercial AI SaaS"],
+        courses: ["AI & GenAI Engineering: LLMs & Autonomous Agents", "Tech Freelancing Mastery"],
+        projects: ["Enterprise Document RAG Assistant", "Autonomous Multi-Agent Market Analyst"]
       }
     ]
   },
@@ -1005,66 +924,39 @@ export const careerPathsData = [
     number: "04",
     title: "Data Science & Analytics",
     shortRole: "Data Scientist",
-    description: "Transform raw enterprise data into predictive insights, business intelligence dashboards, and machine learning models.",
-    duration: "4–8 Months",
+    description: "Transform raw enterprise data into executive business intelligence dashboards and predictive machine learning models.",
+    duration: "4–6 Months",
     startingLevel: "Beginner",
     finalRole: "Data Scientist / BI Specialist",
     color: "#FF0205",
     icon: "database",
     levels: [
       {
-        level: "LEVEL 00",
-        phase: "START HERE",
-        title: "Python, Math & Analytics Foundations",
-        desc: "Master Python syntax, statistics, linear algebra, NumPy arrays, and exploratory data analysis fundamentals.",
-        skills: ["Python 3", "Statistics & Probability", "NumPy", "Jupyter Notebooks"],
-        courses: ["Python for Data Science, Pandas & Visualization"],
-        projects: ["Statistical Analysis & Computing Toolkit"]
-      },
-      {
         level: "LEVEL 01",
         phase: "DATA WRANGLING",
-        title: "SQL Databases & Pandas Wrangling",
-        desc: "Master relational databases, complex SQL queries, data cleaning, aggregation, and reshaping with Pandas.",
-        skills: ["PostgreSQL & MySQL", "Pandas DataFrames", "Data Wrangling", "Plotly & Seaborn"],
+        title: "Python, SQL & Data Wrangling Foundations",
+        desc: "Master relational SQL database queries, data cleaning, aggregation, reshaping with Pandas, and exploratory data analysis.",
+        skills: ["SQL & PostgreSQL", "Python 3", "Pandas DataFrames", "Data Cleaning & ETL", "Seaborn Visuals"],
         courses: ["Python for Data Science, Pandas & Visualization"],
-        projects: ["Enterprise SQL Data Warehouse Analysis"]
+        projects: ["Enterprise SQL Data Warehouse Analysis", "Automated Data Cleaning Pipeline"]
       },
       {
         level: "LEVEL 02",
         phase: "BUSINESS INTELLIGENCE",
-        title: "Executive Dashboards & BI Suites",
-        desc: "Build enterprise reporting dashboards with Power BI, Tableau, DAX calculations, and automated ETL pipelines.",
-        skills: ["Power BI", "Tableau", "DAX Formulas", "Data Modeling & ETL"],
+        title: "Power BI, Tableau & Executive Analytics",
+        desc: "Build interactive executive dashboards, DAX KPI formulas, ETL pipelines, and corporate decision reporting suites.",
+        skills: ["Power BI", "Tableau", "DAX Formulas", "Data Modeling & ETL", "Executive Storytelling"],
         courses: ["Power BI, Tableau & Executive Data Storytelling"],
-        projects: ["Corporate Financial Health Executive Dashboard"]
+        projects: ["Corporate Financial Health Executive Dashboard", "Supply Chain Inventory BI Suite"]
       },
       {
         level: "LEVEL 03",
-        phase: "PREDICTIVE MODELING",
-        title: "Applied Machine Learning & Forecasting",
-        desc: "Construct predictive statistical models, cluster customer segments, and forecast time-series business trends.",
-        skills: ["Scikit-Learn", "Regression & Time-Series", "Clustering & Classification", "Hypothesis Testing"],
-        courses: ["Machine Learning Engineering with Scikit-Learn"],
-        projects: ["Revenue Forecasting & Demand Predictor"]
-      },
-      {
-        level: "LEVEL 04",
-        phase: "DEEP LEARNING & NLP",
-        title: "Neural Networks & Text Analytics",
-        desc: "Engineer neural networks for unstructured text and image data using PyTorch and transformer embeddings.",
-        skills: ["PyTorch", "NLP & Embeddings", "Neural Networks", "Feature Stores"],
-        courses: ["AI & GenAI Engineering: LLMs & Autonomous Agents"],
-        projects: ["Customer Sentiment & Churn Neural Classifier"]
-      },
-      {
-        level: "LEVEL 05",
-        phase: "PROFESSIONAL",
-        title: "Data Storytelling & Production MLOps",
-        desc: "Deploy automated report pipelines, communicate insights to executive leadership, and win global freelance analytics clients.",
-        skills: ["MLOps & Docker", "Executive Storytelling", "FastAPI Serving", "International Consulting"],
-        courses: ["Tech Freelancing & Global Client Acquisition"],
-        projects: ["Full Business Intelligence & ML Consulting Portfolio"]
+        phase: "ML & CAREER",
+        title: "Applied Machine Learning & Data Freelancing",
+        desc: "Build predictive forecasting models, time-series analysis, automated reporting pipelines, and win global analytics clients.",
+        skills: ["Scikit-Learn", "Predictive Forecasting", "Time-Series Modeling", "MLOps & Docker", "Global Data Consulting"],
+        courses: ["Machine Learning Engineering with Scikit-Learn", "Tech Freelancing & Global Client Acquisition"],
+        projects: ["Revenue Demand Prediction Engine", "Full Business Intelligence Consulting Portfolio"]
       }
     ]
   },
@@ -1074,65 +966,38 @@ export const careerPathsData = [
     title: "Software Engineering",
     shortRole: "Senior Software Engineer",
     description: "Deep computer science fundamentals, data structures, algorithms, concurrency, and distributed system design.",
-    duration: "6–12 Months",
+    duration: "6–9 Months",
     startingLevel: "Beginner",
     finalRole: "Software Engineer / Backend Architect",
     color: "#FF0205",
     icon: "cpu",
     levels: [
       {
-        level: "LEVEL 00",
-        phase: "START HERE",
-        title: "Computer Science & Logic Foundations",
-        desc: "Understand computer architecture, CPU registers, binary logic, memory models, and Linux development workflows.",
-        skills: ["C / C++ Basics", "Computer Architecture", "Linux CLI", "Git & Debugging"],
-        courses: ["Programming, Data Structures & System Design"],
-        projects: ["CLI File Utility & System Inspector"]
-      },
-      {
         level: "LEVEL 01",
-        phase: "CORE CS",
-        title: "Memory Management & Object Architecture",
-        desc: "Master pointers, manual memory allocation, cache locality, and object-oriented architecture in C++ and Go.",
-        skills: ["C++ / Go", "Memory Management", "Pointers & References", "Object-Oriented Design"],
+        phase: "CORE CS & MEMORY",
+        title: "C++ Programming, Memory & OOP Architecture",
+        desc: "Master pointers, manual memory allocation, CPU architecture, cache locality, and object-oriented design patterns.",
+        skills: ["C++ / C", "Pointers & Memory Allocation", "Object-Oriented Design", "Linux CLI", "Git & Debugging"],
         courses: ["Programming, Data Structures & System Design"],
-        projects: ["Custom Dynamic Memory Allocator"]
+        projects: ["Custom Dynamic Memory Allocator", "CLI System Performance Inspector"]
       },
       {
         level: "LEVEL 02",
-        phase: "ALGORITHMS",
+        phase: "DSA & SYSTEM DESIGN",
         title: "Data Structures & Algorithmic Problem Solving",
-        desc: "Solve complex computational challenges using trees, graphs, heaps, dynamic programming, and greedy algorithms.",
-        skills: ["Trees & Graphs", "Dynamic Programming", "Heap Priority Queues", "Time/Space Complexity"],
+        desc: "Solve complex algorithmic challenges using trees, graphs, heaps, dynamic programming, and scalable system design.",
+        skills: ["Trees & Graphs", "Dynamic Programming", "Heap Priority Queues", "System Design", "Time/Space Complexity"],
         courses: ["Programming, Data Structures & System Design"],
-        projects: ["Graph-Based Dijkstra Routing Engine"]
+        projects: ["Graph-Based Dijkstra Routing Engine", "High-Throughput Rate Limiter"]
       },
       {
         level: "LEVEL 03",
-        phase: "CONCURRENCY",
-        title: "Concurrent Systems & Microservices",
-        desc: "Engineer high-throughput concurrent backends using Go, Goroutines, Channels, Mutexes, and gRPC communication.",
-        skills: ["Go Concurrency", "Goroutines & Channels", "gRPC & Protocol Buffers", "Redis Caching"],
-        courses: ["Go (Golang) Microservices & Concurrency"],
-        projects: ["High-Frequency Real-Time Matching Engine"]
-      },
-      {
-        level: "LEVEL 04",
-        phase: "SYSTEM DESIGN",
-        title: "Distributed System Design & Resilience",
-        desc: "Architect scalable distributed systems with load balancers, database sharding, Kafka queues, and fault tolerance.",
-        skills: ["Distributed Systems", "Apache Kafka", "Database Sharding", "Fault Tolerance & Raft"],
-        courses: ["Cloud Computing, Docker & Kubernetes DevOps"],
-        projects: ["Distributed Scalable Chat Architecture"]
-      },
-      {
-        level: "LEVEL 05",
-        phase: "PROFESSIONAL",
-        title: "Scale Engineering & Technical Interview Mastery",
-        desc: "Enterprise design patterns, automated CI/CD pipelines, production monitoring, and FAANG/global remote interview mastery.",
-        skills: ["System Design", "CI/CD & Docker", "Design Patterns", "Technical Interview Prep"],
-        courses: ["Cloud Computing, Docker & Kubernetes DevOps", "Tech Freelancing & Global Client Acquisition"],
-        projects: ["Production-Grade Distributed Microservices Platform"]
+        phase: "MICROSERVICES & CAREER",
+        title: "Go Microservices, Concurrency & Career Ready",
+        desc: "Build concurrent microservices with Go, Goroutines, Channels, gRPC, and prepare for high-ticket remote engineering roles.",
+        skills: ["Go Concurrency", "Goroutines & Channels", "gRPC & Protocol Buffers", "Distributed Systems", "Technical Interview Prep"],
+        courses: ["Go (Golang) Microservices & Concurrency", "Tech Freelancing Mastery"],
+        projects: ["High-Frequency Real-Time Trade Matcher", "Production Distributed Microservices Platform"]
       }
     ]
   },
@@ -1142,65 +1007,38 @@ export const careerPathsData = [
     title: "Cloud & DevOps",
     shortRole: "DevOps / Cloud Architect",
     description: "Automate modern cloud delivery pipelines with Docker containers, Kubernetes clusters, Terraform IaC, and AWS.",
-    duration: "4–8 Months",
+    duration: "4–6 Months",
     startingLevel: "Intermediate",
     finalRole: "DevOps Engineer / Cloud Architect",
     color: "#FF0205",
     icon: "cloud",
     levels: [
       {
-        level: "LEVEL 00",
-        phase: "START HERE",
-        title: "Linux Systems & Cloud Networking",
-        desc: "Master Linux system administration, Bash shell scripting, SSH keys, TCP/IP subnetting, and DNS routing.",
-        skills: ["Linux CLI & Bash", "TCP/IP & Subnetting", "SSH & Security", "DNS & Load Balancing"],
-        courses: ["Cybersecurity Fundamentals (Linux module)"],
-        projects: ["Hardened Automated Linux Server"]
-      },
-      {
         level: "LEVEL 01",
         phase: "CONTAINERS",
-        title: "Docker Containerization & Image Security",
-        desc: "Master multi-stage Docker builds, container networking, image security scanning, and Docker Compose environments.",
-        skills: ["Docker & Dockerfile", "Multi-stage Builds", "Compose Stacks", "Container Hardening"],
+        title: "Linux System Administration & Docker",
+        desc: "Master Linux automation, bash scripting, multi-stage Docker builds, container networking, and image security.",
+        skills: ["Linux CLI & Bash", "Docker & Dockerfile", "Multi-stage Builds", "Docker Compose", "Container Hardening"],
         courses: ["Cloud Computing, Docker & Kubernetes DevOps"],
-        projects: ["Containerized Multi-Service Microservices Stack"]
+        projects: ["Hardened Automated Linux Server", "Containerized Multi-Service Microservices Stack"]
       },
       {
         level: "LEVEL 02",
-        phase: "ORCHESTRATION",
-        title: "Kubernetes Cluster Management & Helm",
-        desc: "Deploy, scale, and manage self-healing Kubernetes clusters, Ingress controllers, Helm packaging, and ConfigMaps.",
-        skills: ["Kubernetes (k8s)", "Pods, Deployments & Services", "Ingress & TLS", "Helm Packaging"],
-        courses: ["Cloud Computing, Docker & Kubernetes DevOps"],
-        projects: ["Production Kubernetes Cluster on Cloud"]
+        phase: "KUBERNETES & CLOUD",
+        title: "Kubernetes Cluster Management & AWS Cloud",
+        desc: "Deploy self-healing Kubernetes clusters, Helm charts, Ingress routing, and provision AWS VPCs with Terraform IaC.",
+        skills: ["Kubernetes (k8s)", "Pods & Services", "Helm Packaging", "Terraform IaC", "AWS VPC & IAM"],
+        courses: ["Cloud Computing, Docker & Kubernetes DevOps", "AWS Cloud Solutions Architect Masterclass"],
+        projects: ["Production Kubernetes Cluster on Cloud", "Multi-Region Terraform Infrastructure"]
       },
       {
         level: "LEVEL 03",
-        phase: "INFRASTRUCTURE AS CODE",
-        title: "AWS Cloud & Terraform IaC",
-        desc: "Provision cloud infrastructure declaratively using Terraform, AWS VPCs, EC2, RDS, and automated state management.",
-        skills: ["Terraform", "AWS VPC & IAM", "Infrastructure as Code", "Cloud Security"],
-        courses: ["AWS Cloud Solutions Architect Masterclass"],
-        projects: ["Multi-Region Automated Terraform Infrastructure"]
-      },
-      {
-        level: "LEVEL 04",
-        phase: "AUTOMATION & OBSERVABILITY",
-        title: "CI/CD GitOps & Prometheus Monitoring",
-        desc: "Build automated GitHub Actions pipelines with security scans, and monitor metrics with Prometheus, Grafana, and ArgoCD.",
-        skills: ["GitHub Actions", "GitOps & ArgoCD", "Prometheus & Grafana", "Zero-Downtime Deployment"],
-        courses: ["Cloud Computing, Docker & Kubernetes DevOps"],
-        projects: ["Complete Automated CI/CD GitOps Pipeline"]
-      },
-      {
-        level: "LEVEL 05",
-        phase: "PROFESSIONAL",
-        title: "Enterprise SRE & Cloud Architect Consulting",
-        desc: "Multi-cloud resilience, disaster recovery, FinOps cloud cost optimization, SOC 2 compliance, and global freelance contracts.",
-        skills: ["Site Reliability (SRE)", "FinOps Cost Optimization", "Multi-Cloud Strategy", "Global Freelance Consulting"],
+        phase: "CI/CD & CAREER",
+        title: "Automated CI/CD Pipelines & SRE Consulting",
+        desc: "Build automated GitHub Actions CI/CD workflows, Prometheus monitoring, and win high-paying global DevOps clients.",
+        skills: ["GitHub Actions", "GitOps & ArgoCD", "Prometheus & Grafana", "Zero-Downtime Deployment", "Global Cloud Consulting"],
         courses: ["AWS Cloud Solutions Architect Masterclass", "Tech Freelancing & Global Client Acquisition"],
-        projects: ["Enterprise High-Availability Multi-Region Cloud Blueprint"]
+        projects: ["Complete Automated CI/CD GitOps Pipeline", "Enterprise High-Availability Cloud Blueprint"]
       }
     ]
   }

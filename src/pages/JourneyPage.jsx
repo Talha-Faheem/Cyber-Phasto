@@ -502,7 +502,7 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           min-height: 100vh;
           position: relative;
           overflow-x: clip;
-          padding-bottom: 60px;
+          padding-bottom: 20px;
         }
 
         /* ---------- Journey Hero Section ---------- */
@@ -1192,13 +1192,14 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           box-shadow: 0 18px 36px -10px rgba(255, 2, 5, 0.8);
         }
 
-        footer {
+        .roadmap-end-tag {
           text-align: center;
-          padding: 10px 24px 60px;
+          padding: 16px 24px 8px;
           color: var(--muted);
           font-family: var(--mono);
-          font-size: 12px;
-          letter-spacing: 0.04em;
+          font-size: 11.5px;
+          letter-spacing: 0.08em;
+          opacity: 0.8;
         }
 
         /* ---------- Quiz Modal ---------- */

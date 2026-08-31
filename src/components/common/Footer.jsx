@@ -9,31 +9,29 @@ import {
   Github
 } from 'lucide-react';
 
+// Exact, mathematically unified vector paths for "CYBER PASHTO"
+const CYBER_PASHTO_PATH = "M 153 10 L 82 10 C 60 10 45 25 45 46 L 45 74 C 45 95 60 110 82 110 L 153 110 L 153 88 L 86 88 C 74 88 67 81 67 71 L 67 49 C 67 39 74 32 86 32 L 153 32 Z M 171 10 L 195 10 L 225 56 L 255 10 L 279 10 L 236 68 L 236 110 L 214 110 L 214 68 Z M 297 10 L 362 10 C 382 10 395 20 395 38 C 395 49 387 57 374 59 C 390 62 397 71 397 86 C 397 102 382 110 362 110 L 297 110 Z M 319 28 L 358 28 C 368 28 373 32 373 40 C 373 48 368 52 358 52 L 319 52 Z M 319 68 L 360 68 C 371 68 376 72 376 81 C 376 90 371 94 360 94 L 319 94 Z M 415 10 L 507 10 L 507 30 L 437 30 L 437 50 L 499 50 L 499 70 L 437 70 L 437 90 L 507 90 L 507 110 L 415 110 Z M 525 10 L 592 10 C 614 10 629 23 629 40 C 629 53 618 62 602 65 L 629 110 L 604 110 L 579 66 L 547 66 L 547 110 L 525 110 Z M 547 28 L 588 28 C 601 28 608 32 608 42 C 608 51 601 55 588 55 L 547 55 Z M 683 10 L 752 10 C 774 10 783 23 783 42 C 783 61 774 72 752 72 L 705 72 L 705 110 L 683 110 Z M 705 28 L 748 28 C 759 28 764 32 764 42 C 764 51 759 55 748 55 L 705 55 Z M 801 110 L 824 110 L 840 72 L 874 72 L 890 110 L 913 110 L 868 10 L 846 10 Z M 857 34 L 869 56 L 845 56 Z M 1024 33 L 1004 33 C 1001 24 992 18 978 18 C 962 18 953 26 953 36 C 953 47 962 52 984 57 C 1010 63 1029 72 1029 90 C 1029 104 1015 110 980 110 C 950 110 933 98 931 83 L 952 83 C 955 94 966 99 980 99 C 998 99 1007 92 1007 81 C 1007 71 998 66 976 61 C 950 55 932 47 932 30 C 932 17 946 10 978 10 C 1008 10 1022 22 1024 33 Z M 1047 10 L 1069 10 L 1069 50 L 1127 50 L 1127 10 L 1149 10 L 1149 110 L 1127 110 L 1127 70 L 1069 70 L 1069 110 L 1047 110 Z M 1167 10 L 1265 10 L 1265 30 L 1227 30 L 1227 110 L 1205 110 L 1205 30 L 1167 30 Z M 1320 10 L 1356 10 C 1378 10 1393 25 1393 45 L 1393 75 C 1393 95 1378 110 1356 110 L 1320 110 C 1298 110 1283 95 1283 75 L 1283 45 C 1283 25 1298 10 1320 10 Z M 1323 30 C 1311 30 1305 37 1305 48 L 1305 72 C 1305 83 1311 90 1323 90 L 1353 90 C 1365 90 1371 83 1371 72 L 1371 48 C 1371 37 1365 30 1353 30 Z";
+
 export default function Footer({ onOpenContact }) {
   const [isHovered, setIsHovered] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const watermarkRef = useRef(null);
-  const orbRef = useRef(null);
-  const rafRef = useRef(null);
-
-  const updateOrb = (clientX, clientY) => {
-    if (!watermarkRef.current || !orbRef.current) return;
-    const rect = watermarkRef.current.getBoundingClientRect();
-    const x = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
-    const y = Math.max(0, Math.min(100, ((clientY - rect.top) / rect.height) * 100));
-    orbRef.current.style.left = `${x}%`;
-    orbRef.current.style.top = `${y}%`;
-  };
 
   const handleMouseMove = useCallback((e) => {
-    if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    rafRef.current = requestAnimationFrame(() => updateOrb(e.clientX, e.clientY));
+    if (!watermarkRef.current) return;
+    const rect = watermarkRef.current.getBoundingClientRect();
+    const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+    const y = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
+    setMousePos({ x, y });
   }, []);
 
   const handleTouchMove = useCallback((e) => {
-    if (!e.touches[0]) return;
-    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    if (!watermarkRef.current || !e.touches || !e.touches[0]) return;
+    const rect = watermarkRef.current.getBoundingClientRect();
     const touch = e.touches[0];
-    rafRef.current = requestAnimationFrame(() => updateOrb(touch.clientX, touch.clientY));
+    const x = Math.max(0, Math.min(100, ((touch.clientX - rect.left) / rect.width) * 100));
+    const y = Math.max(0, Math.min(100, ((touch.clientY - rect.top) / rect.height) * 100));
+    setMousePos({ x, y });
     setIsHovered(true);
   }, []);
 
@@ -43,106 +41,220 @@ export default function Footer({ onOpenContact }) {
         backgroundColor: 'var(--black)',
         position: 'relative',
         paddingTop: '0',
-        paddingBottom: '3.5rem',
+        paddingBottom: '1.25rem',
         overflow: 'hidden',
-        borderTop: '1px solid var(--border)'
+        borderTop: 'none'
       }}
     >
-      {/* Background Dot Grid Matrix (32px x 32px) */}
+      {/* Background Dot Grid Matrix (24px x 24px) */}
       <div 
         className="absolute inset-0 pointer-events-none"
         style={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: 'radial-gradient(1px 1px, rgba(255, 255, 255, 0.06) 1px, transparent 1px)',
-          backgroundSize: '32px 32px',
+          backgroundImage: 'radial-gradient(1px 1px, rgba(255, 255, 255, 0.07) 1px, transparent 1px)',
+          backgroundSize: '24px 24px',
           pointerEvents: 'none',
           zIndex: 1
         }}
       />
 
       {/* ===================================================================
-          1. Interactive CYBER PASHTO Giant Watermark (No Underlines)
+          1. Interactive CYBER PASHTO Vector Watermark with Top Laser Glow
           =================================================================== */}
       <div 
         ref={watermarkRef}
-        onMouseEnter={() => setIsHovered(true)}
+        onMouseEnter={(e) => {
+          setIsHovered(true);
+          handleMouseMove(e);
+        }}
         onMouseLeave={() => setIsHovered(false)}
         onMouseMove={handleMouseMove}
-        onTouchStart={() => setIsHovered(true)}
+        onTouchStart={(e) => {
+          setIsHovered(true);
+          handleTouchMove(e);
+        }}
         onTouchEnd={() => setIsHovered(false)}
         onTouchMove={handleTouchMove}
         style={{ 
           position: 'relative', 
-          overflow: 'hidden', 
-          cursor: 'default', 
-          userSelect: 'none',
           zIndex: 2, 
           width: '100%',
-          padding: 'clamp(20px, 4vw, 40px) 0 clamp(16px, 3vw, 32px)'
+          cursor: 'default',
+          paddingTop: '3.5rem',
+          paddingBottom: '3.5rem'
         }}
       >
-        {/* Ambient Glowing Orb Behind Watermark */}
+        {/* Top Horizontal Laser Glow Line matching reference image */}
         <div 
-          ref={orbRef}
           style={{
             position: 'absolute',
-            top: '50%',
-            left: '50%',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '1px',
+            background: isHovered
+              ? `linear-gradient(90deg, transparent 0%, rgba(255, 2, 5, 0.15) ${Math.max(0, mousePos.x - 30)}%, #FF0205 ${mousePos.x}%, rgba(255, 2, 5, 0.15) ${Math.min(100, mousePos.x + 30)}%, transparent 100%)`
+              : 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 25%, rgba(229, 0, 0, 0.35) 50%, rgba(255, 255, 255, 0.08) 75%, transparent 100%)',
+            boxShadow: isHovered
+              ? '0 0 15px rgba(255, 2, 5, 0.85), 0 0 30px rgba(255, 2, 5, 0.45)'
+              : '0 0 10px rgba(229, 0, 0, 0.2)',
+            transition: 'box-shadow 0.3s ease'
+          }}
+        >
+          {/* Glowing Red Dot on the line that smoothly glides with cursor */}
+          <div 
+            style={{
+              position: 'absolute',
+              top: '-2.5px',
+              left: `${mousePos.x}%`,
+              transform: 'translateX(-50%)',
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              backgroundColor: '#FF0205',
+              boxShadow: '0 0 8px #FF0205, 0 0 16px #FF0205',
+              opacity: isHovered ? 1 : 0.4,
+              transition: 'opacity 0.3s ease'
+            }}
+          />
+        </div>
+
+        {/* Dynamic Glowing Ambient Spotlight Orb that follows cursor */}
+        <div 
+          style={{
+            position: 'absolute',
+            top: `${mousePos.y}%`,
+            left: `${mousePos.x}%`,
             transform: 'translate(-50%, -50%)',
-            width: '450px',
-            height: '240px',
-            background: 'radial-gradient(circle, rgba(229, 0, 0, 0.28) 0%, rgba(200, 0, 20, 0.08) 45%, transparent 75%)',
+            width: '480px',
+            height: '260px',
+            background: 'radial-gradient(circle, rgba(255, 2, 5, 0.38) 0%, rgba(200, 0, 20, 0.14) 45%, transparent 75%)',
+            filter: 'blur(45px)',
             pointerEvents: 'none',
             opacity: isHovered ? 1 : 0,
             transition: 'opacity 0.35s ease',
-            zIndex: 1,
-            willChange: 'left, top'
+            zIndex: 1
           }}
         />
 
-        {/* Watermark Typography matching reference image media_1788118524746.png */}
+        {/* Scalable, Crisp SVG Outline Typography with Zero Artifacts */}
         <div 
           style={{
-            width: '100%',
-            maxWidth: '100vw',
-            margin: '0 auto',
-            padding: 'clamp(28px, 4.5vw, 56px) 1.5rem clamp(20px, 3.5vw, 44px)',
-            boxSizing: 'border-box',
             position: 'relative',
             zIndex: 2,
-            overflow: 'hidden',
+            width: '100%',
+            maxWidth: '1500px',
+            margin: '0 auto',
+            padding: '0 24px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
           }}
         >
-          <div
-            style={{
-              fontFamily: "'Montserrat', sans-serif",
-              fontWeight: 900,
-              fontSize: 'clamp(48px, 10.4vw, 168px)',
-              letterSpacing: '-0.015em',
-              lineHeight: 0.95,
-              textTransform: 'uppercase',
-              textAlign: 'center',
-              whiteSpace: 'nowrap',
+          <svg 
+            viewBox="0 0 1440 120" 
+            fill="none" 
+            xmlns="http://www.w3.org/2000/svg"
+            style={{ 
+              width: '100%', 
+              height: 'auto', 
               display: 'block',
-              width: '100%',
-              userSelect: 'none',
-              WebkitTextStroke: '1px rgba(255, 255, 255, 0.16)',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              backgroundImage: isHovered
-                ? `radial-gradient(360px at ${mousePos.x}% ${mousePos.y}%, rgba(229, 0, 0, 0.95) 0%, rgba(229, 0, 0, 0.55) 24%, rgba(229, 0, 0, 0.2) 48%, rgba(255, 255, 255, 0.05) 72%, transparent 100%)`
-                : `radial-gradient(420px at 15% 50%, rgba(229, 0, 0, 0.45) 0%, rgba(180, 0, 0, 0.2) 28%, rgba(255, 255, 255, 0.03) 55%, transparent 75%)`,
-              transition: isHovered ? 'none' : 'background-image 0.4s ease',
-              textRendering: 'geometricPrecision'
+              overflow: 'visible'
             }}
           >
-            CYBER PASHTO
-          </div>
+            <defs>
+              <radialGradient
+                id="footerWatermarkLaserFill"
+                cx={`${mousePos.x}%`}
+                cy={`${mousePos.y}%`}
+                r="380px"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop offset="0%" stopColor="#FF0205" stopOpacity="0.95" />
+                <stop offset="22%" stopColor="#FF0205" stopOpacity="0.55" />
+                <stop offset="45%" stopColor="#B00000" stopOpacity="0.22" />
+                <stop offset="70%" stopColor="#FFFFFF" stopOpacity="0.05" />
+                <stop offset="100%" stopColor="#000000" stopOpacity="0" />
+              </radialGradient>
+
+              <radialGradient
+                id="footerWatermarkLaserStroke"
+                cx={`${mousePos.x}%`}
+                cy={`${mousePos.y}%`}
+                r="360px"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop offset="0%" stopColor="#FF3B3E" stopOpacity="1" />
+                <stop offset="25%" stopColor="#FF0205" stopOpacity="0.9" />
+                <stop offset="55%" stopColor="rgba(255, 2, 5, 0.4)" stopOpacity="0.5" />
+                <stop offset="85%" stopColor="rgba(255, 255, 255, 0.2)" stopOpacity="0.2" />
+                <stop offset="100%" stopColor="rgba(255, 255, 255, 0.18)" stopOpacity="0.18" />
+              </radialGradient>
+            </defs>
+
+            {/* Base Layer: Crisp Grayish / White Wireframe Outlines */}
+            <path
+              d={CYBER_PASHTO_PATH}
+              fill="none"
+              stroke="rgba(255, 255, 255, 0.2)"
+              strokeWidth="1.2"
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              fillRule="evenodd"
+            />
+
+            {/* Interactive Spotlight Layer: Blazing Red Glowing Illumination */}
+            <path
+              d={CYBER_PASHTO_PATH}
+              fill="url(#footerWatermarkLaserFill)"
+              stroke="url(#footerWatermarkLaserStroke)"
+              strokeWidth="1.5"
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              fillRule="evenodd"
+              filter={isHovered ? "drop-shadow(0 0 20px rgba(255, 2, 5, 0.65))" : "none"}
+              style={{
+                opacity: isHovered ? 1 : 0,
+                transition: 'opacity 0.25s ease'
+              }}
+            />
+          </svg>
+        </div>
+
+        {/* Bottom Horizontal Laser Glow Line */}
+        <div 
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: '1px',
+            background: isHovered
+              ? `linear-gradient(90deg, transparent 0%, rgba(255, 2, 5, 0.15) ${Math.max(0, mousePos.x - 30)}%, #FF0205 ${mousePos.x}%, rgba(255, 2, 5, 0.15) ${Math.min(100, mousePos.x + 30)}%, transparent 100%)`
+              : 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 25%, rgba(229, 0, 0, 0.35) 50%, rgba(255, 255, 255, 0.08) 75%, transparent 100%)',
+            boxShadow: isHovered
+              ? '0 0 15px rgba(255, 2, 5, 0.85), 0 0 30px rgba(255, 2, 5, 0.45)'
+              : '0 0 10px rgba(229, 0, 0, 0.2)',
+            transition: 'box-shadow 0.3s ease'
+          }}
+        >
+          {/* Glowing Red Dot on the bottom line that smoothly glides with cursor */}
+          <div 
+            style={{
+              position: 'absolute',
+              bottom: '-2.5px',
+              left: `${mousePos.x}%`,
+              transform: 'translateX(-50%)',
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              backgroundColor: '#FF0205',
+              boxShadow: '0 0 8px #FF0205, 0 0 16px #FF0205',
+              opacity: isHovered ? 1 : 0.4,
+              transition: 'opacity 0.3s ease'
+            }}
+          />
         </div>
       </div>
 
@@ -154,15 +266,15 @@ export default function Footer({ onOpenContact }) {
         style={{
           maxWidth: '1280px',
           margin: '0 auto',
-          padding: 'clamp(40px, 5vw, 64px) clamp(20px, 4vw, 56px) 0'
+          padding: 'clamp(28px, 3.5vw, 44px) clamp(20px, 4vw, 56px) 0'
         }}
       >
         <div 
           style={{
             display: 'grid',
             gridTemplateColumns: '1.4fr 1fr 1.2fr 1fr',
-            gap: '2.5rem',
-            marginBottom: '3.5rem'
+            gap: '2rem',
+            marginBottom: '2rem'
           }}
           className="footer-columns-grid"
         >

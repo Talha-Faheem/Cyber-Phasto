@@ -68,7 +68,7 @@ export default function BottomCta() {
           position: 'relative', 
           zIndex: 2, 
           width: '100%',
-          cursor: 'crosshair',
+          cursor: 'default',
           paddingTop: '3.5rem',
           paddingBottom: '3.5rem'
         }}
