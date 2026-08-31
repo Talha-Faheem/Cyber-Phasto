@@ -35,11 +35,11 @@
 }
 
 html {
-  scroll-behavior: smooth;
   background: var(--black);
   color: #fff;
   font-family: var(--font-sans);
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
 body {
@@ -47,7 +47,8 @@ body {
   background: var(--black);
   color: #fff;
   font-family: var(--font-sans);
-  overflow-x: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
   position: relative;
   min-height: 100vh;
 }
@@ -58,8 +59,9 @@ body::after {
   inset: 0;
   z-index: 999;
   pointer-events: none;
-  opacity: 0.022;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.015;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 4px 4px;
 }
 
 a {
@@ -423,6 +425,7 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
   position: relative;
   background-color: #040404;
   min-height: 100vh;
+  overflow-x: clip;
 }
 
 .homePageWrapper > *:not(.home-bg-wrapper),
@@ -532,13 +535,13 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
   }
 }
 
-/* Strategic Luminous Atmospheric Halos (Soft & Subtle) */
+/* Strategic Luminous Atmospheric Halos (Soft & Subtle via direct GPU gradients) */
 .home-bg-glow {
   position: absolute;
   border-radius: 50%;
-  filter: blur(180px);
   pointer-events: none;
   z-index: 1;
+  will-change: opacity, transform;
 }
 
 .home-bg-glow.glow-top {
@@ -546,8 +549,7 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
   height: 700px;
   top: 2%;
   right: -120px;
-  background: rgba(190, 5, 15, 0.03);
-  animation: pulseBgGlow 8s ease-in-out infinite alternate;
+  background: radial-gradient(circle, rgba(190, 5, 15, 0.04) 0%, rgba(190, 5, 15, 0.015) 40%, transparent 70%);
 }
 
 .home-bg-glow.glow-mid-left {
@@ -555,8 +557,7 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
   height: 580px;
   top: 32%;
   left: -160px;
-  background: rgba(180, 5, 15, 0.02);
-  animation: pulseBgGlow 10s ease-in-out infinite alternate-reverse;
+  background: radial-gradient(circle, rgba(180, 5, 15, 0.03) 0%, rgba(180, 5, 15, 0.01) 40%, transparent 70%);
 }
 
 .home-bg-glow.glow-mid-right {
@@ -564,8 +565,7 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
   height: 600px;
   top: 58%;
   right: -130px;
-  background: rgba(255, 255, 255, 0.01);
-  animation: pulseBgGlow 9s ease-in-out infinite alternate;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.015) 0%, rgba(255, 255, 255, 0.005) 40%, transparent 70%);
 }
 
 .home-bg-glow.glow-bottom {
@@ -573,13 +573,7 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
   height: 680px;
   top: 84%;
   left: 15%;
-  background: rgba(190, 5, 15, 0.025);
-  animation: pulseBgGlow 11s ease-in-out infinite alternate;
-}
-
-@keyframes pulseBgGlow {
-  0% { transform: scale(0.96); opacity: 0.7; }
-  100% { transform: scale(1.08); opacity: 1; }
+  background: radial-gradient(circle, rgba(190, 5, 15, 0.035) 0%, rgba(190, 5, 15, 0.01) 40%, transparent 70%);
 }
 
 .hero {

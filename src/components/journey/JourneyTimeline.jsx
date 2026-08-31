@@ -23,6 +23,7 @@ export default function JourneyTimeline({
   startDotRef,
   endDotRef,
   courseNodeRefs,
+  courseCardRefs,
   destinationCardRef,
   activePath,
   onOpenContact
@@ -91,7 +92,15 @@ export default function JourneyTimeline({
               data-step
               data-index={idx}
             >
-              <div className="level-card card-upcoming" id={`card-${idx + 1}`}>
+              <div 
+                className="level-card card-upcoming" 
+                id={`card-${idx + 1}`}
+                ref={el => {
+                  if (courseCardRefs && courseCardRefs.current) {
+                    courseCardRefs.current[idx] = el;
+                  }
+                }}
+              >
                 <div className="level-card-glow" />
                 <div className="level-head">
                   <span className="level-kicker">{kicker}</span>

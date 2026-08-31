@@ -10,32 +10,43 @@ export default function Navbar({ onOpenContact }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      if (currentScrollY <= 35) {
-        setIsVisible(true);
-        setIsScrolled(false);
-        lastScrollY.current = currentScrollY;
-        return;
-      }
+    let rafId = null;
 
-      setIsScrolled(true);
-      const diff = currentScrollY - lastScrollY.current;
-      
-      if (Math.abs(diff) > scrollThreshold) {
-        if (diff > 0 && currentScrollY > 70) {
-          setIsVisible(false);
-          setMobileOpen(false);
-        } else if (diff < 0) {
+    const handleScroll = () => {
+      if (rafId) return;
+
+      rafId = requestAnimationFrame(() => {
+        const currentScrollY = window.scrollY;
+        
+        if (currentScrollY <= 35) {
           setIsVisible(true);
+          setIsScrolled(false);
+          lastScrollY.current = currentScrollY;
+          rafId = null;
+          return;
         }
-        lastScrollY.current = currentScrollY;
-      }
+
+        setIsScrolled(true);
+        const diff = currentScrollY - lastScrollY.current;
+        
+        if (Math.abs(diff) > scrollThreshold) {
+          if (diff > 0 && currentScrollY > 70) {
+            setIsVisible(false);
+            setMobileOpen(false);
+          } else if (diff < 0) {
+            setIsVisible(true);
+          }
+          lastScrollY.current = currentScrollY;
+        }
+        rafId = null;
+      });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   const handleApplyClick = () => {

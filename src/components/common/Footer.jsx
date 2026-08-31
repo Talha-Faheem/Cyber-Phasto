@@ -10,25 +10,30 @@ import {
 } from 'lucide-react';
 
 export default function Footer({ onOpenContact }) {
-  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [isHovered, setIsHovered] = useState(false);
   const watermarkRef = useRef(null);
+  const orbRef = useRef(null);
+  const rafRef = useRef(null);
+
+  const updateOrb = (clientX, clientY) => {
+    if (!watermarkRef.current || !orbRef.current) return;
+    const rect = watermarkRef.current.getBoundingClientRect();
+    const x = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+    const y = Math.max(0, Math.min(100, ((clientY - rect.top) / rect.height) * 100));
+    orbRef.current.style.left = `${x}%`;
+    orbRef.current.style.top = `${y}%`;
+  };
 
   const handleMouseMove = useCallback((e) => {
-    if (!watermarkRef.current) return;
-    const rect = watermarkRef.current.getBoundingClientRect();
-    const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
-    const y = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
-    setMousePos({ x, y });
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => updateOrb(e.clientX, e.clientY));
   }, []);
 
   const handleTouchMove = useCallback((e) => {
-    if (!watermarkRef.current || !e.touches[0]) return;
-    const rect = watermarkRef.current.getBoundingClientRect();
+    if (!e.touches[0]) return;
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
     const touch = e.touches[0];
-    const x = Math.max(0, Math.min(100, ((touch.clientX - rect.left) / rect.width) * 100));
-    const y = Math.max(0, Math.min(100, ((touch.clientY - rect.top) / rect.height) * 100));
-    setMousePos({ x, y });
+    rafRef.current = requestAnimationFrame(() => updateOrb(touch.clientX, touch.clientY));
     setIsHovered(true);
   }, []);
 
@@ -79,19 +84,20 @@ export default function Footer({ onOpenContact }) {
       >
         {/* Ambient Glowing Orb Behind Watermark */}
         <div 
+          ref={orbRef}
           style={{
             position: 'absolute',
-            top: `${mousePos.y}%`,
-            left: `${mousePos.x}%`,
+            top: '50%',
+            left: '50%',
             transform: 'translate(-50%, -50%)',
             width: '450px',
             height: '240px',
             background: 'radial-gradient(circle, rgba(229, 0, 0, 0.28) 0%, rgba(200, 0, 20, 0.08) 45%, transparent 75%)',
-            filter: 'blur(50px)',
             pointerEvents: 'none',
             opacity: isHovered ? 1 : 0,
             transition: 'opacity 0.35s ease',
-            zIndex: 1
+            zIndex: 1,
+            willChange: 'left, top'
           }}
         />
 

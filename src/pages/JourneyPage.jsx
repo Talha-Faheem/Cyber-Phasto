@@ -26,7 +26,7 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
-    }, 150);
+    }, 120);
   };
 
   const trackRef = useRef(null);
@@ -39,88 +39,104 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
   const endDotRef = useRef(null);
   const destinationCardRef = useRef(null);
   const courseNodeRefs = useRef([]);
-  const pathCacheRef = useRef({ totalLength: 0, nodes: [] });
+  const courseCardRefs = useRef([]);
+
+  // Performance metrics & state cache ref
+  const layoutMetricsRef = useRef({
+    offsetTop: 0,
+    height: 0,
+    startY: 0,
+    endY: 0,
+    totalTravel: 1,
+    totalLength: 0,
+    lut: [],
+    nodes: []
+  });
+
+  const milestoneStatesRef = useRef({});
+  const startDotStateRef = useRef('');
+  const endDotStateRef = useRef('');
+  const destCardStateRef = useRef('');
   const targetProgressRef = useRef(0);
   const currentProgressRef = useRef(0);
   const rafIdRef = useRef(null);
 
   const activePath = careerPathsData.find(p => p.id === selectedPathId) || careerPathsData[0];
 
-  // Apply visual DOM mutations at any given interpolated progress value (0..1)
+  // High-performance visual applier with milestone state diffing (0 unnecessary DOM writes)
   const applyProgressVisuals = useCallback((progress) => {
-    const roadmap = trackRef.current;
-    const pathActive = pathActiveRef.current;
-    const pathGlow = pathGlowRef.current;
-    const leadDot = leadDotRef.current;
-    const startDot = startDotRef.current;
-    const endDot = endDotRef.current;
-    const destCard = destinationCardRef.current;
-    const { totalLength, nodes } = pathCacheRef.current;
-
-    if (!roadmap || !pathActive || totalLength <= 0) return;
+    const metrics = layoutMetricsRef.current;
+    const totalLength = metrics.totalLength;
+    if (!totalLength || totalLength <= 0) return;
 
     const clamped = Math.max(0, Math.min(1, progress));
     const currentLength = clamped * totalLength;
     const strokeOffset = totalLength - currentLength;
 
-    // 1. Update SVG Progress Strokes (both active line and neon glow)
-    pathActive.style.strokeDasharray = `${totalLength} ${totalLength}`;
-    pathActive.style.strokeDashoffset = `${strokeOffset}`;
-    if (pathGlow) {
-      pathGlow.style.strokeDasharray = `${totalLength} ${totalLength}`;
-      pathGlow.style.strokeDashoffset = `${strokeOffset}`;
+    // 1. Update SVG Progress Strokes
+    if (pathActiveRef.current) {
+      pathActiveRef.current.style.strokeDashoffset = `${strokeOffset}`;
+    }
+    if (pathGlowRef.current) {
+      pathGlowRef.current.style.strokeDashoffset = `${strokeOffset}`;
     }
 
-    // 2. Position the Leading Edge Traveler Indicator along the wave
-    if (leadDot) {
-      if (clamped <= 0.003) {
-        leadDot.style.opacity = '0';
+    // 2. Position Leading Traveler Dot via O(1) LUT index lookup (Zero getPointAtLength calls during scroll)
+    if (leadDotRef.current && metrics.lut && metrics.lut.length > 0) {
+      if (clamped <= 0.002) {
+        leadDotRef.current.style.opacity = '0';
       } else {
-        const pt = pathActive.getPointAtLength(currentLength);
-        leadDot.style.transform = `translate3d(${pt.x}px, ${pt.y}px, 0)`;
-        leadDot.style.opacity = '1';
+        const lutIdx = Math.min(metrics.lut.length - 1, Math.max(0, Math.round(clamped * (metrics.lut.length - 1))));
+        const pt = metrics.lut[lutIdx];
+        if (pt) {
+          leadDotRef.current.style.transform = `translate3d(${pt.x}px, ${pt.y}px, 0)`;
+          leadDotRef.current.style.opacity = '1';
+        }
       }
     }
 
-    // 3. Dynamic Milestone Node & Card State Reactions
-    if (nodes && nodes.length > 0) {
-      nodes.forEach((nodeInfo) => {
-        const isReached = currentLength >= nodeInfo.length - 8;
-        const isCurrent = Math.abs(currentLength - nodeInfo.length) < 36;
+    // 3. State Diffing on Start Milestone Dot
+    if (startDotRef.current) {
+      const startState = clamped > 0.015 ? 'completed' : 'current';
+      if (startDotStateRef.current !== startState) {
+        startDotStateRef.current = startState;
+        startDotRef.current.className = startState === 'completed' 
+          ? 'node-dot node-completed' 
+          : 'node-dot node-current pulse';
+      }
+    }
 
-        if (nodeInfo.type === 'start' && startDot) {
-          if (clamped > 0.02) {
-            startDot.className = 'node-dot node-completed';
-          } else {
-            startDot.className = 'node-dot node-current pulse';
-          }
-        } else if (nodeInfo.type === 'end' && endDot) {
-          if (clamped >= 0.96) {
-            endDot.className = 'node-dot end-node node-completed';
-          } else if (clamped >= 0.88) {
-            endDot.className = 'node-dot end-node node-current pulse';
-          } else {
-            endDot.className = 'node-dot end-node node-upcoming';
-          }
-        } else if (nodeInfo.type === 'course') {
-          const nodeEl = courseNodeRefs.current[nodeInfo.courseIdx];
-          if (nodeEl) {
-            if (isCurrent) {
-              nodeEl.className = 'node-dot level-node node-current pulse';
-            } else if (isReached) {
-              nodeEl.className = 'node-dot level-node node-completed';
-            } else {
-              nodeEl.className = 'node-dot level-node node-upcoming';
+    // 4. State Diffing on Course Milestone Nodes & Cards
+    if (metrics.nodes && metrics.nodes.length > 0) {
+      metrics.nodes.forEach((nodeInfo) => {
+        if (nodeInfo.type === 'course') {
+          const threshold = nodeInfo.progressThreshold;
+          const isReached = clamped >= threshold - 0.006;
+          const isCurrent = Math.abs(clamped - threshold) < 0.038;
+          
+          const nodeState = isCurrent ? 'current' : isReached ? 'completed' : 'upcoming';
+          const prevNodeState = milestoneStatesRef.current[nodeInfo.courseIdx];
+
+          if (prevNodeState !== nodeState) {
+            milestoneStatesRef.current[nodeInfo.courseIdx] = nodeState;
+            
+            const nodeEl = courseNodeRefs.current[nodeInfo.courseIdx];
+            if (nodeEl) {
+              if (nodeState === 'current') {
+                nodeEl.className = 'node-dot level-node node-current pulse';
+              } else if (nodeState === 'completed') {
+                nodeEl.className = 'node-dot level-node node-completed';
+              } else {
+                nodeEl.className = 'node-dot level-node node-upcoming';
+              }
             }
-          }
 
-          if (nodeInfo.cardId) {
-            const cardEl = document.getElementById(nodeInfo.cardId);
+            const cardEl = courseCardRefs.current[nodeInfo.courseIdx] || (nodeInfo.cardId ? document.getElementById(nodeInfo.cardId) : null);
             if (cardEl) {
-              if (isCurrent) {
+              if (nodeState === 'current') {
                 cardEl.classList.add('card-current');
-                cardEl.classList.remove('card-upcoming');
-              } else if (isReached) {
+                cardEl.classList.remove('card-upcoming', 'card-completed');
+              } else if (nodeState === 'completed') {
                 cardEl.classList.add('card-completed');
                 cardEl.classList.remove('card-upcoming', 'card-current');
               } else {
@@ -129,94 +145,89 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
               }
             }
           }
+        } else if (nodeInfo.type === 'end') {
+          const endState = clamped >= 0.96 ? 'completed' : clamped >= 0.88 ? 'current' : 'upcoming';
+          if (endDotStateRef.current !== endState && endDotRef.current) {
+            endDotStateRef.current = endState;
+            if (endState === 'completed') {
+              endDotRef.current.className = 'node-dot end-node node-completed';
+            } else if (endState === 'current') {
+              endDotRef.current.className = 'node-dot end-node node-current pulse';
+            } else {
+              endDotRef.current.className = 'node-dot end-node node-upcoming';
+            }
+          }
         }
       });
     }
 
-    // 4. Highlight destination card upon reaching end
-    if (destCard) {
-      if (clamped >= 0.95) {
-        destCard.classList.add('card-completed');
-        destCard.classList.remove('card-upcoming');
-      } else {
-        destCard.classList.add('card-upcoming');
-        destCard.classList.remove('card-completed');
+    // 5. Highlight Destination Card upon Reaching End
+    if (destinationCardRef.current) {
+      const destState = clamped >= 0.95 ? 'completed' : 'upcoming';
+      if (destCardStateRef.current !== destState) {
+        destCardStateRef.current = destState;
+        if (destState === 'completed') {
+          destinationCardRef.current.classList.add('card-completed');
+          destinationCardRef.current.classList.remove('card-upcoming');
+        } else {
+          destinationCardRef.current.classList.add('card-upcoming');
+          destinationCardRef.current.classList.remove('card-completed');
+        }
       }
     }
   }, []);
 
-  // Compute raw target progress from scroll position
+  // Compute target progress purely with arithmetic from cached metrics (0 layout reflows!)
   const calculateTargetProgress = useCallback(() => {
-    const roadmap = trackRef.current;
-    if (!roadmap) return 0;
+    const metrics = layoutMetricsRef.current;
+    if (!metrics.totalTravel || metrics.totalTravel <= 0) return 0;
 
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop || window.scrollY || 0;
-    const rect = roadmap.getBoundingClientRect();
-    const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 800;
+    const scrollY = window.pageYOffset || document.documentElement.scrollTop || window.scrollY || 0;
+    const viewportHeight = window.innerHeight || 800;
 
-    const roadmapPageY = rect.top + scrollTop;
-    const roadmapHeight = rect.height;
-    const focalPageY = scrollTop + (viewportHeight * 0.46);
+    // Optical reading center: 45% of viewport height
+    const focalPageY = scrollY + (viewportHeight * 0.45);
 
-    const journeyStartY = roadmapPageY + 24;
-    const journeyEndY = roadmapPageY + roadmapHeight - 110;
-    const totalTravel = Math.max(150, journeyEndY - journeyStartY);
-
-    let progress = (focalPageY - journeyStartY) / totalTravel;
+    const progress = (focalPageY - metrics.startY) / metrics.totalTravel;
     return Math.max(0, Math.min(1, progress));
   }, []);
 
-  // Continuous physics lerp animation loop for butter-smooth momentum & fluidity
-  const startAnimationLoop = useCallback(() => {
-    if (rafIdRef.current) return;
-
-    const tick = () => {
-      const target = targetProgressRef.current;
-      const current = currentProgressRef.current;
-      const diff = target - current;
-
-      if (Math.abs(diff) > 0.0001) {
-        // High-end smooth easing dampener (0.1 = ultra silky, fast response without overshoot)
-        currentProgressRef.current = current + diff * 0.1;
-        applyProgressVisuals(currentProgressRef.current);
-        rafIdRef.current = requestAnimationFrame(tick);
-      } else {
-        currentProgressRef.current = target;
-        applyProgressVisuals(target);
-        rafIdRef.current = null;
-      }
-    };
-
-    rafIdRef.current = requestAnimationFrame(tick);
-  }, [applyProgressVisuals]);
-
-  // Handle scroll trigger: update target and wake animation loop if sleeping
+  // Immediate zero-lag scroll synchronization on RAF (zero trailing delay)
   const updateScrollProgress = useCallback((immediate = false) => {
-    const target = calculateTargetProgress();
-    targetProgressRef.current = target;
-
     if (immediate) {
       if (rafIdRef.current) {
         cancelAnimationFrame(rafIdRef.current);
         rafIdRef.current = null;
       }
+      const target = calculateTargetProgress();
       currentProgressRef.current = target;
       applyProgressVisuals(target);
-    } else {
-      startAnimationLoop();
+      return;
     }
-  }, [calculateTargetProgress, applyProgressVisuals, startAnimationLoop]);
 
-  // Wave Layout Generator: Wave sweeps across and touches every course card directly
+    if (!rafIdRef.current) {
+      rafIdRef.current = requestAnimationFrame(() => {
+        const target = calculateTargetProgress();
+        currentProgressRef.current = target;
+        applyProgressVisuals(target);
+        rafIdRef.current = null;
+      });
+    }
+  }, [calculateTargetProgress, applyProgressVisuals]);
+
+  // Wave Layout Generator: Pre-computes smooth curve, cached contact points, and 600-point LUT
   const layoutPath = useCallback(() => {
     const roadmap = trackRef.current;
     const svg = svgRef.current;
     if (!roadmap || !svg) return;
 
-    const roadmapRect = roadmap.getBoundingClientRect();
-    const width = roadmapRect.width;
-    const height = roadmapRect.height;
+    const width = roadmap.offsetWidth;
+    const height = roadmap.offsetHeight;
     if (width === 0 || height === 0) return;
+
+    const roadmapRect = roadmap.getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop || window.scrollY || 0;
+    const roadmapPageY = roadmapRect.top + scrollTop;
 
     svg.setAttribute('width', `${width}`);
     svg.setAttribute('height', `${height}`);
@@ -243,18 +254,16 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
 
     // 2. Course Milestone Nodes: Wave sweeps and touches the inner border of each card
     rows.forEach((row, rIdx) => {
-      const card = row.querySelector('.level-card');
+      const card = courseCardRefs.current[rIdx] || row.querySelector('.level-card');
       if (!card) return;
       
       const cardRect = card.getBoundingClientRect();
       const rowRect = row.getBoundingClientRect();
       const isLeft = rIdx % 2 === 0;
       
-      // Node touches the inner edge of the card
       const nodeX = (isLeft ? cardRect.right : cardRect.left) - roadmapRect.left;
       const nodeY = (rowRect.top + (rowRect.height / 2)) - roadmapRect.top;
 
-      // Position course milestone node directly touching card edge
       if (courseNodeRefs.current[rIdx]) {
         courseNodeRefs.current[rIdx].style.left = `${nodeX}px`;
         courseNodeRefs.current[rIdx].style.top = `${nodeY}px`;
@@ -290,7 +299,7 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
 
     if (points.length < 2) return;
 
-    // 4. Construct smooth sweeping S-curves touching every card with vertical tangents
+    // 4. Construct smooth sweeping S-curves with vertical tangents
     let d = `M ${points[0].x} ${points[0].y}`;
     for (let i = 0; i < points.length - 1; i++) {
       const p0 = points[i];
@@ -318,41 +327,75 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
         pathGlowRef.current.style.strokeDasharray = `${totalLength} ${totalLength}`;
       }
 
-      // Map each milestone to its exact arc length along the wave
-      const calculatedNodes = nodeItems.map(node => {
-        let low = 0;
-        let high = totalLength;
-        for (let iter = 0; iter < 40; iter++) {
-          const mid = (low + high) / 2;
-          const pt = pathActiveRef.current.getPointAtLength(mid);
-          if (pt.y < node.y) {
-            low = mid;
-          } else {
-            high = mid;
+      // Precompute 600-point Look-Up Table (LUT) for O(1) traveler dot rendering
+      const SAMPLES = 600;
+      const lut = new Array(SAMPLES + 1);
+      for (let i = 0; i <= SAMPLES; i++) {
+        const len = (i / SAMPLES) * totalLength;
+        const pt = pathActiveRef.current.getPointAtLength(len);
+        lut[i] = { x: pt.x, y: pt.y, length: len };
+      }
+
+      // Map each milestone node accurately to its closest point along the path
+      const calculatedNodes = nodeItems.map((node, nIdx) => {
+        if (nIdx === 0) {
+          return { ...node, length: 0, progressThreshold: 0 };
+        }
+        if (nIdx === nodeItems.length - 1) {
+          return { ...node, length: totalLength, progressThreshold: 1 };
+        }
+
+        let bestDistSq = Infinity;
+        let bestLen = 0;
+        for (let s = 0; s < lut.length; s++) {
+          const dx = lut[s].x - node.x;
+          const dy = lut[s].y - node.y;
+          const distSq = dx * dx + dy * dy;
+          if (distSq < bestDistSq) {
+            bestDistSq = distSq;
+            bestLen = lut[s].length;
           }
         }
+
         return {
           ...node,
-          length: (low + high) / 2
+          length: bestLen,
+          progressThreshold: totalLength > 0 ? (bestLen / totalLength) : 0
         };
       });
 
-      pathCacheRef.current = {
+      // Reset state caches
+      milestoneStatesRef.current = {};
+      startDotStateRef.current = '';
+      endDotStateRef.current = '';
+      destCardStateRef.current = '';
+
+      const journeyStartY = roadmapPageY + points[0].y;
+      const journeyEndY = roadmapPageY + points[points.length - 1].y;
+      const totalTravel = Math.max(150, journeyEndY - journeyStartY);
+
+      layoutMetricsRef.current = {
+        offsetTop: roadmapPageY,
+        height,
+        startY: journeyStartY,
+        endY: journeyEndY,
+        totalTravel,
         totalLength,
+        lut,
         nodes: calculatedNodes
       };
 
-      // Initial progress update matching current scroll position immediately
+      // Immediate progress update matching current scroll position
       updateScrollProgress(true);
     }
   }, [updateScrollProgress]);
 
-  // Setup High-Performance Continuous Momentum Scroll Listener
+  // Setup High-Performance, Zero-Overhead Scroll & Resize Observers
   useEffect(() => {
     layoutPath();
-    const t1 = setTimeout(layoutPath, 50);
-    const t2 = setTimeout(layoutPath, 200);
-    const t3 = setTimeout(layoutPath, 500);
+    const t1 = setTimeout(layoutPath, 40);
+    const t2 = setTimeout(layoutPath, 160);
+    const t3 = setTimeout(layoutPath, 400);
 
     const handleScroll = () => {
       updateScrollProgress(false);
@@ -363,25 +406,36 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => {
         layoutPath();
-      }, 60);
+      }, 50);
     };
 
+    // Single passive window scroll listener
     window.addEventListener('scroll', handleScroll, { passive: true });
-    document.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleResize);
-    window.addEventListener('wheel', handleScroll, { passive: true });
-    window.addEventListener('touchmove', handleScroll, { passive: true });
+
+    // ResizeObserver on the roadmap element to automatically handle dynamic layout changes
+    let resizeObserver;
+    if (typeof ResizeObserver !== 'undefined' && trackRef.current) {
+      resizeObserver = new ResizeObserver(() => {
+        handleResize();
+      });
+      resizeObserver.observe(trackRef.current);
+    }
 
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
       clearTimeout(t3);
       clearTimeout(resizeTimer);
+      if (rafIdRef.current) {
+        cancelAnimationFrame(rafIdRef.current);
+        rafIdRef.current = null;
+      }
+      if (resizeObserver) {
+        resizeObserver.disconnect();
+      }
       window.removeEventListener('scroll', handleScroll);
-      document.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
-      window.removeEventListener('wheel', handleScroll);
-      window.removeEventListener('touchmove', handleScroll);
     };
   }, [selectedPathId, layoutPath, updateScrollProgress]);
 
@@ -409,11 +463,11 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
         startDotRef={startDotRef}
         endDotRef={endDotRef}
         courseNodeRefs={courseNodeRefs}
+        courseCardRefs={courseCardRefs}
         destinationCardRef={destinationCardRef}
         activePath={activePath}
         onOpenContact={onOpenContact}
       />
-
 
       <PathFinderQuizModal 
         isOpen={isQuizOpen}
@@ -447,7 +501,7 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           font-family: var(--sans);
           min-height: 100vh;
           position: relative;
-          overflow-x: hidden;
+          overflow-x: clip;
           padding-bottom: 60px;
         }
 
@@ -749,10 +803,8 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
         /* 2. Traveled Neon Red Aura */
         .path-svg path.spine-glow {
           fill: none;
-          stroke: var(--red);
-          stroke-width: 9;
-          opacity: 0.32;
-          filter: blur(5px);
+          stroke: rgba(255, 2, 5, 0.45);
+          stroke-width: 8;
           stroke-linecap: round;
           will-change: stroke-dashoffset;
         }
@@ -763,7 +815,6 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           stroke: var(--red-bright);
           stroke-width: 2.8;
           stroke-linecap: round;
-          filter: drop-shadow(0 0 8px rgba(255, 22, 22, 0.95));
           will-change: stroke-dashoffset;
         }
 
@@ -858,10 +909,12 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
 
         @keyframes nodeGlowPulse {
           0%, 100% {
-            box-shadow: 0 0 0 3px var(--black), 0 0 14px 3px rgba(255, 22, 22, 0.7);
+            transform: scale(1.18);
+            opacity: 1;
           }
           50% {
-            box-shadow: 0 0 0 3px var(--black), 0 0 22px 6px rgba(255, 22, 22, 1);
+            transform: scale(1.36);
+            opacity: 0.92;
           }
         }
 
@@ -912,9 +965,8 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           width: 140px;
           height: 140px;
           border-radius: 50%;
-          background: radial-gradient(circle, rgba(255, 2, 5, 0.16) 0%, transparent 70%);
+          background: radial-gradient(circle, rgba(255, 2, 5, 0.22) 0%, rgba(255, 2, 5, 0.06) 45%, transparent 70%);
           pointer-events: none;
-          filter: blur(20px);
         }
 
         .level-card.card-completed {
