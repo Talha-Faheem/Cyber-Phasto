@@ -338,15 +338,19 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
   border: 1px solid rgba(255, 255, 255, 0.15);
   color: #fff;
   border-radius: 12px;
-  padding: 8px 12px;
-  font-size: 16px;
-  line-height: 1;
+  width: 38px;
+  height: 38px;
+  padding: 0;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: all 0.25s ease;
+  align-items: center;
+  justify-content: center;
 }
 
 .sheryians-menu-btn.open {
-  transform: rotate(90deg);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
 }
 
 .sheryians-mobile-drawer {
@@ -379,8 +383,7 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
   padding: 0 20px;
 }
 
-.sheryians-mobile-inner a,
-.sheryians-mobile-inner button {
+.sheryians-mobile-inner a {
   padding: 14px 0;
   border-bottom: 1px solid #1e1e1e;
   color: #ccc;
@@ -394,23 +397,46 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
   font-family: inherit;
   text-decoration: none;
   display: block;
+  transition: color 0.2s ease;
 }
 
-.sheryians-mobile-inner a:hover,
-.sheryians-mobile-inner button:hover {
+.sheryians-mobile-inner a:hover {
   color: #ffffff;
 }
 
-.sheryians-mobile-inner a.active,
-.sheryians-mobile-inner button.active {
+.sheryians-mobile-inner a.active {
   color: #ffffff;
   font-weight: 700;
 }
 
-.sheryians-mobile-inner a:last-child,
-.sheryians-mobile-inner button:last-child {
-  border-bottom: none;
-  margin: 12px 0 16px;
+.sheryians-mobile-apply-btn {
+  width: 100% !important;
+  height: 46px !important;
+  background: #ffffff !important;
+  color: #050505 !important;
+  border: 1px solid rgba(255, 255, 255, 0.9) !important;
+  border-radius: 999px !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  font-family: var(--font-sans) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  margin: 16px 0 18px 0 !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 18px rgba(255, 255, 255, 0.2) !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.sheryians-mobile-apply-btn:hover,
+.sheryians-mobile-apply-btn:active {
+  background: #ff0205 !important;
+  border-color: #ff0205 !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 25px rgba(255, 2, 5, 0.65) !important;
 }
 
 /* ============================================================
@@ -1000,21 +1026,23 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
   margin-bottom: 8px;
 }
 .title {
-  font-size: clamp(42px, 6.2vw, 82px);
-  line-height: 0.92;
-  letter-spacing: -0.05em;
+  font-size: clamp(30px, 5.5vw, 76px);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
   text-align: center;
   max-width: 900px;
   margin: 17px auto;
   font-weight: 800;
+  padding: 0 16px;
 }
 .sub {
   text-align: center;
   color: #777;
-  line-height: 1.7;
+  line-height: 1.6;
   max-width: 650px;
-  margin: 20px auto 0;
-  font-size: 15px;
+  margin: 16px auto 0;
+  font-size: clamp(14px, 3.6vw, 15px);
+  padding: 0 16px;
 }
 
 .future {
@@ -1889,7 +1917,7 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
 .events {
   background: transparent;
   border-block: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 125px 0;
+  padding: clamp(55px, 8vw, 115px) 0;
   position: relative;
   overflow: hidden;
 }
@@ -1898,16 +1926,16 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
   position: relative;
   width: 100vw;
   margin-left: calc(-50vw + 50%);
-  margin-top: 55px;
+  margin-top: clamp(24px, 4vw, 45px);
   overflow: hidden;
-  padding: 20px 0;
-  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  padding: 16px 0;
+  mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
 }
 
 .eventsMarqueeTrack {
   display: flex;
-  gap: 20px;
+  gap: clamp(14px, 3vw, 22px);
   width: max-content;
   animation: eventsLoop 32s linear infinite;
   will-change: transform;
@@ -1927,17 +1955,17 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
 }
 
 .eventCard {
-  flex: 0 0 380px;
-  height: 330px;
+  flex: 0 0 clamp(270px, 80vw, 360px);
+  height: clamp(270px, 42vh, 320px);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 22px;
+  border-radius: 18px;
   position: relative;
   overflow: hidden;
   background: #0d0d0d;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 26px;
+  padding: clamp(18px, 4vw, 24px);
   transition: transform 0.4s var(--ease-soft), border-color 0.35s ease, box-shadow 0.35s ease;
   user-select: none;
   cursor: pointer;
@@ -2034,9 +2062,9 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
 }
 
 .eventCardBottom h3 {
-  font-size: 26px;
+  font-size: clamp(20px, 5vw, 24px);
   letter-spacing: -0.035em;
-  margin: 0 0 8px;
+  margin: 0 0 6px;
   font-weight: 800;
   color: #ffffff;
   line-height: 1.15;
@@ -2045,8 +2073,8 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
 .eventCardBottom p {
   margin: 0;
   color: #a0a0a0;
-  font-size: 13.5px;
-  line-height: 1.55;
+  font-size: clamp(12.5px, 3.2vw, 13.5px);
+  line-height: 1.45;
 }
 
 .projects {
@@ -2285,7 +2313,7 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
 }
 
 .reviews {
-  padding: 125px 0;
+  padding: clamp(55px, 8vw, 115px) 0;
   overflow: hidden;
   position: relative;
   background: transparent;
@@ -2295,13 +2323,13 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
   position: relative;
   width: 100vw;
   margin-left: calc(-50vw + 50%);
-  margin-top: 50px;
+  margin-top: clamp(24px, 4vw, 44px);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  gap: clamp(14px, 2.5vw, 20px);
+  mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
 }
 
 .reviewsShadowLeft {
@@ -2309,8 +2337,8 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
   top: 0;
   bottom: 0;
   left: 0;
-  width: clamp(80px, 16vw, 260px);
-  background: linear-gradient(to right, #000000 30%, rgba(0, 0, 0, 0.85) 65%, transparent 100%);
+  width: clamp(20px, 6vw, 160px);
+  background: linear-gradient(to right, #000000 15%, rgba(0, 0, 0, 0.6) 65%, transparent 100%);
   z-index: 10;
   pointer-events: none;
 }
@@ -2320,15 +2348,15 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
   top: 0;
   bottom: 0;
   right: 0;
-  width: clamp(80px, 16vw, 260px);
-  background: linear-gradient(to left, #000000 30%, rgba(0, 0, 0, 0.85) 65%, transparent 100%);
+  width: clamp(20px, 6vw, 160px);
+  background: linear-gradient(to left, #000000 15%, rgba(0, 0, 0, 0.6) 65%, transparent 100%);
   z-index: 10;
   pointer-events: none;
 }
 
 .reviewTrack {
   display: flex;
-  gap: 18px;
+  gap: clamp(12px, 2.5vw, 18px);
   width: max-content;
   will-change: transform;
   animation: reviewScrollLeft 38s linear infinite;
@@ -2336,7 +2364,7 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
 
 .reviewTrackReverse {
   display: flex;
-  gap: 18px;
+  gap: clamp(12px, 2.5vw, 18px);
   width: max-content;
   will-change: transform;
   animation: reviewScrollRight 38s linear infinite;
@@ -2358,11 +2386,11 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
 }
 
 .review {
-  width: 375px;
+  width: clamp(280px, 82vw, 375px);
   flex-shrink: 0;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 26px;
+  border-radius: 12px;
+  padding: clamp(16px, 3.5vw, 24px);
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.015) 100%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -2667,11 +2695,11 @@ footer a:hover {
 }
 
 @media (max-width: 850px) {
-  .links, .navBtn, .sheryians-nav-pill, .sheryians-apply-btn {
-    display: none;
+  .links, .navBtn, .sheryians-nav-pill, .sheryians-header-inner > .sheryians-apply-btn {
+    display: none !important;
   }
   .menu, .sheryians-menu-btn {
-    display: block;
+    display: inline-flex !important;
   }
   .mobileNav, .sheryians-mobile-drawer {
     display: grid;

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
 
 export default function Navbar({ onOpenContact }) {
   const [isVisible, setIsVisible] = useState(true);
@@ -77,6 +78,7 @@ export default function Navbar({ onOpenContact }) {
             <NavLink to="/courses" className={({ isActive }) => isActive ? 'active' : ''}>Courses</NavLink>
             <NavLink to="/roadmap" className={({ isActive }) => isActive ? 'active' : ''}>Journey</NavLink>
             <NavLink to="/contact" className={({ isActive }) => isActive ? 'active' : ''}>Contact Us</NavLink>
+            <NavLink to="/contact-2" className={({ isActive }) => isActive ? 'active' : ''}>Contact-2</NavLink>
           </nav>
 
           <button onClick={handleApplyClick} className="sheryians-apply-btn">
@@ -88,9 +90,9 @@ export default function Navbar({ onOpenContact }) {
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-expanded={mobileOpen}
             aria-controls="mobileDrawer"
-            aria-label="Toggle navigation menu"
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
           >
-            ☰
+            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </header>
@@ -104,11 +106,15 @@ export default function Navbar({ onOpenContact }) {
           <NavLink to="/courses" onClick={() => setMobileOpen(false)}>Courses</NavLink>
           <NavLink to="/roadmap" onClick={() => setMobileOpen(false)}>Journey</NavLink>
           <NavLink to="/contact" onClick={() => setMobileOpen(false)}>Contact Us</NavLink>
+          <NavLink to="/contact-2" onClick={() => setMobileOpen(false)}>Contact-2</NavLink>
+          
           <button 
+            type="button"
             onClick={handleApplyClick} 
-            className="sheryians-apply-btn w-full justify-center my-3.5"
+            className="sheryians-mobile-apply-btn"
           >
-            Apply Now! →
+            <span>Apply Now!</span>
+            <span>→</span>
           </button>
         </div>
       </div>

@@ -546,15 +546,18 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           gap: 8px;
           background: var(--red);
           color: #ffffff;
-          font-size: 14.5px;
+          font-size: clamp(13px, 3.5vw, 14.5px);
           font-weight: 700;
           font-family: var(--sans);
-          padding: 13px 28px;
-          border-radius: 10px;
+          padding: 11px 22px;
+          border-radius: 999px;
           border: 1px solid var(--red-border);
           cursor: pointer;
           box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
           transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+          max-width: min(440px, calc(100% - 24px));
+          margin: 0 auto;
+          text-align: center;
         }
 
         .journeyHeroQuizPill:hover {
@@ -564,14 +567,21 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           border-color: rgba(255, 255, 255, 0.25);
         }
 
-        /* ---------- Track Pills Tabs ---------- */
+        /* ---------- Track Pills Tabs (Horizontal Slider on Mobile) ---------- */
+        .trackPillSliderWrapper {
+          width: 100%;
+          position: relative;
+          z-index: 3;
+          margin-bottom: 20px;
+        }
+
         .trackPillContainer {
           display: flex;
           align-items: center;
           justify-content: center;
           gap: 10px;
           flex-wrap: wrap;
-          margin-bottom: 24px;
+          margin-bottom: 0;
           position: relative;
           z-index: 3;
         }
@@ -591,6 +601,8 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           transition: all 0.25s ease;
           font-family: var(--sans);
           box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+          white-space: nowrap;
+          flex-shrink: 0;
         }
 
         .trackPill:hover {
@@ -620,13 +632,13 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           background: #FFFFFF;
           color: #111827;
           border: 1px solid rgba(255, 2, 5, 0.14);
-          border-radius: 16px;
-          padding: 28px 32px;
+          border-radius: 20px;
+          padding: clamp(20px, 3.5vw, 32px);
           display: flex;
           align-items: center;
           justify-content: space-between;
           flex-wrap: wrap;
-          gap: 24px;
+          gap: 20px;
           box-shadow: 0 14px 40px rgba(0, 0, 0, 0.28), 0 0 32px rgba(255, 2, 5, 0.12);
           position: relative;
           overflow: hidden;
@@ -649,7 +661,7 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
 
         .summaryContentLeft {
           flex: 1 1 440px;
-          min-width: 280px;
+          min-width: 260px;
         }
 
         .summaryEyebrowRow {
@@ -702,21 +714,20 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
 
         .summaryMetaContainer {
           display: flex;
-          gap: 14px;
+          gap: 12px;
           flex-wrap: wrap;
           align-items: center;
         }
 
         .summaryMetaCard {
-          background: #FF0205;
-          background: linear-gradient(135deg, #FF0205 0%, #E00104 100%);
+          background: linear-gradient(135deg, #FF0205 0%, #D60003 100%);
           border: 1px solid rgba(255, 2, 5, 0.4);
           border-radius: 12px;
-          padding: 14px 20px;
+          padding: 12px 18px;
           display: flex;
           align-items: center;
-          gap: 14px;
-          box-shadow: 0 4px 16px rgba(255, 2, 5, 0.28);
+          gap: 12px;
+          box-shadow: 0 4px 14px rgba(255, 2, 5, 0.25);
           position: relative;
           color: #FFFFFF;
           transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -728,9 +739,9 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
         }
 
         .metaIconWrap {
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
+          width: 36px;
+          height: 36px;
+          border-radius: 9px;
           background: rgba(255, 255, 255, 0.2);
           border: 1px solid rgba(255, 255, 255, 0.35);
           color: #FFFFFF;
@@ -743,7 +754,8 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
         .metaInfoCol {
           display: flex;
           flex-direction: column;
-          gap: 3px;
+          gap: 2px;
+          min-width: 0;
         }
 
         .metaLabelRow {
@@ -754,18 +766,18 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
 
         .metaLabel {
           font-family: var(--mono);
-          font-size: 10.5px;
+          font-size: 10px;
           font-weight: 700;
-          color: rgba(255, 255, 255, 0.82);
+          color: rgba(255, 255, 255, 0.85);
           letter-spacing: 0.06em;
           text-transform: uppercase;
         }
 
         .metaValue {
-          font-size: 15px;
+          font-size: 14px;
           font-weight: 700;
           color: #FFFFFF;
-          letter-spacing: -0.015em;
+          letter-spacing: -0.01em;
           font-family: var(--sans);
           line-height: 1.25;
         }
@@ -1068,21 +1080,35 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           flex-shrink: 0;
         }
 
-        .tag-row {
+        .roadmap-skills-wrap {
           display: flex;
           flex-wrap: wrap;
           gap: 6px;
-          margin-bottom: 10px;
+          margin-bottom: 12px;
         }
 
-        .tag {
+        .roadmap-skill-tag {
           font-family: var(--mono);
-          font-size: 11.5px;
-          color: #d8d8d8;
-          border: 1px solid rgba(255, 2, 5, 0.22);
+          font-size: 11px;
+          font-weight: 600;
+          color: #f1f1f1 !important;
+          -webkit-text-fill-color: #f1f1f1 !important;
+          border: 1px solid rgba(255, 2, 5, 0.3);
           border-radius: 6px;
-          padding: 4px 8px;
-          background: rgba(255, 2, 5, 0.06);
+          padding: 4px 9px;
+          background: rgba(255, 2, 5, 0.1);
+          display: inline-flex !important;
+          align-items: center;
+          line-height: 1.3;
+          letter-spacing: 0.02em;
+          transition: all 0.2s ease;
+        }
+
+        .roadmap-skill-tag:hover {
+          background: rgba(255, 2, 5, 0.2);
+          border-color: rgba(255, 2, 5, 0.6);
+          color: #ffffff !important;
+          -webkit-text-fill-color: #ffffff !important;
         }
 
         .level-build {
@@ -1264,6 +1290,35 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
 
         /* ---------- Responsive Behavior ---------- */
         @media (max-width: 900px) {
+          .trackPillSliderWrapper {
+            overflow: hidden;
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+            padding: 4px 0 10px 0;
+          }
+
+          .trackPillContainer {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x proximity;
+            justify-content: flex-start;
+            padding: 4px 20px 10px 20px;
+            gap: 10px;
+            scrollbar-width: none;
+          }
+
+          .trackPillContainer::-webkit-scrollbar {
+            display: none;
+          }
+
+          .trackPill {
+            scroll-snap-align: start;
+            padding: 9px 18px;
+            font-size: 13px;
+          }
+
           .level-card {
             width: min(390px, calc(50% - 32px));
             padding: 18px 18px 16px;
@@ -1275,31 +1330,64 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
 
         @media (max-width: 760px) {
           .roadmap {
-            padding: 0 12px 30px;
+            padding: 0 10px 30px;
           }
           .level-row {
-            padding: 16px 0;
+            padding: 14px 0;
+            width: 100%;
           }
           .level-card {
-            width: calc(100% - 44px);
-          }
-          .level-row.side-left .level-card {
-            margin-right: 0;
-            margin-left: auto;
-          }
-          .level-row.side-right .level-card {
-            margin-left: auto;
-            margin-right: 0;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 auto !important;
+            padding: 20px 20px 18px;
+            box-sizing: border-box;
           }
           .destination-card {
             padding: 28px 20px;
           }
+          .summaryContentLeft {
+            flex: 1 1 100%;
+            min-width: 0;
+          }
+          .summaryTitle {
+            font-size: 22px;
+          }
+          .summaryDesc {
+            font-size: 13.5px;
+          }
+          .summaryMetaContainer {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+          }
+          .summaryMetaCard {
+            padding: 10px 12px;
+            gap: 10px;
+          }
+          .metaIconWrap {
+            width: 32px;
+            height: 32px;
+          }
+          .metaValue {
+            font-size: 13px;
+          }
         }
 
         @media (max-width: 520px) {
+          .summaryMetaContainer {
+            grid-template-columns: 1fr;
+            gap: 8px;
+          }
+          .summaryMetaCard {
+            padding: 11px 14px;
+          }
           .level-card {
-            width: calc(100% - 36px);
-            padding: 16px 16px 14px;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 auto !important;
+            padding: 18px 16px 16px;
           }
           .level-title {
             font-size: 18px;

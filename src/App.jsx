@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage';
 import CoursesPage from './pages/CoursesPage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
+import ContactPage2 from './pages/ContactPage2';
 import JourneyPage from './pages/JourneyPage';
 import ServicesPage from './pages/ServicesPage';
 import ContactModal from './components/sections/ContactModal';
@@ -38,6 +39,8 @@ function AppContent() {
           <Route path="/journey" element={<JourneyPage onOpenContact={() => setIsContactOpen(true)} />} />
           <Route path="/about" element={<AboutPage onOpenContact={() => setIsContactOpen(true)} />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/contact-2" element={<ContactPage2 />} />
+          <Route path="/contact2" element={<ContactPage2 />} />
           <Route path="/services" element={<ServicesPage onOpenContact={() => setIsContactOpen(true)} />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

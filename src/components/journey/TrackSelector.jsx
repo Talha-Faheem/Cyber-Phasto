@@ -28,27 +28,40 @@ export default function TrackSelector({
   setSelectedPathId,
   activePath
 }) {
+  const containerRef = React.useRef(null);
+
+  React.useEffect(() => {
+    if (containerRef.current) {
+      const activeEl = containerRef.current.querySelector('.trackPill.active');
+      if (activeEl) {
+        activeEl.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+    }
+  }, [selectedPathId]);
+
   return (
     <section style={{ padding: '24px 0 24px', position: 'relative', zIndex: 3 }}>
       <div className="container">
         
-        {/* Track Selector Tabs */}
-        <div className="trackPillContainer">
-          {careerPathsData.map((path) => {
-            const isSelected = path.id === selectedPathId;
-            return (
-              <button
-                key={path.id}
-                type="button"
-                onClick={() => setSelectedPathId(path.id)}
-                className={`trackPill ${isSelected ? 'active' : ''}`}
-              >
-                <span className="trackPillIcon">{getTrackIcon(path.icon)}</span>
-                <span>{path.title}</span>
-                {isSelected && <span className="trackActiveDot" />}
-              </button>
-            );
-          })}
+        {/* Horizontal Scrollable Track Selector Slider */}
+        <div className="trackPillSliderWrapper">
+          <div className="trackPillContainer" ref={containerRef}>
+            {careerPathsData.map((path) => {
+              const isSelected = path.id === selectedPathId;
+              return (
+                <button
+                  key={path.id}
+                  type="button"
+                  onClick={() => setSelectedPathId(path.id)}
+                  className={`trackPill ${isSelected ? 'active' : ''}`}
+                >
+                  <span className="trackPillIcon">{getTrackIcon(path.icon)}</span>
+                  <span>{path.title}</span>
+                  {isSelected && <span className="trackActiveDot" />}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Clean White Modern Roadmap Summary Box */}

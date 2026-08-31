@@ -120,9 +120,9 @@ export default function JourneyTimeline({
                 </div>
 
                 {lvl.skills && lvl.skills.length > 0 && (
-                  <div className="tag-row">
+                  <div className="roadmap-skills-wrap">
                     {lvl.skills.map((skill, sIdx) => (
-                      <span key={sIdx} className="tag">{skill}</span>
+                      <span key={sIdx} className="roadmap-skill-tag">{skill}</span>
                     ))}
                   </div>
                 )}
