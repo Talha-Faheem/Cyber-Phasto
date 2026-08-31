@@ -1,153 +1,162 @@
 import React from 'react';
-import { BookOpen, ArrowRight, ArrowDown, ArrowLeft, Sparkles, CheckCircle2, Wrench } from 'lucide-react';
 
-export const getStepPlacement = (index, totalSteps) => {
-  // Exact 6-course journey structure matching reference flow:
-  // Step 0 (Course 01): Col 1 (Left, Row 1) -> turns Right to Course 02
-  // Step 1 (Course 02): Col 2 (Right, Row 1) -> goes straight Down to Course 03
-  // Step 2 (Course 03): Col 2 (Right, Row 2) -> turns Left to Course 04
-  // Step 3 (Course 04): Col 1 (Left, Row 2) -> goes straight Down to Course 05
-  // Step 4 (Course 05): Col 1 (Left, Row 3) -> turns Right to Course 06
-  // Step 5 (Course 06): Col 2 (Right, Row 3) -> goes Down to Destination
-  const placements = [
-    { col: 1, row: 1, direction: 'right', isStaggered: false, label: '01' },
-    { col: 2, row: 1, direction: 'down', isStaggered: true, label: '02' },
-    { col: 2, row: 2, direction: 'left', isStaggered: false, label: '03' },
-    { col: 1, row: 2, direction: 'down', isStaggered: true, label: '04' },
-    { col: 1, row: 3, direction: 'right', isStaggered: false, label: '05' },
-    { col: 2, row: 3, direction: 'down', isStaggered: true, label: '06' }
-  ];
+const bookIcon = (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--red-bright)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+  </svg>
+);
 
-  return placements[index] || {
-    col: index % 2 === 0 ? 1 : 2,
-    row: Math.floor(index / 2) + 1,
-    direction: 'down',
-    isStaggered: index % 2 !== 0,
-    label: `0${index + 1}`
-  };
-};
+const buildIcon = (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+  </svg>
+);
 
 export default function JourneyTimeline({
   trackRef,
   svgRef,
-  pathIdleRef,
+  pathBaseRef,
   pathGlowRef,
   pathActiveRef,
-  stepsContainerRef,
-  activePath
+  leadDotRef,
+  startDotRef,
+  endDotRef,
+  courseNodeRefs,
+  destinationCardRef,
+  activePath,
+  onOpenContact
 }) {
-  const totalLevels = activePath.levels.length;
+  const levels = activePath?.levels || [];
+  const finalRole = activePath?.finalRole || 'Full Stack Software Engineer';
 
   return (
-    <div className="journey-track" id="journeyTrack" ref={trackRef}>
-      <svg className="journey-svg" id="journeySvg" ref={svgRef} preserveAspectRatio="none">
-        <defs>
-          <filter id="laserGlow" x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="7" result="blur" />
-            <feComposite in="SourceGraphic" in2="blur" operator="over" />
-          </filter>
-        </defs>
-        <path className="path-idle" id="pathIdle" ref={pathIdleRef} />
-        <path className="path-glow" id="pathGlow" ref={pathGlowRef} />
-        <path className="path-active" id="pathActive" ref={pathActiveRef} />
+    <div className="roadmap" id="roadmap" ref={trackRef}>
+      {/* SVG Compact Continuous Wave Spine */}
+      <svg className="path-svg" id="pathSvg" ref={svgRef}>
+        <path className="spine-base" id="spineBase" ref={pathBaseRef}></path>
+        <path className="spine-glow" id="spineGlow" ref={pathGlowRef}></path>
+        <path className="spine-draw" id="spineDraw" ref={pathActiveRef}></path>
       </svg>
 
-      <div className="journey-2d-grid" ref={stepsContainerRef}>
-        {activePath.levels.map((step, idx) => {
+      {/* Leading Edge Traveler Dot Indicator */}
+      <div className="traveler-dot" id="travelerDot" ref={leadDotRef}>
+        <div className="traveler-pulse-ring" />
+      </div>
+
+      {/* Start Milestone Node (index 0 - Top Center) */}
+      <div className="node-dot node-current pulse" id="startNode" ref={startDotRef}>
+        <span className="node-inner-dot" />
+      </div>
+
+      {/* Course Milestone Nodes directly touching card borders */}
+      {levels.map((_, idx) => (
+        <div
+          key={`node-${idx}`}
+          className="node-dot node-upcoming"
+          id={`node-${idx + 1}`}
+          ref={el => {
+            if (courseNodeRefs && courseNodeRefs.current) {
+              courseNodeRefs.current[idx] = el;
+            }
+          }}
+        >
+          <span className="node-inner-dot" />
+        </div>
+      ))}
+
+      {/* Alternating Course Level Rows */}
+      <div id="levels">
+        {levels.map((lvl, idx) => {
+          // Strictly alternate: Course 1 (idx 0) -> LEFT, Course 2 (idx 1) -> RIGHT, etc.
+          const isLeft = idx % 2 === 0;
+          const levelNum = `0${idx + 1}`;
           const isFirst = idx === 0;
-          const isLast = idx === totalLevels - 1;
-          const placement = getStepPlacement(idx, totalLevels);
-          const nextIndex = idx + 2 <= totalLevels ? `0${idx + 2}` : 'END';
+          const kicker = isFirst
+            ? `Course ${levelNum} — Start here`
+            : `Course ${levelNum} — ${lvl.phase || 'Foundations'}`;
+
+          const primaryCourse = lvl.courses && lvl.courses.length > 0 
+            ? lvl.courses[0] 
+            : `${activePath.title} Module`;
+          
+          const primaryProject = lvl.projects && lvl.projects.length > 0 
+            ? lvl.projects[0] 
+            : `${lvl.title} Practical Build`;
 
           return (
             <div
               key={idx}
-              className={`journey-step journey-step-col-${placement.col} ${
-                placement.isStaggered ? 'journey-step-staggered' : ''
-              }`}
+              className={`level-row side-${isLeft ? 'left' : 'right'}`}
               data-step
               data-index={idx}
-              data-col={placement.col}
-              data-row={placement.row}
-              style={{
-                gridColumn: placement.col,
-                gridRow: placement.row
-              }}
             >
-              {/* Top Entry Anchor */}
-              <div className="step-entry-anchor" />
-
-              {/* Substantial, High-Quality Course Card */}
-              <div className="step-card-box">
-                {/* Header with Level Label & Index Badge */}
-                <div className="step-card-header">
-                  <div className="step-eyebrow">
-                    {isFirst ? '🔥 LEVEL 01 — START HERE' : `LEVEL 0${idx + 1} — ${step.phase || 'CORE TRACK'}`}
-                  </div>
-                  <span className="step-index-badge">
-                    0{idx + 1}
-                  </span>
+              <div className="level-card card-upcoming" id={`card-${idx + 1}`}>
+                <div className="level-card-glow" />
+                <div className="level-head">
+                  <span className="level-kicker">{kicker}</span>
+                  <span className="level-num">{levelNum}</span>
+                </div>
+                <h3 className="level-title">{lvl.title}</h3>
+                <p className="level-desc">{lvl.desc}</p>
+                
+                <div className="level-course">
+                  {bookIcon}
+                  <span>Course: <b>{primaryCourse}</b></span>
                 </div>
 
-                {/* Course Title */}
-                <h3 className="step-title">{step.title}</h3>
-
-                {/* Course Description */}
-                <p className="step-desc">{step.desc}</p>
-
-                {/* Primary Recommended Course */}
-                {step.courses && step.courses.length > 0 && (
-                  <div className="step-course-tag">
-                    <BookOpen size={13} style={{ color: 'var(--accent)', flexShrink: 0 }} />
-                    <span className="truncate"><strong>Course:</strong> {step.courses[0]}</span>
-                  </div>
-                )}
-
-                {/* Topics & Technologies Skills Pills */}
-                {step.skills && step.skills.length > 0 && (
-                  <div className="step-skills-wrap">
-                    {step.skills.slice(0, 4).map((skill, sIdx) => (
-                      <span key={sIdx} className="step-skill-pill">
-                        {skill}
-                      </span>
+                {lvl.skills && lvl.skills.length > 0 && (
+                  <div className="tag-row">
+                    {lvl.skills.map((skill, sIdx) => (
+                      <span key={sIdx} className="tag">{skill}</span>
                     ))}
                   </div>
                 )}
 
-                {/* Hands-on Project / Build Section */}
-                {step.projects && step.projects.length > 0 && (
-                  <div className="step-project-row">
-                    <Wrench size={13} style={{ color: '#ff8a80', flexShrink: 0 }} />
-                    <span className="truncate"><strong>Build:</strong> {step.projects[0]}</span>
-                  </div>
-                )}
-              </div>
-
-              {/* Bottom Exit Marker & Direction Indicator */}
-              <div className="step-marker" data-direction={placement.direction}>
-                <div className="step-marker-dot" />
-                <div className="step-marker-pulse" />
-                
-                {placement.direction === 'right' && (
-                  <span className="step-direction-hint hint-right">
-                    <span>Course {nextIndex}</span> <ArrowRight size={12} />
-                  </span>
-                )}
-                {placement.direction === 'left' && (
-                  <span className="step-direction-hint hint-left">
-                    <ArrowLeft size={12} /> <span>Course {nextIndex}</span>
-                  </span>
-                )}
-                {placement.direction === 'down' && (
-                  <span className="step-direction-hint hint-down">
-                    {isLast ? <span>Destination</span> : <span>Course {nextIndex}</span>} <ArrowDown size={12} />
-                  </span>
-                )}
+                <div className="level-build">
+                  {buildIcon}
+                  <span>Build: <b>{primaryProject}</b></span>
+                </div>
               </div>
             </div>
           );
         })}
       </div>
+
+      {/* Destination Milestone Section */}
+      <div className="destination-row">
+        <div className="node-dot end-node node-upcoming" id="endNode" ref={endDotRef}>
+          <span className="node-inner-dot" />
+        </div>
+        <div 
+          className="destination-card card-upcoming" 
+          id="destinationCard" 
+          ref={destinationCardRef}
+        >
+          <div className="destination-badge">GOAL REACHED</div>
+          <h2>Destination reached</h2>
+          <p>
+            Complete all {levels.length} courses sequentially to go from foundational concepts to a battle-tested, portfolio-backed <b>{finalRole}</b> career skillset.
+          </p>
+          <button 
+            type="button" 
+            className="cta" 
+            onClick={() => onOpenContact && onOpenContact()}
+          >
+            <span>Start your journey</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer>END OF ROADMAP</footer>
     </div>
   );
 }
+
+
+

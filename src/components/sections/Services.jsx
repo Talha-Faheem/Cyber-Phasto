@@ -71,7 +71,7 @@ export default function Services({ onOpenContact }) {
     : services.filter(s => s.category === activeCategory);
 
   return (
-    <section id="services" className="section-padding" style={{ backgroundColor: '#07080a', position: 'relative' }}>
+    <section id="services" className="section-padding" style={{ backgroundColor: 'var(--black)', position: 'relative' }}>
       <div className="container">
         
         {/* Section Header */}
@@ -79,7 +79,7 @@ export default function Services({ onOpenContact }) {
           <h2 style={{ fontSize: 'clamp(2rem, 3.5vw, 3rem)', marginBottom: '1rem' }}>
             Cybersecurity <span className="text-gradient-red">Services</span>
           </h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>
+          <p style={{ color: 'var(--muted)', fontSize: '1.05rem' }}>
             Military-grade security assessments, continuous defense, and threat intelligence tailored 
             for enterprises, financial institutions, and government bodies.
           </p>
@@ -90,7 +90,7 @@ export default function Services({ onOpenContact }) {
           style={{
             display: 'flex',
             alignItems: 'center',
-            justify: 'center',
+            justifyContent: 'center',
             gap: '0.75rem',
             flexWrap: 'wrap',
             marginBottom: '3rem'
@@ -107,12 +107,12 @@ export default function Services({ onOpenContact }) {
                 fontSize: '0.85rem',
                 fontWeight: 600,
                 border: '1px solid',
-                borderColor: activeCategory === cat ? 'var(--accent-red-bright)' : 'var(--border-card)',
-                backgroundColor: activeCategory === cat ? 'var(--accent-red)' : 'rgba(255, 255, 255, 0.03)',
-                color: activeCategory === cat ? '#FFFFFF' : 'var(--text-muted)',
+                borderColor: activeCategory === cat ? 'var(--red-bright)' : 'var(--border)',
+                backgroundColor: activeCategory === cat ? 'var(--red)' : 'rgba(255, 255, 255, 0.03)',
+                color: activeCategory === cat ? '#FFFFFF' : 'var(--muted)',
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
-                boxShadow: activeCategory === cat ? 'var(--shadow-red-sm)' : 'none'
+                boxShadow: activeCategory === cat ? '0 0 12px var(--red-glow)' : 'none'
               }}
             >
               {cat}
@@ -138,9 +138,9 @@ export default function Services({ onOpenContact }) {
                   padding: '2rem',
                   display: 'flex',
                   flexDirection: 'column',
-                  justify: 'space-between',
-                  backgroundColor: '#0a0b0e',
-                  border: '1px solid var(--border-card)',
+                  justifyContent: 'space-between',
+                  backgroundColor: 'var(--ink)',
+                  border: '1px solid var(--border)',
                   borderRadius: 'var(--radius-md)'
                 }}
               >
@@ -150,9 +150,9 @@ export default function Services({ onOpenContact }) {
                       style={{
                         padding: '0.75rem',
                         borderRadius: '10px',
-                        backgroundColor: 'var(--accent-red-subtle)',
-                        border: '1px solid var(--accent-red-border)',
-                        color: 'var(--accent-red-bright)'
+                        backgroundColor: 'var(--red-subtle)',
+                        border: '1px solid var(--red-border)',
+                        color: 'var(--red-bright)'
                       }}
                     >
                       <IconComponent size={24} />
@@ -164,8 +164,8 @@ export default function Services({ onOpenContact }) {
                         padding: '0.25rem 0.65rem',
                         borderRadius: '4px',
                         backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                        color: 'var(--accent-red-bright)',
-                        border: '1px solid rgba(229, 9, 20, 0.2)'
+                        color: 'var(--red-bright)',
+                        border: '1px solid var(--red-border)'
                       }}
                     >
                       {service.category.toUpperCase()}
@@ -176,14 +176,14 @@ export default function Services({ onOpenContact }) {
                     {service.title}
                   </h3>
 
-                  <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+                  <p style={{ color: 'var(--muted)', fontSize: '0.92rem', lineHeight: 1.6, marginBottom: '1.5rem' }}>
                     {service.shortDesc}
                   </p>
 
                   <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.5rem' }}>
                     {service.features.map((feat, idx) => (
-                      <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                        <CheckCircle size={14} style={{ color: 'var(--accent-red-bright)', flexShrink: 0 }} />
+                      <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--paper)' }}>
+                        <CheckCircle size={14} style={{ color: 'var(--red-bright)', flexShrink: 0 }} />
                         <span>{feat}</span>
                       </li>
                     ))}
@@ -211,8 +211,8 @@ export default function Services({ onOpenContact }) {
         }
         .service-card:hover {
           transform: translateY(-5px);
-          border-color: var(--accent-red-border) !important;
-          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 20px rgba(229, 9, 20, 0.15) !important;
+          border-color: var(--red-border) !important;
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 20px var(--red-glow) !important;
         }
       `}</style>
     </section>

@@ -3,7 +3,7 @@ import { ShieldCheck, Target, Lock, Cpu, Globe, Award, Sparkles, BookOpen } from
 
 export default function MissionVision() {
   return (
-    <section id="mission" style={{ backgroundColor: '#000000', padding: '4.5rem 0', position: 'relative', borderTop: '1px solid #292929' }}>
+    <section id="mission" style={{ backgroundColor: 'var(--black)', padding: '4.5rem 0', position: 'relative', borderTop: '1px solid var(--border)' }}>
       <div className="cyber-grid-overlay" style={{ opacity: 0.35 }} />
 
       <div className="container" style={{ position: 'relative', zIndex: 2 }}>
@@ -13,7 +13,7 @@ export default function MissionVision() {
           <h2 style={{ fontSize: 'clamp(2rem, 3.5vw, 3rem)', marginBottom: '0.85rem', color: '#FFFFFF' }}>
             Why <span className="text-gradient-red">Cyber Pashto?</span>
           </h2>
-          <p style={{ color: '#D0D0D0', fontSize: '1.02rem' }}>
+          <p style={{ color: 'var(--paper)', fontSize: '1.02rem' }}>
             Driving digital resilience and high-impact technology education across Khyber Pakhtunkhwa and Pakistan.
           </p>
         </div>
@@ -33,8 +33,8 @@ export default function MissionVision() {
               padding: '2.25rem',
               position: 'relative',
               overflow: 'hidden',
-              backgroundColor: '#080808',
-              border: '1px solid #292929',
+              backgroundColor: 'var(--ink)',
+              border: '1px solid var(--border)',
               borderRadius: '20px'
             }}
           >
@@ -44,25 +44,25 @@ export default function MissionVision() {
                   width: '50px',
                   height: '50px',
                   borderRadius: '12px',
-                  backgroundColor: 'rgba(255, 0, 0, 0.12)',
-                  border: '1px solid rgba(255, 0, 0, 0.3)',
+                  backgroundColor: 'var(--red-subtle)',
+                  border: '1px solid var(--red-border)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#FF1616'
+                  color: 'var(--red-bright)'
                 }}
               >
                 <Target size={24} />
               </div>
               <div>
-                <span className="mono-text" style={{ fontSize: '0.75rem', color: '#FF1616', letterSpacing: '0.08em' }}>
+                <span className="mono-text" style={{ fontSize: '0.75rem', color: 'var(--red-bright)', letterSpacing: '0.08em' }}>
                   OUR PURPOSE
                 </span>
                 <h3 style={{ fontSize: '1.5rem', color: '#FFFFFF' }}>The Mission</h3>
               </div>
             </div>
 
-            <p style={{ color: '#8A8A8A', fontSize: '0.94rem', lineHeight: 1.65, marginBottom: '1.5rem' }}>
+            <p style={{ color: 'var(--muted)', fontSize: '0.94rem', lineHeight: 1.65, marginBottom: '1.5rem' }}>
               To bridge the technical gap in Pakistan's technology ecosystem by providing affordable, high-caliber 
               practical training in offensive cybersecurity, full-stack software development, and artificial intelligence.
             </p>
@@ -74,8 +74,8 @@ export default function MissionVision() {
                 'Accessible tuition subsidized for regional talent',
                 'Direct mentorship from seasoned industry researchers'
               ].map((point, idx) => (
-                <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', fontSize: '0.86rem', color: '#D0D0D0' }}>
-                  <ShieldCheck size={16} style={{ color: '#FF1616', flexShrink: 0 }} />
+                <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', fontSize: '0.86rem', color: 'var(--paper)' }}>
+                  <ShieldCheck size={16} style={{ color: 'var(--red-bright)', flexShrink: 0 }} />
                   <span>{point}</span>
                 </div>
               ))}
@@ -89,8 +89,8 @@ export default function MissionVision() {
               padding: '2.25rem',
               position: 'relative',
               overflow: 'hidden',
-              backgroundColor: '#080808',
-              border: '1px solid #292929',
+              backgroundColor: 'var(--ink)',
+              border: '1px solid var(--border)',
               borderRadius: '20px'
             }}
           >
@@ -100,25 +100,25 @@ export default function MissionVision() {
                   width: '50px',
                   height: '50px',
                   borderRadius: '12px',
-                  backgroundColor: 'rgba(255, 0, 0, 0.12)',
-                  border: '1px solid rgba(255, 0, 0, 0.3)',
+                  backgroundColor: 'var(--red-subtle)',
+                  border: '1px solid var(--red-border)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#FF1616'
+                  color: 'var(--red-bright)'
                 }}
               >
                 <Globe size={24} />
               </div>
               <div>
-                <span className="mono-text" style={{ fontSize: '0.75rem', color: '#FF1616', letterSpacing: '0.08em' }}>
+                <span className="mono-text" style={{ fontSize: '0.75rem', color: 'var(--red-bright)', letterSpacing: '0.08em' }}>
                   THE HORIZON
                 </span>
                 <h3 style={{ fontSize: '1.5rem', color: '#FFFFFF' }}>The Vision</h3>
               </div>
             </div>
 
-            <p style={{ color: '#8A8A8A', fontSize: '0.94rem', lineHeight: 1.65, marginBottom: '1.5rem' }}>
+            <p style={{ color: 'var(--muted)', fontSize: '0.94rem', lineHeight: 1.65, marginBottom: '1.5rem' }}>
               To establish Khyber Pakhtunkhwa as a globally recognized hub for elite offensive security engineers, 
               threat analysts, and technology founders capable of protecting the nation's critical infrastructure.
             </p>
@@ -130,8 +130,8 @@ export default function MissionVision() {
                 'Fostering female leadership in technical research',
                 'Delivering enterprise-grade VAPT to national bodies'
               ].map((point, idx) => (
-                <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', fontSize: '0.86rem', color: '#D0D0D0' }}>
-                  <ShieldCheck size={16} style={{ color: '#FF1616', flexShrink: 0 }} />
+                <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', fontSize: '0.86rem', color: 'var(--paper)' }}>
+                  <ShieldCheck size={16} style={{ color: 'var(--red-bright)', flexShrink: 0 }} />
                   <span>{point}</span>
                 </div>
               ))}

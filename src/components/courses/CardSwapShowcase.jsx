@@ -128,7 +128,7 @@ export default function CardSwapShowcase({ courses = [], onEnroll }) {
             className="mono-text" 
             style={{ 
               fontSize: '0.78rem', 
-              color: '#FF1616', 
+              color: 'var(--red-bright)', 
               letterSpacing: '0.12em',
               fontWeight: 800,
               textTransform: 'uppercase'
@@ -136,12 +136,12 @@ export default function CardSwapShowcase({ courses = [], onEnroll }) {
           >
             // FEATURED SPOTLIGHT
           </span>
-          <span style={{ width: '30px', height: '1px', backgroundColor: '#FF0000' }} />
+          <span style={{ width: '30px', height: '1px', backgroundColor: 'var(--red)' }} />
         </div>
 
-        <div className="mono-text" style={{ fontSize: '0.85rem', color: '#8A8A8A', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+        <div className="mono-text" style={{ fontSize: '0.85rem', color: 'var(--muted)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
           <span style={{ color: '#FFFFFF' }}>FEATURED_INDEX</span>
-          <span style={{ color: '#FF1616', fontWeight: 800, fontSize: '1rem' }}>
+          <span style={{ color: 'var(--red-bright)', fontWeight: 800, fontSize: '1rem' }}>
             {String(activeIndex + 1).padStart(2, '0')}
           </span>
           <span>/</span>
@@ -209,11 +209,11 @@ export default function CardSwapShowcase({ courses = [], onEnroll }) {
                 style={{
                   width: '100%',
                   height: '100%',
-                  backgroundColor: '#080808',
-                  borderRadius: '22px',
-                  border: isCurrentActive ? '1px solid #FF0000' : '1px solid #292929',
+                  backgroundColor: 'var(--ink)',
+                  borderRadius: '10px',
+                  border: isCurrentActive ? '1px solid var(--red)' : '1px solid var(--border)',
                   boxShadow: isCurrentActive 
-                    ? '0 25px 60px rgba(0,0,0,0.95), 0 0 35px rgba(255, 0, 0, 0.25)' 
+                    ? '0 25px 60px rgba(0,0,0,0.95), 0 0 35px var(--red-glow)' 
                     : '0 15px 40px rgba(0,0,0,0.7)',
                   overflow: 'hidden',
                   display: 'flex',
@@ -228,8 +228,8 @@ export default function CardSwapShowcase({ courses = [], onEnroll }) {
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     padding: '0.75rem 1.4rem',
-                    backgroundColor: '#000000',
-                    borderBottom: '1px solid #292929'
+                    backgroundColor: 'var(--black)',
+                    borderBottom: '1px solid var(--border)'
                   }}
                 >
 
@@ -239,127 +239,104 @@ export default function CardSwapShowcase({ courses = [], onEnroll }) {
                       style={{
                         fontSize: '0.68rem',
                         fontWeight: 700,
-                        color: '#FF1616',
-                        backgroundColor: 'rgba(255, 0, 0, 0.12)',
+                        color: 'var(--red-bright)',
+                        backgroundColor: 'var(--red-subtle)',
                         padding: '0.2rem 0.6rem',
                         borderRadius: '4px',
-                        border: '1px solid rgba(255, 0, 0, 0.3)'
+                        border: '1px solid var(--red-border)'
                       }}
                     >
                       {course.badgeText || 'FLAGSHIP'}
                     </span>
-                    <span className="mono-text" style={{ fontSize: '0.72rem', color: '#8A8A8A' }}>
-                      {course.code}
+                    <span className="mono-text" style={{ fontSize: '0.72rem', color: 'var(--muted)' }}>
+                      LEVEL 0{course.level || 1} // COHORT
                     </span>
                   </div>
                 </div>
 
-                {/* 2. Course Image & Floating Elements */}
+                {/* 2. Banner Image Area with Dark Gradient */}
                 <div
                   style={{
                     position: 'relative',
                     width: '100%',
-                    height: '240px',
-                    backgroundColor: '#000000',
+                    height: '180px',
+                    backgroundColor: 'var(--black)',
                     overflow: 'hidden'
                   }}
                 >
                   <img
                     src={course.image}
                     alt={course.title}
-                    loading={slot === 0 ? 'eager' : 'lazy'}
                     style={{
                       width: '100%',
                       height: '100%',
                       objectFit: 'cover',
-                      filter: 'brightness(0.9) contrast(1.08)'
+                      filter: 'grayscale(30%) contrast(110%) brightness(85%)'
                     }}
                   />
                   <div
                     style={{
                       position: 'absolute',
                       inset: 0,
-                      background: 'linear-gradient(to top, #080808 0%, rgba(8, 8, 8, 0.3) 55%, transparent 100%)'
+                      background: 'linear-gradient(to top, var(--ink) 0%, rgba(9, 9, 9, 0.3) 55%, transparent 100%)'
                     }}
                   />
 
-                  {/* Floating Tag Badges */}
+                  {/* Badges on Banner */}
                   <div
                     style={{
                       position: 'absolute',
-                      top: '0.9rem',
-                      left: '0.9rem',
-                      right: '0.9rem',
+                      top: '12px',
+                      left: '14px',
+                      right: '14px',
                       display: 'flex',
                       alignItems: 'center',
-                      justifyContent: 'space-between',
-                      gap: '0.5rem',
-                      zIndex: 2
+                      justifyContent: 'space-between'
                     }}
                   >
-                    <div style={{ display: 'flex', gap: '0.4rem' }}>
-                      {course.tags.map((tag, tIdx) => (
-                        <span
-                          key={tIdx}
-                          style={{
-                            fontFamily: 'var(--font-mono)',
-                            fontSize: '0.66rem',
-                            fontWeight: 700,
-                            letterSpacing: '0.06em',
-                            padding: '0.25rem 0.65rem',
-                            borderRadius: '999px',
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            border: '1px solid #292929',
-                            color: '#FFFFFF',
-                            backdropFilter: 'blur(10px)'
-                          }}
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+                    <span
+                      style={{
+                        fontSize: '0.68rem',
+                        fontWeight: 700,
+                        fontFamily: 'var(--font-mono)',
+                        padding: '0.25rem 0.55rem',
+                        borderRadius: '6px',
+                        backgroundColor: 'rgba(0, 0, 0, 0.65)',
+                        backdropFilter: 'blur(8px)',
+                        border: '1px solid var(--border)',
+                        color: '#FFFFFF',
+                        letterSpacing: '0.04em'
+                      }}
+                    >
+                      {course.category}
+                    </span>
 
                     <div
                       style={{
                         display: 'flex',
                         alignItems: 'center',
                         gap: '0.25rem',
-                        padding: '0.25rem 0.6rem',
-                        borderRadius: '999px',
-                        backgroundColor: 'rgba(0, 0, 0, 0.85)',
-                        border: '1px solid rgba(255, 0, 0, 0.35)',
-                        color: '#FF1616',
-                        fontFamily: 'var(--font-mono)',
+                        backgroundColor: 'rgba(0, 0, 0, 0.65)',
+                        backdropFilter: 'blur(8px)',
+                        padding: '0.25rem 0.55rem',
+                        borderRadius: '6px',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
                         fontSize: '0.72rem',
-                        fontWeight: 700
+                        fontWeight: 700,
+                        color: 'var(--red-bright)',
+                        fontFamily: 'var(--font-mono)'
                       }}
                     >
-                      <Star size={12} fill="#FF1616" color="#FF1616" />
-                      <span>{course.rating}</span>
+                      <Star size={12} fill="var(--red-bright)" color="var(--red-bright)" />
+                      <span>{course.rating || '4.9'}</span>
                     </div>
-                  </div>
-
-                  <div
-                    style={{
-                      position: 'absolute',
-                      bottom: '0.75rem',
-                      left: '1.4rem',
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '0.75rem',
-                      fontWeight: 700,
-                      color: '#FF1616',
-                      letterSpacing: '0.08em',
-                      textTransform: 'uppercase'
-                    }}
-                  >
-                    {course.category} // {course.level}
                   </div>
                 </div>
 
-                {/* 3. Card Information */}
+                {/* 3. Main Content Body */}
                 <div
                   style={{
-                    padding: '1.25rem 1.6rem 1.6rem 1.6rem',
+                    padding: '1.25rem 1.5rem',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
@@ -367,14 +344,28 @@ export default function CardSwapShowcase({ courses = [], onEnroll }) {
                   }}
                 >
                   <div>
+                    <span
+                      className="mono-text"
+                      style={{
+                        fontSize: '0.72rem',
+                        fontWeight: 700,
+                        color: 'var(--red-bright)',
+                        letterSpacing: '0.08em',
+                        display: 'block',
+                        marginBottom: '0.35rem'
+                      }}
+                    >
+                      {course.badge}
+                    </span>
+
                     <h3
                       style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: 'clamp(1.2rem, 2.2vw, 1.45rem)',
+                        fontSize: '1.28rem',
                         fontWeight: 800,
-                        lineHeight: 1.25,
                         color: '#FFFFFF',
-                        marginBottom: '0.65rem'
+                        lineHeight: 1.25,
+                        marginBottom: '0.5rem',
+                        letterSpacing: '-0.02em'
                       }}
                     >
                       {course.title}
@@ -382,45 +373,63 @@ export default function CardSwapShowcase({ courses = [], onEnroll }) {
 
                     <p
                       style={{
-                        fontFamily: 'var(--font-sans)',
-                        fontSize: '0.9rem',
+                        fontSize: '0.85rem',
+                        color: 'var(--muted)',
                         lineHeight: 1.55,
-                        color: '#8A8A8A',
-                        marginBottom: '1.15rem',
+                        marginBottom: '1rem',
                         display: '-webkit-box',
                         WebkitLineClamp: 2,
                         WebkitBoxOrient: 'vertical',
                         overflow: 'hidden'
                       }}
                     >
-                      {course.description}
+                      {course.desc}
                     </p>
 
-                    {/* Metadata Strip */}
+                    {/* Metadata Badges */}
                     <div
                       style={{
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '1.25rem',
-                        padding: '0.6rem 0.85rem',
-                        borderRadius: '10px',
-                        backgroundColor: 'rgba(255, 255, 255, 0.02)',
-                        border: '1px solid #292929',
-                        marginBottom: '1.25rem',
-                        fontSize: '0.8rem',
-                        color: '#D0D0D0'
+                        flexWrap: 'wrap',
+                        gap: '0.5rem',
+                        fontSize: '0.75rem',
+                        fontFamily: 'var(--font-mono)',
+                        marginBottom: '1rem'
                       }}
                     >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                        <BookOpen size={14} style={{ color: '#FF1616' }} />
-                        <span>{course.lessons} Modules</span>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.35rem',
+                          padding: '0.25rem 0.6rem',
+                          borderRadius: '6px',
+                          backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                          border: '1px solid var(--border)',
+                          color: 'var(--paper)'
+                        }}
+                      >
+                        <BookOpen size={14} style={{ color: 'var(--red-bright)' }} />
+                        <span>{course.modulesCount} Modules</span>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                        <Clock size={14} style={{ color: '#FF1616' }} />
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.35rem',
+                          padding: '0.25rem 0.6rem',
+                          borderRadius: '6px',
+                          backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                          border: '1px solid var(--border)',
+                          color: 'var(--paper)'
+                        }}
+                      >
+                        <Clock size={14} style={{ color: 'var(--red-bright)' }} />
                         <span>{course.duration}</span>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                        <Award size={14} style={{ color: '#FF1616' }} />
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--paper)' }}>
+                        <Award size={14} style={{ color: 'var(--red-bright)' }} />
                         <span>Verified Certificate</span>
                       </div>
                     </div>
@@ -434,16 +443,16 @@ export default function CardSwapShowcase({ courses = [], onEnroll }) {
                         alignItems: 'baseline',
                         justifyContent: 'space-between',
                         marginBottom: '1rem',
-                        borderTop: '1px solid #292929',
+                        borderTop: '1px solid var(--border)',
                         paddingTop: '0.85rem'
                       }}
                     >
                       <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem' }}>
-                        <span style={{ fontSize: '0.85rem', color: '#8A8A8A', fontFamily: 'var(--font-mono)' }}>Tuition</span>
+                        <span style={{ fontSize: '0.85rem', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>Tuition</span>
                         <span style={{ fontSize: '1.65rem', fontWeight: 800, color: '#C99A3A', fontFamily: 'var(--font-mono)' }}>
                           {course.formattedPrice}
                         </span>
-                        <span style={{ fontSize: '0.9rem', textDecoration: 'line-through', color: '#8A8A8A', opacity: 0.7 }}>
+                        <span style={{ fontSize: '0.9rem', textDecoration: 'line-through', color: 'var(--muted)', opacity: 0.7 }}>
                           {course.formattedOriginalPrice}
                         </span>
                       </div>
@@ -453,7 +462,7 @@ export default function CardSwapShowcase({ courses = [], onEnroll }) {
                           fontSize: '0.72rem',
                           fontWeight: 700,
                           color: '#FFFFFF',
-                          backgroundColor: '#FF0000',
+                          backgroundColor: 'var(--red)',
                           padding: '0.25rem 0.65rem',
                           borderRadius: '4px',
                           fontFamily: 'var(--font-mono)'
@@ -519,7 +528,7 @@ export default function CardSwapShowcase({ courses = [], onEnroll }) {
             alignItems: 'center',
             gap: '0.5rem',
             background: 'none',
-            border: '1px solid #292929',
+            border: '1px solid var(--border)',
             borderRadius: '10px',
             padding: '0.65rem 1.25rem',
             color: '#FFFFFF',
@@ -531,7 +540,7 @@ export default function CardSwapShowcase({ courses = [], onEnroll }) {
           }}
           className="btn-secondary"
         >
-          <ArrowLeft size={16} style={{ color: '#FF1616' }} />
+          <ArrowLeft size={16} style={{ color: 'var(--red-bright)' }} />
           <span>PREVIOUS</span>
         </button>
 
@@ -557,7 +566,7 @@ export default function CardSwapShowcase({ courses = [], onEnroll }) {
                   style={{
                     fontSize: '0.85rem',
                     fontWeight: isCurr ? 800 : 500,
-                    color: isCurr ? '#FF1616' : '#8A8A8A',
+                    color: isCurr ? 'var(--red-bright)' : 'var(--muted)',
                     transition: 'color 0.25s ease'
                   }}
                 >
@@ -569,8 +578,8 @@ export default function CardSwapShowcase({ courses = [], onEnroll }) {
                       display: 'inline-block',
                       width: '28px',
                       height: '2px',
-                      backgroundColor: '#FF0000',
-                      boxShadow: '0 0 8px #FF0000',
+                      backgroundColor: 'var(--red)',
+                      boxShadow: '0 0 8px var(--red-glow)',
                       borderRadius: '2px',
                       transition: 'all 0.3s ease'
                     }}
@@ -590,7 +599,7 @@ export default function CardSwapShowcase({ courses = [], onEnroll }) {
             alignItems: 'center',
             gap: '0.5rem',
             background: 'none',
-            border: '1px solid #292929',
+            border: '1px solid var(--border)',
             borderRadius: '10px',
             padding: '0.65rem 1.25rem',
             color: '#FFFFFF',
@@ -603,7 +612,7 @@ export default function CardSwapShowcase({ courses = [], onEnroll }) {
           className="btn-secondary"
         >
           <span>NEXT</span>
-          <ArrowRight size={16} style={{ color: '#FF1616' }} />
+          <ArrowRight size={16} style={{ color: 'var(--red-bright)' }} />
         </button>
       </div>
 

@@ -26,26 +26,26 @@ export default function CourseDetailModal({
           <h2 style={{ fontSize: '32px', fontWeight: 800, color: '#fff', margin: '0 0 12px', letterSpacing: '-0.03em' }}>
             {selectedCourseDetail.title}
           </h2>
-          <p style={{ color: '#aaa', fontSize: '15px', lineHeight: 1.6, margin: 0 }}>
+          <p style={{ color: 'var(--muted)', fontSize: '15px', lineHeight: 1.6, margin: 0 }}>
             {selectedCourseDetail.overview}
           </p>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '12px', marginBottom: '28px' }}>
-          <div style={{ background: '#121212', padding: '14px', borderRadius: '10px', border: '1px solid #222' }}>
-            <div className="mono" style={{ fontSize: '10px', color: '#777' }}>DURATION</div>
+          <div style={{ background: 'var(--ink)', padding: '14px', borderRadius: '10px', border: '1px solid var(--border)' }}>
+            <div className="mono" style={{ fontSize: '10px', color: 'var(--muted)' }}>DURATION</div>
             <div style={{ fontSize: '15px', fontWeight: 700, color: '#fff', marginTop: '4px' }}>{selectedCourseDetail.duration}</div>
           </div>
-          <div style={{ background: '#121212', padding: '14px', borderRadius: '10px', border: '1px solid #222' }}>
-            <div className="mono" style={{ fontSize: '10px', color: '#777' }}>LEVEL</div>
+          <div style={{ background: 'var(--ink)', padding: '14px', borderRadius: '10px', border: '1px solid var(--border)' }}>
+            <div className="mono" style={{ fontSize: '10px', color: 'var(--muted)' }}>LEVEL</div>
             <div style={{ fontSize: '15px', fontWeight: 700, color: '#fff', marginTop: '4px' }}>{selectedCourseDetail.level}</div>
           </div>
-          <div style={{ background: '#121212', padding: '14px', borderRadius: '10px', border: '1px solid #222' }}>
-            <div className="mono" style={{ fontSize: '10px', color: '#777' }}>LESSONS</div>
+          <div style={{ background: 'var(--ink)', padding: '14px', borderRadius: '10px', border: '1px solid var(--border)' }}>
+            <div className="mono" style={{ fontSize: '10px', color: 'var(--muted)' }}>LESSONS</div>
             <div style={{ fontSize: '15px', fontWeight: 700, color: '#fff', marginTop: '4px' }}>{selectedCourseDetail.lessons} Modules</div>
           </div>
-          <div style={{ background: '#121212', padding: '14px', borderRadius: '10px', border: '1px solid #222' }}>
-            <div className="mono" style={{ fontSize: '10px', color: '#777' }}>CERTIFICATE</div>
+          <div style={{ background: 'var(--ink)', padding: '14px', borderRadius: '10px', border: '1px solid var(--border)' }}>
+            <div className="mono" style={{ fontSize: '10px', color: 'var(--muted)' }}>CERTIFICATE</div>
             <div style={{ fontSize: '15px', fontWeight: 700, color: '#22c55e', marginTop: '4px' }}>Verified</div>
           </div>
         </div>
@@ -56,7 +56,7 @@ export default function CourseDetailModal({
           </h4>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {selectedCourseDetail.whatYouLearn.map((item, idx) => (
-              <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', color: '#ccc', fontSize: '14px' }}>
+              <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', color: 'var(--paper)', fontSize: '14px' }}>
                 <CheckCircle2 size={16} style={{ color: 'var(--red)', flexShrink: 0, marginTop: '2px' }} />
                 <span>{item}</span>
               </div>
@@ -71,12 +71,12 @@ export default function CourseDetailModal({
           {selectedCourseDetail.curriculum.map((mod, idx) => (
             <div key={idx} className="curriculumAccordionItem">
               <div>
-                <span className="mono" style={{ fontSize: '11px', color: '#ff5a5c', marginRight: '8px' }}>
+                <span className="mono" style={{ fontSize: '11px', color: 'var(--red-bright)', marginRight: '8px' }}>
                   {mod.module}
                 </span>
-                <strong style={{ color: '#eee', fontSize: '13px' }}>{mod.title}</strong>
+                <strong style={{ color: 'var(--paper)', fontSize: '13px' }}>{mod.title}</strong>
               </div>
-              <span className="mono" style={{ fontSize: '11px', color: '#777' }}>{mod.lessons}</span>
+              <span className="mono" style={{ fontSize: '11px', color: 'var(--muted)' }}>{mod.lessons}</span>
             </div>
           ))}
         </div>
@@ -87,22 +87,22 @@ export default function CourseDetailModal({
           </h4>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
             {selectedCourseDetail.projects.map((p, idx) => (
-              <span key={idx} className="skillPill" style={{ background: '#161616', color: '#ff5a5c', borderColor: 'rgba(255, 2, 5, 0.2)' }}>
+              <span key={idx} className="skillPill" style={{ background: 'var(--ink)', color: 'var(--red-bright)', borderColor: 'var(--red-border)' }}>
                 🛠 {p}
               </span>
             ))}
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '20px', borderTop: '1px solid #222', flexWrap: 'wrap', gap: '16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '20px', borderTop: '1px solid var(--border)', flexWrap: 'wrap', gap: '16px' }}>
           <div>
             <div style={{ fontSize: '24px', fontWeight: 800, color: '#fff' }}>
               {selectedCourseDetail.formattedPrice}
-              <span className="mono" style={{ fontSize: '13px', color: '#666', textDecoration: 'line-through', marginLeft: '8px' }}>
+              <span className="mono" style={{ fontSize: '13px', color: 'var(--muted)', textDecoration: 'line-through', marginLeft: '8px' }}>
                 {selectedCourseDetail.formattedOriginalPrice}
               </span>
             </div>
-            <div className="mono" style={{ fontSize: '11px', color: '#ff5a5c' }}>
+            <div className="mono" style={{ fontSize: '11px', color: 'var(--red-bright)' }}>
               {selectedCourseDetail.discount} • Lifetime Access &amp; Mentorship
             </div>
           </div>

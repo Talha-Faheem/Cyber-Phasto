@@ -79,7 +79,7 @@ export default function LiveTerminal() {
   };
 
   return (
-    <section style={{ backgroundColor: '#000000', padding: '4.5rem 0', position: 'relative', borderTop: '1px solid #292929' }}>
+    <section style={{ backgroundColor: 'var(--black)', padding: '4.5rem 0', position: 'relative', borderTop: '1px solid var(--border)' }}>
       <div className="container">
         
         {/* Header */}
@@ -87,7 +87,7 @@ export default function LiveTerminal() {
           <h2 style={{ fontSize: 'clamp(2rem, 3.5vw, 3rem)', marginBottom: '0.85rem', color: '#FFFFFF' }}>
             Live Security <span className="text-gradient-red">Terminal</span>
           </h2>
-          <p style={{ color: '#D0D0D0', fontSize: '1.02rem' }}>
+          <p style={{ color: 'var(--paper)', fontSize: '1.02rem' }}>
             Simulate vulnerability scans and inspect Cyber Pashto operational telemetry in real time.
           </p>
         </div>
@@ -98,36 +98,36 @@ export default function LiveTerminal() {
           style={{
             maxWidth: '900px',
             margin: '0 auto',
-            backgroundColor: '#080808',
-            border: '1px solid #292929',
+            backgroundColor: 'var(--ink)',
+            border: '1px solid var(--border)',
             borderRadius: '20px',
             overflow: 'hidden',
-            boxShadow: '0 20px 50px rgba(0,0,0,0.9), 0 0 30px rgba(255, 0, 0, 0.1)'
+            boxShadow: '0 20px 50px rgba(0,0,0,0.9), 0 0 30px var(--red-glow)'
           }}
         >
           {/* Top Titlebar */}
           <div 
             style={{
               padding: '0.65rem 1.15rem',
-              backgroundColor: '#000000',
-              borderBottom: '1px solid #292929',
+              backgroundColor: 'var(--black)',
+              borderBottom: '1px solid var(--border)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between'
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#FF0000' }} />
+              <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--red)' }} />
               <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#FFBD2E' }} />
               <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#27C93F' }} />
-              <span className="mono-text" style={{ fontSize: '0.76rem', color: '#8A8A8A', marginLeft: '0.5rem' }}>
+              <span className="mono-text" style={{ fontSize: '0.76rem', color: 'var(--muted)', marginLeft: '0.5rem' }}>
                 terminal@cyberpashto-academy:~
               </span>
             </div>
 
             <button 
               onClick={() => handleCommand('clear')} 
-              style={{ background: 'none', border: 'none', color: '#8A8A8A', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.74rem' }}
+              style={{ background: 'none', border: 'none', color: 'var(--muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.74rem' }}
               className="mono-text"
             >
               <RotateCcw size={12} /> Clear
@@ -135,8 +135,8 @@ export default function LiveTerminal() {
           </div>
 
           {/* Quick Command Samples */}
-          <div style={{ padding: '0.65rem 1.15rem', backgroundColor: 'rgba(255, 255, 255, 0.02)', borderBottom: '1px solid #292929', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-            <span className="mono-text" style={{ fontSize: '0.75rem', color: '#8A8A8A', alignSelf: 'center' }}>Samples:</span>
+          <div style={{ padding: '0.65rem 1.15rem', backgroundColor: 'rgba(255, 255, 255, 0.02)', borderBottom: '1px solid var(--border)', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <span className="mono-text" style={{ fontSize: '0.75rem', color: 'var(--muted)', alignSelf: 'center' }}>Samples:</span>
             {['help', 'scan --vapt', 'threat --map', 'courses', 'stats'].map((sampleCmd) => (
               <button
                 key={sampleCmd}
@@ -146,9 +146,9 @@ export default function LiveTerminal() {
                   fontSize: '0.74rem',
                   padding: '0.2rem 0.55rem',
                   borderRadius: '4px',
-                  backgroundColor: 'rgba(255, 0, 0, 0.1)',
-                  border: '1px solid rgba(255, 0, 0, 0.25)',
-                  color: '#FF1616',
+                  backgroundColor: 'var(--red-subtle)',
+                  border: '1px solid var(--red-border)',
+                  color: 'var(--red-bright)',
                   cursor: 'pointer'
                 }}
               >
@@ -170,7 +170,7 @@ export default function LiveTerminal() {
               display: 'flex',
               flexDirection: 'column',
               gap: '0.35rem',
-              backgroundColor: '#040507'
+              backgroundColor: 'var(--black)'
             }}
           >
             {history.map((item, idx) => (
@@ -181,9 +181,9 @@ export default function LiveTerminal() {
                     item.type === 'user' ? '#FFFFFF' :
                     item.type === 'success' ? '#4ADE80' :
                     item.type === 'warning' ? '#FFBD2E' :
-                    item.type === 'error' ? '#FF1616' :
-                    item.type === 'system' ? '#FF1616' :
-                    '#8A8A8A'
+                    item.type === 'error' ? 'var(--red-bright)' :
+                    item.type === 'system' ? 'var(--red-bright)' :
+                    'var(--muted)'
                 }}
               >
                 {item.text}
@@ -192,8 +192,8 @@ export default function LiveTerminal() {
           </div>
 
           {/* Terminal Input Bar */}
-          <form onSubmit={onSubmit} style={{ display: 'flex', borderTop: '1px solid #292929', backgroundColor: '#080808' }}>
-            <span className="mono-text" style={{ padding: '0.75rem 0.9rem', color: '#FF1616', fontSize: '0.85rem' }}>
+          <form onSubmit={onSubmit} style={{ display: 'flex', borderTop: '1px solid var(--border)', backgroundColor: 'var(--ink)' }}>
+            <span className="mono-text" style={{ padding: '0.75rem 0.9rem', color: 'var(--red-bright)', fontSize: '0.85rem' }}>
               user@cyberpashto:~$
             </span>
             <input 
@@ -216,7 +216,7 @@ export default function LiveTerminal() {
               type="submit" 
               style={{
                 padding: '0 1.25rem',
-                backgroundColor: '#FF0000',
+                backgroundColor: 'var(--red)',
                 border: 'none',
                 color: '#FFFFFF',
                 cursor: 'pointer',

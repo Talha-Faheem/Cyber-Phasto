@@ -1,66 +1,25 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import HomeBackground from '../components/home/HomeBackground';
 import { 
-  Mail, 
-  MapPin, 
-  Phone, 
-  Send, 
   CheckCircle2, 
-  ArrowRight
+  ArrowRight, 
+  Facebook, 
+  Twitter, 
+  Instagram, 
+  Linkedin, 
+  Youtube, 
+  Github 
 } from 'lucide-react';
-
-const cardStyle = {
-  padding: '1.75rem',
-  backgroundColor: 'rgba(18, 12, 14, 0.55)',
-  backgroundImage: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%)',
-  backdropFilter: 'blur(20px)',
-  WebkitBackdropFilter: 'blur(20px)',
-  border: '1px solid rgba(255, 255, 255, 0.12)',
-  borderRadius: '20px',
-  boxShadow: '0 20px 50px rgba(0, 0, 0, 0.75), inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 0 25px rgba(255, 2, 5, 0.06)',
-  transition: 'transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease'
-};
-
-const formCardStyle = {
-  padding: '2.5rem',
-  backgroundColor: '#ffffff',
-  color: '#070707',
-  border: '1px solid #e5e5e8',
-  borderRadius: '24px',
-  boxShadow: '0 25px 65px rgba(0, 0, 0, 0.45), 0 0 40px rgba(255, 2, 5, 0.08)',
-  transition: 'transform 0.3s ease, box-shadow 0.3s ease'
-};
-
-const formLabelStyle = {
-  display: 'block',
-  fontSize: '0.82rem',
-  color: '#111111',
-  marginBottom: '0.45rem',
-  fontWeight: 700,
-  fontFamily: 'var(--font-mono)'
-};
-
-const formInputStyle = {
-  width: '100%',
-  padding: '0.85rem 1rem',
-  backgroundColor: '#f6f6f8',
-  border: '1.5px solid #e2e2e7',
-  borderRadius: '12px',
-  color: '#070707',
-  fontFamily: 'var(--font-sans)',
-  fontSize: '0.9rem',
-  outline: 'none',
-  boxSizing: 'border-box',
-  transition: 'border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease'
-};
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     phone: '',
-    subject: 'Course Admission & Enrollment',
+    subject: 'Course Admission & Syllabus Details',
     message: ''
   });
 
@@ -70,231 +29,603 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="contactPageWrapper bg-[#040404] pt-28 pb-24 min-h-screen text-white w-full relative overflow-x-hidden">
+    <div className="contactPageWrapper contact-page-container min-h-screen text-white w-full relative overflow-x-hidden">
       <HomeBackground />
-      <section className="container" style={{ textAlign: 'center', maxWidth: '850px', marginBottom: '4rem' }}>
-        <h1 style={{ fontSize: 'clamp(2.4rem, 5vw, 4.2rem)', fontWeight: 800, marginBottom: '1.25rem', lineHeight: 1.15, color: '#FFFFFF' }}>
-          LET'S BUILD YOUR <span className="gradient-text">NEXT STEP.</span>
-        </h1>
-        <p style={{ color: '#A0A0A0', fontSize: '1.15rem', lineHeight: 1.65 }}>
-          Have questions regarding course enrollment, syllabus details, corporate red-team training, or university chapter setup? Reach our direct team.
-        </p>
-      </section>
 
-      <section className="container" style={{ marginBottom: '5rem' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2.5rem', maxWidth: '1140px', margin: '0 auto' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            <div style={cardStyle} className="contact-glass-card">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
-                <div style={{ padding: '0.75rem', borderRadius: '12px', backgroundColor: 'rgba(255, 2, 5, 0.15)', border: '1px solid rgba(255, 2, 5, 0.3)', color: 'var(--red)' }}>
-                  <Mail size={22} />
-                </div>
-                <div>
-                  <h3 style={{ fontSize: '1.1rem', color: '#ffffff', fontWeight: 800 }}>Official Support Email</h3>
-                  <span className="mono" style={{ fontSize: '0.92rem', color: '#ff5a5c', fontWeight: 700 }}>support@cyberpashto.com</span>
-                </div>
-              </div>
-              <p style={{ fontSize: '0.85rem', color: '#a1a1aa', marginTop: '0.5rem', lineHeight: 1.5 }}>
-                Expect replies from our academic counseling team within 6–12 hours.
-              </p>
-            </div>
-
-            <div style={cardStyle} className="contact-glass-card">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
-                <div style={{ padding: '0.75rem', borderRadius: '12px', backgroundColor: 'rgba(255, 2, 5, 0.15)', border: '1px solid rgba(255, 2, 5, 0.3)', color: 'var(--red)' }}>
-                  <Phone size={22} />
-                </div>
-                <div>
-                  <h3 style={{ fontSize: '1.1rem', color: '#ffffff', fontWeight: 800 }}>Admissions Hotline</h3>
-                  <span className="mono" style={{ fontSize: '0.92rem', color: '#ffffff', fontWeight: 700 }}>0325-5636856</span>
-                </div>
-              </div>
-              <p style={{ fontSize: '0.85rem', color: '#a1a1aa', marginTop: '0.5rem', lineHeight: 1.5 }}>
-                Direct student assistance: Monday to Saturday, 9:00 AM – 6:00 PM PKT.
-              </p>
-            </div>
-
-            <div style={cardStyle} className="contact-glass-card">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
-                <div style={{ padding: '0.75rem', borderRadius: '12px', backgroundColor: 'rgba(255, 2, 5, 0.15)', border: '1px solid rgba(255, 2, 5, 0.3)', color: 'var(--red)' }}>
-                  <MapPin size={22} />
-                </div>
-                <div>
-                  <h3 style={{ fontSize: '1.1rem', color: '#ffffff', fontWeight: 800 }}>Regional Academy Hub</h3>
-                  <span style={{ fontSize: '0.9rem', color: '#e4e4e7', fontWeight: 600 }}>Chakdara, Lower Dir &amp; Peshawar, KPK, Pakistan</span>
-                </div>
-              </div>
-              <p style={{ fontSize: '0.85rem', color: '#a1a1aa', marginTop: '0.5rem', lineHeight: 1.5 }}>
-                Onsite workshops, student lab access, and chapter coordination center.
-              </p>
-            </div>
-          </div>
-
-          <div style={formCardStyle}>
-            {submitted ? (
-              <div style={{ textAlign: 'center', padding: '3rem 1rem' }}>
-                <div style={{ width: '70px', height: '70px', borderRadius: '50%', backgroundColor: 'rgba(255, 2, 5, 0.12)', border: '2px solid var(--red)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--red)', margin: '0 auto 1.5rem auto' }}>
-                  <CheckCircle2 size={38} />
-                </div>
-                <h3 style={{ fontSize: '1.6rem', marginBottom: '0.75rem', color: '#070707', fontWeight: 800 }}>Inquiry Submitted</h3>
-                <p style={{ color: '#555555', fontSize: '0.98rem', marginBottom: '2rem', lineHeight: 1.6 }}>
-                  Thank you for reaching out to Cyber Pashto. A senior academic advisor will contact you within 12 hours.
-                </p>
-                <button onClick={() => setSubmitted(false)} className="btn primary" style={{ padding: '0.85rem 2.2rem', borderRadius: '12px' }}>
-                  Send Another Inquiry
-                </button>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                <div>
-                  <h3 style={{ fontSize: '1.6rem', marginBottom: '0.35rem', color: '#070707', fontWeight: 800, letterSpacing: '-0.02em' }}>
-                    Send Us an Inquiry
-                  </h3>
-                  <p style={{ fontSize: '0.9rem', color: '#555555', margin: 0, lineHeight: 1.5 }}>
-                    Fill out the form below to receive syllabus previews and enrollment details.
-                  </p>
-                </div>
-
-                <div>
-                  <label style={formLabelStyle}>Your Full Name *</label>
-                  <input 
-                    type="text" 
-                    required 
-                    placeholder="e.g. Tariq Khattak"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    style={formInputStyle}
-                    className="contact-white-input"
-                  />
-                </div>
-
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem' }}>
-                  <div>
-                    <label style={formLabelStyle}>Email Address *</label>
-                    <input 
-                      type="email" 
-                      required 
-                      placeholder="tariq@gmail.com"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      style={formInputStyle}
-                      className="contact-white-input"
-                    />
-                  </div>
-
-                  <div>
-                    <label style={formLabelStyle}>Phone / WhatsApp</label>
-                    <input 
-                      type="text" 
-                      placeholder="03XX-XXXXXXX"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      style={formInputStyle}
-                      className="contact-white-input"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label style={formLabelStyle}>Subject / Interest Area</label>
-                  <select 
-                    value={formData.subject}
-                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    style={{ ...formInputStyle, cursor: 'pointer', backgroundColor: '#f6f6f8' }}
-                    className="contact-white-input"
-                  >
-                    <option value="Course Admission & Enrollment">Course Admission & Enrollment</option>
-                    <option value="Web Development & Full Stack Cohort">Web Development & Full Stack Cohort</option>
-                    <option value="Cybersecurity Level 2 (VAPT)">Cybersecurity Level 2 (VAPT)</option>
-                    <option value="Ethical Hacking & Red Team Cohort">Ethical Hacking & Red Team Cohort</option>
-                    <option value="Artificial Intelligence & GenAI">Artificial Intelligence & GenAI</option>
-                    <option value="University Chapter Setup">University Chapter Setup</option>
-                    <option value="Enterprise Security Audit">Enterprise Security Audit</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label style={formLabelStyle}>Your Message *</label>
-                  <textarea 
-                    rows={4} 
-                    required 
-                    placeholder="Tell us about your learning goals or questions..."
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    style={{ ...formInputStyle, resize: 'vertical' }}
-                    className="contact-white-input"
-                  />
-                </div>
-
-                <button 
-                  type="submit" 
-                  className="btn primary" 
-                  style={{ 
-                    width: '100%', 
-                    padding: '14px 24px', 
-                    fontSize: '14px', 
-                    marginTop: '0.4rem',
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '8px'
-                  }}
-                >
-                  <Send size={16} />
-                  <span>Submit Inquiry</span>
-                </button>
-              </form>
-            )}
-          </div>
-        </div>
-      </section>
-
-      <section className="container" style={{ maxWidth: '850px', marginTop: '3rem', textAlign: 'center' }}>
-        <div style={{
-          padding: '2.5rem 2rem',
-          backgroundColor: 'rgba(18, 12, 14, 0.45)',
-          backgroundImage: 'linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.01) 100%)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-          borderRadius: '24px',
-          boxShadow: '0 20px 50px rgba(0, 0, 0, 0.6)'
-        }}>
-          <h3 style={{ fontSize: '1.5rem', marginBottom: '0.75rem', color: '#FFFFFF', fontWeight: 800 }}>Direct Admission Assistance</h3>
-          <p style={{ color: '#a1a1aa', fontSize: '0.95rem', lineHeight: 1.6, marginBottom: '2rem' }}>
-            Have immediate questions? You can also message our admissions counselors directly on WhatsApp at <strong style={{ color: 'var(--red)' }}>0325-5636856</strong>.
+      {/* 1. Contact Us Heading Section (White & Red) */}
+      <section className="contact-header-section">
+        <div className="container" style={{ textAlign: 'center' }}>
+          <h1 className="contact-main-heading">
+            <span className="heading-white">Contact </span>
+            <span className="heading-red">Us</span>
+          </h1>
+          <p className="contact-main-desc">
+            Have questions about admissions, cohort tracks, or corporate defense? We're here to help.
           </p>
-          <a 
-            href="https://cyberpashtopremium.com/" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="btn secondary"
-            style={{ padding: '14px 28px', borderRadius: '12px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
-          >
-            <span>Visit LMS Portal</span>
-            <ArrowRight size={16} style={{ color: 'var(--red)' }} />
-          </a>
         </div>
       </section>
 
+      {/* 2. Main Two-Tone Contact Card Section */}
+      <section className="contact-main-section">
+        <div className="container">
+          <div className="contact-showcase-card">
+            
+            {/* Left Form Column */}
+            <div className="contact-form-col">
+              <div className="contact-form-header">
+                <div>
+                  <span className="contact-eyebrow">— Contact Us</span>
+                  <h2 className="contact-heading">
+                    Join Us in Creating<br />Something Great
+                  </h2>
+                </div>
+              </div>
+
+              {submitted ? (
+                <div className="contact-success-box">
+                  <div className="success-icon-wrap">
+                    <CheckCircle2 size={36} />
+                  </div>
+                  <h3>Message Dispatched!</h3>
+                  <p>
+                    Thank you for contacting Cyber Pashto. An academic advisor or technical mentor will reach back to you within 6–12 hours.
+                  </p>
+                  <button 
+                    onClick={() => setSubmitted(false)} 
+                    className="contact-submit-btn"
+                    style={{ marginTop: '1.5rem', alignSelf: 'center' }}
+                  >
+                    <span>Send Another Inquiry</span>
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="contact-form-grid">
+                  {/* Row 1: First Name & Last Name */}
+                  <div className="form-row-2">
+                    <div className="form-group">
+                      <label className="form-label">First Name *</label>
+                      <input 
+                        type="text" 
+                        required 
+                        placeholder="e.g. Ahmad"
+                        value={formData.firstName}
+                        onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                        className="form-input"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label className="form-label">Last Name *</label>
+                      <input 
+                        type="text" 
+                        required 
+                        placeholder="e.g. Khan"
+                        value={formData.lastName}
+                        onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                        className="form-input"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Row 2: Email & Phone */}
+                  <div className="form-row-2">
+                    <div className="form-group">
+                      <label className="form-label">Email *</label>
+                      <input 
+                        type="email" 
+                        required 
+                        placeholder="ahmad@example.com"
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        className="form-input"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label className="form-label">Phone Number *</label>
+                      <input 
+                        type="tel" 
+                        required
+                        placeholder="0325-5636856"
+                        value={formData.phone}
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        className="form-input"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Row 3: Subject */}
+                  <div className="form-group">
+                    <label className="form-label">Subject *</label>
+                    <select
+                      value={formData.subject}
+                      onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                      className="form-input form-select"
+                    >
+                      <option value="Course Admission & Syllabus Details">Course Admission &amp; Syllabus Details</option>
+                      <option value="Cybersecurity Level 2 (VAPT Cohort)">Cybersecurity Level 2 (VAPT Cohort)</option>
+                      <option value="Web Development & Full Stack Bootcamp">Web Development &amp; Full Stack Bootcamp</option>
+                      <option value="Artificial Intelligence & GenAI">Artificial Intelligence &amp; GenAI</option>
+                      <option value="University Chapter / Society Partnership">University Chapter / Society Partnership</option>
+                      <option value="Corporate Enterprise Training">Corporate Enterprise Training</option>
+                    </select>
+                  </div>
+
+                  {/* Row 4: Message */}
+                  <div className="form-group">
+                    <label className="form-label">Message *</label>
+                    <textarea 
+                      rows={4} 
+                      required 
+                      placeholder="Write your message or questions here..."
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      className="form-input form-textarea"
+                    />
+                  </div>
+
+                  {/* Send Button */}
+                  <div style={{ marginTop: '0.5rem' }}>
+                    <button type="submit" className="contact-submit-btn">
+                      <span>Send Message</span>
+                      <span className="submit-btn-circle">
+                        <ArrowRight size={16} />
+                      </span>
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+
+            {/* Right Integrated Cyber-Red Accent Info Card */}
+            <div className="contact-info-accent-card">
+              <div className="info-block">
+                <h4 className="info-block-title">Address</h4>
+                <p className="info-block-text">
+                  Regional Academy Campus: Chakdara, Lower Dir &amp; University Town, Peshawar, Khyber Pakhtunkhwa, Pakistan
+                </p>
+              </div>
+
+              <div className="info-block">
+                <h4 className="info-block-title">Contact</h4>
+                <p className="info-block-text">
+                  <strong>Phone:</strong> 0325-5636856<br />
+                  <strong>WhatsApp:</strong> +92 325 5636856<br />
+                  <strong>Email:</strong> support@cyberpashto.com
+                </p>
+              </div>
+
+              <div className="info-block">
+                <h4 className="info-block-title">Open Time</h4>
+                <p className="info-block-text">
+                  <strong>Mon – Sat:</strong> 9:00 AM – 6:00 PM PKT<br />
+                  <strong>Virtual Labs &amp; Discord:</strong> 24/7 Active
+                </p>
+              </div>
+
+              <div className="info-block" style={{ marginBottom: 0 }}>
+                <h4 className="info-block-title">Stay Connected</h4>
+                <div className="social-icons-row">
+                  <a href="https://www.facebook.com/cyberpashto" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="Facebook">
+                    <Facebook size={16} />
+                  </a>
+                  <a href="https://twitter.com/cyberpashto" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="Twitter">
+                    <Twitter size={16} />
+                  </a>
+                  <a href="https://www.instagram.com/cyberpashto" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="Instagram">
+                    <Instagram size={16} />
+                  </a>
+                  <a href="https://www.linkedin.com/company/cyberpashto" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="LinkedIn">
+                    <Linkedin size={16} />
+                  </a>
+                  <a href="https://youtube.com/@cyberpashto" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="YouTube">
+                    <Youtube size={16} />
+                  </a>
+                  <a href="https://github.com/cyberpashto" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="GitHub">
+                    <Github size={16} />
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* 3. "Let's Connect there" Callout Bar */}
+      <section className="contact-connect-bar-section">
+        <div className="container">
+          <div className="connect-bar-card">
+            <div>
+              <h3 className="connect-bar-title">
+                Let's <span style={{ color: 'var(--red)' }}>Connect</span> there
+              </h3>
+              <p className="connect-bar-sub">
+                Prefer direct WhatsApp messaging or instant enrollment assistance? Our counselors are available right now.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+              <a
+                href="https://wa.me/923255636856"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="connect-action-btn"
+              >
+                <span>Chat on WhatsApp</span>
+                <span className="connect-btn-arrow">
+                  <ArrowRight size={14} />
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Embedded Component Styles */}
       <style>{`
-        .contact-glass-card:hover {
-          background-color: rgba(25, 16, 18, 0.7) !important;
-          border-color: rgba(255, 59, 48, 0.45) !important;
-          transform: translateY(-4px);
-          box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(255, 2, 5, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.25) !important;
+        .contact-page-container {
+          min-height: 100vh;
+          color: #ffffff;
+          padding-top: 110px;
+          padding-bottom: 60px;
+          position: relative;
+          overflow-x: hidden;
         }
 
-        .contact-white-input:focus {
-          border-color: var(--red) !important;
-          background-color: #ffffff !important;
-          box-shadow: 0 0 0 3px rgba(255, 2, 5, 0.15) !important;
+        /* 1. Contact Us Heading Section */
+        .contact-header-section {
+          padding: 24px 0 32px 0;
+          text-align: center;
         }
 
-        .contact-white-input option {
-          background-color: #ffffff;
-          color: #070707;
+        .contact-main-heading {
+          font-size: clamp(38px, 6vw, 64px);
+          font-weight: 900;
+          letter-spacing: -0.035em;
+          line-height: 1.1;
+          margin: 0 0 12px 0;
+          font-family: var(--font-sans);
+        }
+
+        .heading-white {
+          color: #FFFFFF;
+        }
+
+        .heading-red {
+          color: var(--red);
+        }
+
+        .contact-main-desc {
+          font-size: 15px;
+          color: var(--muted);
+          max-width: 520px;
+          margin: 0 auto;
+          line-height: 1.6;
+        }
+
+        /* 2. Main Showcase Card */
+        .contact-main-section {
+          padding: 0 0 40px 0;
+        }
+
+        .contact-showcase-card {
+          background-color: var(--paper);
+          color: var(--ink);
+          border-radius: 12px;
+          padding: clamp(24px, 4vw, 48px);
+          display: grid;
+          grid-template-columns: 1.4fr 0.9fr;
+          gap: clamp(28px, 4vw, 56px);
+          box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5), 0 0 35px rgba(255, 255, 255, 0.04);
+          position: relative;
+        }
+
+        @media (max-width: 960px) {
+          .contact-showcase-card {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        .contact-form-col {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+
+        .contact-form-header {
+          margin-bottom: 28px;
+        }
+
+        .contact-eyebrow {
+          font-family: var(--font-mono);
+          font-size: 12px;
+          font-weight: 700;
+          color: var(--muted);
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          display: block;
+          margin-bottom: 6px;
+        }
+
+        .contact-heading {
+          font-size: clamp(26px, 3.2vw, 36px);
+          font-weight: 900;
+          color: var(--ink);
+          line-height: 1.15;
+          letter-spacing: -0.03em;
+          margin: 0;
+        }
+
+        /* Form Controls */
+        .contact-form-grid {
+          display: flex;
+          flex-direction: column;
+          gap: 18px;
+        }
+
+        .form-row-2 {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 16px;
+        }
+
+        @media (max-width: 600px) {
+          .form-row-2 {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        .form-group {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+        }
+
+        .form-label {
+          font-size: 12px;
+          font-weight: 700;
+          color: #333333;
+          font-family: var(--font-mono);
+        }
+
+        .form-input {
+          width: 100%;
+          padding: 12px 14px;
+          background-color: #ebe7e3;
+          border: 1px solid #d4cfc9;
+          border-radius: 8px;
+          font-size: 13.5px;
+          color: var(--ink);
+          font-family: var(--font-sans);
+          outline: none;
+          box-sizing: border-box;
+          transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-input:focus {
+          border-color: var(--red);
+          background-color: #FFFFFF;
+          box-shadow: 0 0 0 3px var(--red-subtle);
+        }
+
+        .form-select {
+          cursor: pointer;
+        }
+
+        .form-textarea {
+          resize: vertical;
+          min-height: 100px;
+        }
+
+        /* Submit Button */
+        .contact-submit-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 12px;
+          background-color: var(--ink);
+          color: #FFFFFF;
+          border: 1px solid var(--ink);
+          border-radius: 999px;
+          padding: 6px 6px 6px 20px;
+          font-size: 13.5px;
+          font-weight: 700;
+          cursor: pointer;
+          font-family: var(--font-sans);
+          transition: all 0.25s cubic-bezier(0.19, 1, 0.22, 1);
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+        }
+
+        .contact-submit-btn:hover {
+          background-color: var(--red);
+          border-color: var(--red);
+          transform: translateY(-2px);
+          box-shadow: 0 8px 24px var(--red-glow);
+        }
+
+        .submit-btn-circle {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          background-color: #FFFFFF;
+          color: var(--ink);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: transform 0.25s ease;
+        }
+
+        .contact-submit-btn:hover .submit-btn-circle {
+          transform: translateX(2px);
+        }
+
+        /* Success Box */
+        .contact-success-box {
+          text-align: center;
+          padding: 40px 20px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .success-icon-wrap {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background-color: var(--red-subtle);
+          color: var(--red);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 16px;
+        }
+
+        .contact-success-box h3 {
+          font-size: 22px;
+          font-weight: 800;
+          color: var(--ink);
+          margin: 0 0 8px 0;
+        }
+
+        .contact-success-box p {
+          font-size: 14px;
+          color: #555555;
+          max-width: 440px;
+          line-height: 1.6;
+          margin: 0;
+        }
+
+        /* Right Integrated Accent Card - Cyber Pashto Red Gradient */
+        .contact-info-accent-card {
+          background: linear-gradient(145deg, var(--red) 0%, var(--red-dark) 100%);
+          color: #FFFFFF;
+          border-radius: 10px;
+          padding: clamp(24px, 3.5vw, 36px);
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          gap: 24px;
+          box-shadow: 0 16px 36px var(--red-glow), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        }
+
+        .info-block-title {
+          font-family: var(--font-mono);
+          font-size: 13px;
+          font-weight: 900;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          color: #FFFFFF;
+          margin: 0 0 8px 0;
+          opacity: 0.95;
+        }
+
+        .info-block-text {
+          font-size: 13.5px;
+          line-height: 1.65;
+          color: rgba(255, 255, 255, 0.92);
+          margin: 0;
+        }
+
+        .info-block-text strong {
+          color: #FFFFFF;
+        }
+
+        .social-icons-row {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          flex-wrap: wrap;
+          margin-top: 6px;
+        }
+
+        .social-icon-btn {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          background-color: rgba(0, 0, 0, 0.35);
+          color: #FFFFFF;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-decoration: none;
+          transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .social-icon-btn:hover {
+          background-color: #FFFFFF;
+          color: var(--red);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+        }
+
+        /* 3. Let's Connect Bar */
+        .contact-connect-bar-section {
+          padding: 20px 0 20px 0;
+        }
+
+        .connect-bar-card {
+          background: rgba(9, 9, 9, 0.7);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border: 1px solid var(--border);
+          border-radius: 12px;
+          padding: 28px 36px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 20px;
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+        }
+
+        .connect-bar-title {
+          font-size: clamp(24px, 3.5vw, 32px);
+          font-weight: 800;
+          color: #FFFFFF;
+          margin: 0 0 6px 0;
+          letter-spacing: -0.02em;
+        }
+
+        .connect-bar-sub {
+          font-size: 14px;
+          color: var(--muted);
+          margin: 0;
+          max-width: 580px;
+          line-height: 1.55;
+        }
+
+        .connect-action-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 12px;
+          background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+          color: #FFFFFF;
+          padding: 8px 8px 8px 22px;
+          border-radius: 999px;
+          font-size: 13.5px;
+          font-weight: 700;
+          text-decoration: none;
+          box-shadow: 0 4px 20px var(--red-glow);
+          transition: all 0.25s ease;
+        }
+
+        .connect-action-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 30px rgba(255, 2, 5, 0.6);
+        }
+
+        .connect-btn-arrow {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          background-color: rgba(255, 255, 255, 0.2);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: transform 0.25s ease;
+        }
+
+        .connect-action-btn:hover .connect-btn-arrow {
+          transform: translateX(2px);
         }
       `}</style>
     </div>

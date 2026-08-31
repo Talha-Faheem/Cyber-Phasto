@@ -8,7 +8,7 @@ export default function PopularTracksPaperSection({ onSelectCourse }) {
       className="popularTracksPaperSection"
       style={{
         background: 'var(--paper)',
-        color: '#070707',
+        color: 'var(--ink)',
         borderRadius: '34px',
         padding: '95px 0 105px',
         margin: '50px 0',
@@ -17,10 +17,10 @@ export default function PopularTracksPaperSection({ onSelectCourse }) {
       }}
     >
       <div className="container">
-        <h2 className="title" style={{ fontSize: 'clamp(32px, 4vw, 48px)', color: '#070707' }}>
+        <h2 className="title" style={{ fontSize: 'clamp(32px, 4vw, 48px)', color: 'var(--ink)' }}>
           Popular &amp; High-Demand Tracks
         </h2>
-        <p className="sub" style={{ marginBottom: '45px', color: '#666' }}>
+        <p className="sub" style={{ marginBottom: '45px', color: '#555555' }}>
           Fast-track programs with high industry hiring rates and active community cohorts.
         </p>
 
@@ -36,7 +36,7 @@ export default function PopularTracksPaperSection({ onSelectCourse }) {
               }}
             >
               <div className="cardBrowserBar" style={{ background: '#f5f5f5', borderBottom: '1px solid #ebebeb' }}>
-                <span className="cardCodeTag" style={{ color: '#888' }}>{course.code}</span>
+                <span className="cardCodeTag" style={{ color: 'var(--muted)' }}>{course.code}</span>
               </div>
 
               <div className="cardImageContainer">
@@ -62,20 +62,20 @@ export default function PopularTracksPaperSection({ onSelectCourse }) {
                     </span>
                   ))}
                 </div>
-                <h3 className="cardTitle" style={{ color: '#070707' }}>{course.title}</h3>
-                <p className="cardDescription" style={{ color: '#666' }}>{course.description}</p>
+                <h3 className="cardTitle" style={{ color: 'var(--ink)' }}>{course.title}</h3>
+                <p className="cardDescription" style={{ color: '#555555' }}>{course.description}</p>
               </div>
 
               <div className="cardFooter" style={{ background: '#fafafa', borderTop: '1px solid #eee' }}>
                 <div className="cardPriceGroup">
-                  <span className="cardPriceCurrent" style={{ color: '#070707' }}>{course.formattedPrice}</span>
-                  <span className="cardPriceOriginal" style={{ color: '#999' }}>{course.formattedOriginalPrice}</span>
+                  <span className="cardPriceCurrent" style={{ color: 'var(--ink)' }}>{course.formattedPrice}</span>
+                  <span className="cardPriceOriginal" style={{ color: 'var(--muted)' }}>{course.formattedOriginalPrice}</span>
                 </div>
                 <button 
                   onClick={() => onSelectCourse(course)} 
                   className="cardCheckBtn"
                   style={{
-                    background: '#070707',
+                    background: 'var(--ink)',
                     color: '#ffffff'
                   }}
                 >

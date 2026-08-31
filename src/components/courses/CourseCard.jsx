@@ -49,7 +49,7 @@ export default function CourseCard({ course, variant = 'grid', onEnroll, index =
         backgroundColor: isHovered ? 'rgba(18, 14, 20, 0.72)' : 'rgba(10, 11, 16, 0.55)',
         backdropFilter: 'blur(22px)',
         WebkitBackdropFilter: 'blur(22px)',
-        borderRadius: '22px',
+        borderRadius: '8px',
         border: isHovered 
           ? '1px solid rgba(255, 60, 60, 0.45)' 
           : '1px solid rgba(255, 255, 255, 0.1)',
@@ -103,11 +103,11 @@ export default function CourseCard({ course, variant = 'grid', onEnroll, index =
               style={{ 
                 fontSize: '0.66rem', 
                 fontWeight: 700, 
-                color: '#FF1616', 
-                backgroundColor: 'rgba(255, 0, 0, 0.12)', 
+                color: 'var(--red-bright)', 
+                backgroundColor: 'var(--red-subtle)', 
                 padding: '0.2rem 0.55rem', 
                 borderRadius: '4px',
-                border: '1px solid rgba(255, 0, 0, 0.3)' 
+                border: '1px solid var(--red-border)' 
               }}
             >
               {badgeText}
@@ -117,7 +117,7 @@ export default function CourseCard({ course, variant = 'grid', onEnroll, index =
             className="mono-text"
             style={{
               fontSize: '0.72rem',
-              color: isHovered ? '#FFFFFF' : '#8A8A8A',
+              color: isHovered ? '#FFFFFF' : 'var(--muted)',
               letterSpacing: '0.05em',
               transition: 'color 0.25s ease'
             }}
@@ -228,7 +228,7 @@ export default function CourseCard({ course, variant = 'grid', onEnroll, index =
             fontWeight: 700,
             textTransform: 'uppercase',
             letterSpacing: '0.08em',
-            color: '#FF1616'
+            color: 'var(--red-bright)'
           }}
         >
           {category} // {level}
@@ -263,7 +263,7 @@ export default function CourseCard({ course, variant = 'grid', onEnroll, index =
               fontFamily: 'var(--font-sans)',
               fontSize: '0.88rem',
               lineHeight: 1.55,
-              color: '#8A8A8A',
+              color: 'var(--muted)',
               marginBottom: '1.25rem',
               display: '-webkit-box',
               WebkitLineClamp: 2,
@@ -282,22 +282,22 @@ export default function CourseCard({ course, variant = 'grid', onEnroll, index =
               padding: '0.65rem 0.75rem',
               borderRadius: '10px',
               backgroundColor: 'rgba(255, 255, 255, 0.03)',
-              border: '1px solid rgba(255, 255, 255, 0.06)',
+              border: '1px solid var(--border)',
               marginBottom: '1.35rem',
               fontSize: '0.78rem',
-              color: '#D0D0D0'
+              color: 'var(--paper)'
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-              <BookOpen size={13} style={{ color: '#FF1616' }} />
+              <BookOpen size={13} style={{ color: 'var(--red-bright)' }} />
               <span>{lessons} Lessons</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-              <Clock size={13} style={{ color: '#FF1616' }} />
+              <Clock size={13} style={{ color: 'var(--red-bright)' }} />
               <span>{duration}</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-              <Award size={13} style={{ color: '#FF1616' }} />
+              <Award size={13} style={{ color: 'var(--red-bright)' }} />
               <span>Certificate</span>
             </div>
           </div>
@@ -310,16 +310,16 @@ export default function CourseCard({ course, variant = 'grid', onEnroll, index =
               alignItems: 'baseline',
               justifyContent: 'space-between',
               marginBottom: '1rem',
-              borderTop: '1px solid rgba(255, 255, 255, 0.06)',
+              borderTop: '1px solid var(--border)',
               paddingTop: '0.85rem'
             }}
           >
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.6rem' }}>
-              <span style={{ fontSize: '0.8rem', color: '#8A8A8A', fontFamily: 'var(--font-mono)' }}>Price</span>
+              <span style={{ fontSize: '0.8rem', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>Price</span>
               <span style={{ fontSize: '1.45rem', fontWeight: 800, color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>
                 {formattedPrice}
               </span>
-              <span style={{ fontSize: '0.82rem', textDecoration: 'line-through', color: '#8A8A8A', opacity: 0.7 }}>
+              <span style={{ fontSize: '0.82rem', textDecoration: 'line-through', color: 'var(--muted)', opacity: 0.7 }}>
                 {formattedOriginalPrice}
               </span>
             </div>
@@ -329,7 +329,7 @@ export default function CourseCard({ course, variant = 'grid', onEnroll, index =
                 fontSize: '0.68rem',
                 fontWeight: 700,
                 color: '#FFFFFF',
-                backgroundColor: '#FF0000',
+                backgroundColor: 'var(--red)',
                 padding: '0.2rem 0.55rem',
                 borderRadius: '4px',
                 fontFamily: 'var(--font-mono)'
@@ -356,14 +356,14 @@ export default function CourseCard({ course, variant = 'grid', onEnroll, index =
               fontSize: '0.88rem',
               fontWeight: 600,
               borderRadius: '12px',
-              backgroundColor: isHovered ? '#FF0000' : 'rgba(255, 255, 255, 0.04)',
-              border: isHovered ? '1px solid #FF1616' : '1px solid rgba(255, 255, 255, 0.1)',
+              backgroundColor: isHovered ? 'var(--red)' : 'rgba(255, 255, 255, 0.04)',
+              border: isHovered ? '1px solid var(--red-bright)' : '1px solid var(--border)',
               color: '#FFFFFF',
               justifyContent: 'center',
               gap: '0.5rem',
               textDecoration: 'none',
               transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-              boxShadow: isHovered ? '0 8px 25px rgba(255, 0, 0, 0.4)' : 'none'
+              boxShadow: isHovered ? '0 8px 25px var(--red-glow)' : 'none'
             }}
           >
             <span>Check Course</span>

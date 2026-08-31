@@ -102,10 +102,10 @@ export default function ThreePillarsSection({ onOpenContact, onNavigate }) {
       headlineHighlight: '& 24/7 SOC.',
       description: 'Defending digital infrastructure with comprehensive penetration testing, live SIEM surveillance, and ISO 27001 advisory.',
       icon: ShieldCheck,
-      color: '#FF0000',        // Red
+      color: '#FF0205',        // Red
       colorBright: '#FF1616',
-      glow: 'rgba(255, 0, 0, 0.24)',
-      bgSubtle: 'rgba(255, 0, 0, 0.12)',
+      glow: 'rgba(255, 2, 5, 0.24)',
+      bgSubtle: 'rgba(255, 2, 5, 0.12)',
       badge: 'ENTERPRISE VAPT',
       link: '#contact',
       isExternal: false,
@@ -157,12 +157,12 @@ export default function ThreePillarsSection({ onOpenContact, onNavigate }) {
   return (
     <section 
       style={{
-        backgroundColor: '#000000',
+        backgroundColor: 'var(--black)',
         padding: '4.5rem 0',
         position: 'relative',
         overflow: 'hidden',
-        borderTop: '1px solid #292929',
-        borderBottom: '1px solid #292929'
+        borderTop: '1px solid var(--border)',
+        borderBottom: '1px solid var(--border)'
       }}
     >
       {/* Background Cyber Grid */}
@@ -240,7 +240,7 @@ export default function ThreePillarsSection({ onOpenContact, onNavigate }) {
                       width: isCurrent ? '26px' : '8px',
                       height: '8px',
                       borderRadius: '4px',
-                      backgroundColor: isCurrent ? p.color : '#292929',
+                      backgroundColor: isCurrent ? p.color : 'var(--border)',
                       border: 'none',
                       cursor: 'pointer',
                       transition: 'all 0.3s ease',
@@ -256,7 +256,7 @@ export default function ThreePillarsSection({ onOpenContact, onNavigate }) {
               className="mono-text" 
               style={{ 
                 fontSize: '0.84rem', 
-                color: '#8A8A8A', 
+                color: 'var(--muted)', 
                 fontWeight: 700 
               }}
             >
@@ -277,7 +277,7 @@ export default function ThreePillarsSection({ onOpenContact, onNavigate }) {
           {/* Left: Interactive "What's Included" Glass Card */}
           <div 
             style={{
-              backgroundColor: 'rgba(8, 8, 8, 0.92)',
+              backgroundColor: 'var(--ink)',
               border: `1px solid ${current.color}`,
               borderRadius: '22px',
               padding: '2rem 2.25rem',
@@ -313,7 +313,7 @@ export default function ThreePillarsSection({ onOpenContact, onNavigate }) {
                 fontSize: '0.72rem',
                 fontWeight: 800,
                 letterSpacing: '0.12em',
-                color: '#8A8A8A',
+                color: 'var(--muted)',
                 textTransform: 'uppercase',
                 marginBottom: '1.15rem'
               }}
@@ -392,7 +392,7 @@ export default function ThreePillarsSection({ onOpenContact, onNavigate }) {
                 gap: '0.35rem',
                 marginTop: '2rem',
                 paddingTop: '1.15rem',
-                borderTop: '1px solid #292929',
+                borderTop: '1px solid var(--border)',
                 flexWrap: 'wrap'
               }}
             >
@@ -408,8 +408,8 @@ export default function ThreePillarsSection({ onOpenContact, onNavigate }) {
                       padding: '0.5rem 0.35rem',
                       borderRadius: '8px',
                       border: '1px solid',
-                      borderColor: isSelected ? p.color : '#292929',
-                      backgroundColor: isSelected ? p.color : '#080808',
+                      borderColor: isSelected ? p.color : 'var(--border)',
+                      backgroundColor: isSelected ? p.color : 'var(--ink)',
                       color: isSelected ? '#000000' : '#FFFFFF',
                       fontFamily: 'var(--font-mono)',
                       fontSize: '0.7rem',
@@ -451,7 +451,7 @@ export default function ThreePillarsSection({ onOpenContact, onNavigate }) {
                 className="mono-text" 
                 style={{ 
                   fontSize: '0.76rem', 
-                  color: '#8A8A8A', 
+                  color: 'var(--muted)', 
                   letterSpacing: '0.08em' 
                 }}
               >
@@ -476,7 +476,7 @@ export default function ThreePillarsSection({ onOpenContact, onNavigate }) {
             <p 
               style={{
                 fontSize: '1.02rem',
-                color: '#D0D0D0',
+                color: 'var(--paper)',
                 lineHeight: 1.55,
                 maxWidth: '560px'
               }}

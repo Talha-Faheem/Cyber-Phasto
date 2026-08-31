@@ -80,7 +80,7 @@ export default function CommunityGallery() {
   ];
 
   return (
-    <section id="highlights" className="section-padding" style={{ backgroundColor: '#07080a', position: 'relative' }}>
+    <section id="highlights" className="section-padding" style={{ backgroundColor: 'var(--black)', position: 'relative' }}>
       <div className="container">
         
         {/* Section Header */}
@@ -88,7 +88,7 @@ export default function CommunityGallery() {
           <h2 style={{ fontSize: 'clamp(2rem, 3.5vw, 3rem)', marginBottom: '1rem' }}>
             Community <span className="text-gradient-red">Highlights</span>
           </h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>
+          <p style={{ color: 'var(--muted)', fontSize: '1.05rem' }}>
             A glimpse into CyberFest summits, student chapter bootcamps, and nationwide security awareness campaigns.
           </p>
         </div>
@@ -100,39 +100,39 @@ export default function CommunityGallery() {
             gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
             gap: '1.5rem',
             padding: '1.75rem',
-            backgroundColor: '#0a0b0e',
-            border: '1px solid var(--accent-red-border)',
+            backgroundColor: 'var(--ink)',
+            border: '1px solid var(--red-border)',
             borderRadius: 'var(--radius-md)',
             marginBottom: '3rem',
             boxShadow: '0 10px 30px rgba(0,0,0,0.6)'
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <div style={{ padding: '0.75rem', borderRadius: '50%', backgroundColor: 'var(--accent-red-subtle)', color: 'var(--accent-red-bright)' }}>
+            <div style={{ padding: '0.75rem', borderRadius: '50%', backgroundColor: 'var(--red-subtle)', color: 'var(--red-bright)' }}>
               <Users size={28} />
             </div>
             <div>
               <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#FFFFFF' }}>
                 <Counter end={98000} suffix="+" />
               </div>
-              <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>Nationwide People Reached</span>
+              <span style={{ fontSize: '0.82rem', color: 'var(--muted)' }}>Nationwide People Reached</span>
             </div>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <div style={{ padding: '0.75rem', borderRadius: '50%', backgroundColor: 'var(--accent-red-subtle)', color: 'var(--accent-red-bright)' }}>
+            <div style={{ padding: '0.75rem', borderRadius: '50%', backgroundColor: 'var(--red-subtle)', color: 'var(--red-bright)' }}>
               <Award size={28} />
             </div>
             <div>
-              <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--accent-red-bright)' }}>
+              <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--red-bright)' }}>
                 <Counter end={25000} suffix="+" />
               </div>
-              <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>Students & Engineers Trained</span>
+              <span style={{ fontSize: '0.82rem', color: 'var(--muted)' }}>Students & Engineers Trained</span>
             </div>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <div style={{ padding: '0.75rem', borderRadius: '50%', backgroundColor: 'var(--accent-red-subtle)', color: 'var(--accent-red-bright)' }}>
+            <div style={{ padding: '0.75rem', borderRadius: '50%', backgroundColor: 'var(--red-subtle)', color: 'var(--red-bright)' }}>
               <Shield size={28} />
             </div>
             <div>
@@ -254,11 +254,11 @@ export default function CommunityGallery() {
             style={{
               maxWidth: '850px',
               width: '100%',
-              backgroundColor: '#0a0b0e',
-              border: '1px solid var(--accent-red-border)',
+              backgroundColor: 'var(--ink)',
+              border: '1px solid var(--red-border)',
               borderRadius: 'var(--radius-lg)',
               overflow: 'hidden',
-              boxShadow: '0 25px 60px rgba(0,0,0,0.95), 0 0 40px rgba(229,9,20,0.3)',
+              boxShadow: '0 25px 60px rgba(0,0,0,0.95), 0 0 40px var(--red-glow)',
               animation: 'scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
             }}
             onClick={(e) => e.stopPropagation()}
@@ -275,12 +275,12 @@ export default function CommunityGallery() {
                   height: '38px',
                   borderRadius: '50%',
                   backgroundColor: 'rgba(5, 5, 5, 0.8)',
-                  border: '1px solid var(--accent-red-border)',
+                  border: '1px solid var(--red-border)',
                   color: '#FFFFFF',
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
-                  justify: 'center'
+                  justifyContent: 'center'
                 }}
               >
                 <X size={20} />
@@ -289,23 +289,23 @@ export default function CommunityGallery() {
 
             <div style={{ padding: '2rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
-                <span className="mono-text" style={{ fontSize: '0.75rem', color: 'var(--accent-red-bright)', backgroundColor: 'var(--accent-red-subtle)', padding: '0.25rem 0.75rem', borderRadius: '4px', border: '1px solid var(--accent-red-border)' }}>
+                <span className="mono-text" style={{ fontSize: '0.75rem', color: 'var(--red-bright)', backgroundColor: 'var(--red-subtle)', padding: '0.25rem 0.75rem', borderRadius: '4px', border: '1px solid var(--red-border)' }}>
                   {selectedItem.category}
                 </span>
-                <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{selectedItem.date}</span>
+                <span style={{ fontSize: '0.85rem', color: 'var(--muted)' }}>{selectedItem.date}</span>
               </div>
 
               <h3 style={{ fontSize: '1.6rem', marginBottom: '0.75rem' }}>{selectedItem.title}</h3>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '1.02rem', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+              <p style={{ color: 'var(--paper)', fontSize: '1.02rem', lineHeight: 1.6, marginBottom: '1.5rem' }}>
                 {selectedItem.desc}
               </p>
 
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid var(--border-subtle)', paddingTop: '1.25rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                  <MapPin size={16} style={{ color: 'var(--accent-red-bright)' }} />
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid var(--border)', paddingTop: '1.25rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--muted)', fontSize: '0.9rem' }}>
+                  <MapPin size={16} style={{ color: 'var(--red-bright)' }} />
                   <span>{selectedItem.location}</span>
                 </div>
-                <span className="mono-text" style={{ fontSize: '0.9rem', color: 'var(--accent-red-bright)', fontWeight: 700 }}>
+                <span className="mono-text" style={{ fontSize: '0.9rem', color: 'var(--red-bright)', fontWeight: 700 }}>
                   {selectedItem.stats}
                 </span>
               </div>

@@ -67,7 +67,7 @@ export default function WhyCyberPashto() {
                 <span className="pulse" />
                 CYBERPASHTO / PESHAWAR
               </div>
-              <div className="mono" style={{ fontSize: '10px', color: '#ff5a5c', background: 'rgba(255, 2, 5, 0.15)', padding: '3px 8px', borderRadius: '4px' }}>
+              <div className="mono" style={{ fontSize: '10px', color: 'var(--red-bright)', background: 'var(--red-subtle)', padding: '3px 8px', borderRadius: '4px' }}>
                 LIVE HUB
               </div>
             </div>
@@ -80,10 +80,10 @@ export default function WhyCyberPashto() {
                     ENGINEERING ECOSYSTEM
                   </span>
                 </div>
-                <p className="mono" style={{ margin: '0 0 6px', fontSize: '11px', color: '#999' }}>
-                  &gt; <span style={{ color: '#ff5a5c' }}>dev_stack:</span> Web, Cyber, AI &amp; Cloud<br />
-                  &gt; <span style={{ color: '#ff5a5c' }}>learning_mode:</span> 100% Practical Labs<br />
-                  &gt; <span style={{ color: '#ff5a5c' }}>community:</span> Active in KP, Pakistan
+                <p className="mono" style={{ margin: '0 0 6px', fontSize: '11px', color: 'var(--muted)' }}>
+                  &gt; <span style={{ color: 'var(--red-bright)' }}>dev_stack:</span> Web, Cyber, AI &amp; Cloud<br />
+                  &gt; <span style={{ color: 'var(--red-bright)' }}>learning_mode:</span> 100% Practical Labs<br />
+                  &gt; <span style={{ color: 'var(--red-bright)' }}>community:</span> Active in KP, Pakistan
                 </p>
               </div>
             </div>

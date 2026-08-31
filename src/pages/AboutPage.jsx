@@ -114,13 +114,13 @@ export default function AboutPage() {
   }, []);
 
   return (
-    <div className="aboutPageWrapper bg-[#040404] pt-28 pb-24 min-h-screen text-white w-full relative overflow-x-hidden">
+    <div className="aboutPageWrapper bg-[var(--black)] pt-28 pb-24 min-h-screen text-white w-full relative overflow-x-hidden">
       <HomeBackground />
       <section className="container" style={{ textAlign: 'center', maxWidth: '900px', marginBottom: '4.5rem' }}>
         <h1 style={{ fontSize: 'clamp(2.4rem, 5.5vw, 4.4rem)', fontWeight: 800, marginBottom: '1.25rem', lineHeight: 1.15, color: '#FFFFFF' }}>
           EMPOWERING THE <span className="text-gradient-red">NEXT GENERATION.</span>
         </h1>
-        <p style={{ color: '#D0D0D0', fontSize: '1.15rem', lineHeight: 1.65, maxWidth: '780px', margin: '0 auto' }}>
+        <p style={{ color: 'var(--paper)', fontSize: '1.15rem', lineHeight: 1.65, maxWidth: '780px', margin: '0 auto' }}>
           Making world-class technology education, offensive security labs, and high-income digital careers 
           accessible to every aspiring engineer across Pakistan.
         </p>
@@ -131,8 +131,8 @@ export default function AboutPage() {
           className="browser-window"
           style={{
             padding: 'clamp(2rem, 4vw, 3.5rem)',
-            backgroundColor: '#080808',
-            border: '1px solid #292929',
+            backgroundColor: 'var(--ink)',
+            border: '1px solid var(--border)',
             borderRadius: '24px',
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
@@ -141,49 +141,49 @@ export default function AboutPage() {
           }}
         >
           <div>
-            <span className="mono-text" style={{ fontSize: '0.78rem', color: '#FF1616', letterSpacing: '0.1em' }}>
+            <span className="mono-text" style={{ fontSize: '0.78rem', color: 'var(--red-bright)', letterSpacing: '0.1em' }}>
               OUR MISSION SINCE 2017
             </span>
             <h2 style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.5rem)', margin: '0.75rem 0 1.25rem 0', color: '#FFFFFF' }}>
               From Regional Roots to National Impact
             </h2>
-            <p style={{ color: '#8A8A8A', fontSize: '0.98rem', lineHeight: 1.7, marginBottom: '1.25rem' }}>
+            <p style={{ color: 'var(--muted)', fontSize: '0.98rem', lineHeight: 1.7, marginBottom: '1.25rem' }}>
               Founded in Khyber Pakhtunkhwa, Cyber Pashto was born from a vital realization: 
               talent is everywhere, but top-tier cybersecurity infrastructure and mentorship were severely concentrated in elite circles.
             </p>
-            <p style={{ color: '#8A8A8A', fontSize: '0.98rem', lineHeight: 1.7 }}>
+            <p style={{ color: 'var(--muted)', fontSize: '0.98rem', lineHeight: 1.7 }}>
               Over the last eight years, we have built a vibrant ecosystem of 50,000+ registered learners, 25+ university security chapters, 
               and enterprise penetration testing services trusted by industry leaders across Pakistan.
             </p>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
-            <div style={{ padding: '1.5rem', borderRadius: '16px', backgroundColor: '#000000', border: '1px solid #292929', textAlign: 'center' }}>
+            <div style={{ padding: '1.5rem', borderRadius: '16px', backgroundColor: 'var(--black)', border: '1px solid var(--border)', textAlign: 'center' }}>
               <div className="gradient-text" style={{ fontSize: '2.4rem', fontWeight: 800, fontFamily: 'var(--font-mono)' }}>
                 <Counter end={50000} suffix="+" />
               </div>
-              <span style={{ fontSize: '0.8rem', color: '#8A8A8A', fontFamily: 'var(--font-mono)' }}>Active Learners</span>
+              <span style={{ fontSize: '0.8rem', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>Active Learners</span>
             </div>
 
-            <div style={{ padding: '1.5rem', borderRadius: '16px', backgroundColor: '#000000', border: '1px solid #292929', textAlign: 'center' }}>
+            <div style={{ padding: '1.5rem', borderRadius: '16px', backgroundColor: 'var(--black)', border: '1px solid var(--border)', textAlign: 'center' }}>
               <div style={{ fontSize: '2.4rem', fontWeight: 800, color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>
                 <Counter end={25} suffix="+" />
               </div>
-              <span style={{ fontSize: '0.8rem', color: '#8A8A8A', fontFamily: 'var(--font-mono)' }}>University Chapters</span>
+              <span style={{ fontSize: '0.8rem', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>University Chapters</span>
             </div>
 
-            <div style={{ padding: '1.5rem', borderRadius: '16px', backgroundColor: '#000000', border: '1px solid #292929', textAlign: 'center' }}>
+            <div style={{ padding: '1.5rem', borderRadius: '16px', backgroundColor: 'var(--black)', border: '1px solid var(--border)', textAlign: 'center' }}>
               <div style={{ fontSize: '2.4rem', fontWeight: 800, color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>
                 <Counter end={150} suffix="+" />
               </div>
-              <span style={{ fontSize: '0.8rem', color: '#8A8A8A', fontFamily: 'var(--font-mono)' }}>Enterprise Audits</span>
+              <span style={{ fontSize: '0.8rem', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>Enterprise Audits</span>
             </div>
 
-            <div style={{ padding: '1.5rem', borderRadius: '16px', backgroundColor: '#000000', border: '1px solid #292929', textAlign: 'center' }}>
+            <div style={{ padding: '1.5rem', borderRadius: '16px', backgroundColor: 'var(--black)', border: '1px solid var(--border)', textAlign: 'center' }}>
               <div className="gradient-text" style={{ fontSize: '2.4rem', fontWeight: 800, fontFamily: 'var(--font-mono)' }}>
                 <Counter end={25000} suffix="+" />
               </div>
-              <span style={{ fontSize: '0.8rem', color: '#8A8A8A', fontFamily: 'var(--font-mono)' }}>Certified Graduates</span>
+              <span style={{ fontSize: '0.8rem', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>Certified Graduates</span>
             </div>
           </div>
         </div>
@@ -202,7 +202,7 @@ export default function AboutPage() {
           <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', color: '#FFFFFF' }}>
             The Student <span className="text-gradient-red">Journey Line</span>
           </h2>
-          <p style={{ color: '#8A8A8A', fontSize: '1.05rem', marginTop: '0.75rem' }}>
+          <p style={{ color: 'var(--muted)', fontSize: '1.05rem', marginTop: '0.75rem' }}>
             As you progress through Cyber Pashto, each milestone builds toward enterprise mastery and career readiness.
           </p>
         </div>
@@ -222,7 +222,7 @@ export default function AboutPage() {
               bottom: '40px',
               left: '32px',
               width: '3px',
-              backgroundColor: '#292929',
+              backgroundColor: 'var(--border)',
               borderRadius: '2px'
             }}
           >
@@ -230,8 +230,8 @@ export default function AboutPage() {
               style={{
                 width: '100%',
                 height: `${Math.max(10, Math.min(100, journeyProgress * 100))}%`,
-                backgroundColor: '#FF0000',
-                boxShadow: '0 0 12px #FF0000',
+                backgroundColor: 'var(--red)',
+                boxShadow: '0 0 12px var(--red-glow)',
                 borderRadius: '2px',
                 transition: 'height 0.15s ease-out'
               }}
@@ -256,9 +256,9 @@ export default function AboutPage() {
                       width: '64px',
                       height: '64px',
                       borderRadius: '50%',
-                      backgroundColor: isPassed ? '#FF0000' : '#080808',
-                      border: isPassed ? '3px solid #FFFFFF' : '2px solid #292929',
-                      color: isPassed ? '#FFFFFF' : '#8A8A8A',
+                      backgroundColor: isPassed ? 'var(--red)' : 'var(--ink)',
+                      border: isPassed ? '3px solid #FFFFFF' : '2px solid var(--border)',
+                      color: isPassed ? '#FFFFFF' : 'var(--muted)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -266,7 +266,7 @@ export default function AboutPage() {
                       fontWeight: 800,
                       fontSize: '1.1rem',
                       flexShrink: 0,
-                      boxShadow: isPassed ? '0 0 20px rgba(255, 0, 0, 0.4)' : 'none',
+                      boxShadow: isPassed ? '0 0 20px var(--red-glow)' : 'none',
                       transition: 'all 0.4s ease',
                       zIndex: 2
                     }}
@@ -279,8 +279,8 @@ export default function AboutPage() {
                     style={{
                       flex: 1,
                       padding: '1.75rem 2rem',
-                      backgroundColor: '#080808',
-                      border: isPassed ? '1px solid #FF0000' : '1px solid #292929',
+                      backgroundColor: 'var(--ink)',
+                      border: isPassed ? '1px solid var(--red)' : '1px solid var(--border)',
                       borderRadius: '18px',
                       transition: 'all 0.4s ease'
                     }}
@@ -291,18 +291,18 @@ export default function AboutPage() {
                         style={{ 
                           fontSize: '0.78rem', 
                           fontWeight: 700, 
-                          color: isPassed ? '#FF1616' : '#8A8A8A' 
+                          color: isPassed ? 'var(--red-bright)' : 'var(--muted)' 
                         }}
                       >
                         MILESTONE // {m.title}
                       </span>
-                      {isPassed && <CheckCircle2 size={16} style={{ color: '#FF1616' }} />}
+                      {isPassed && <CheckCircle2 size={16} style={{ color: 'var(--red-bright)' }} />}
                     </div>
 
                     <h3 style={{ fontSize: '1.35rem', color: '#FFFFFF', marginBottom: '0.65rem' }}>
                       {m.headline}
                     </h3>
-                    <p style={{ color: '#D0D0D0', fontSize: '0.92rem', lineHeight: 1.6 }}>
+                    <p style={{ color: 'var(--paper)', fontSize: '0.92rem', lineHeight: 1.6 }}>
                       {m.desc}
                     </p>
                   </div>
@@ -325,8 +325,8 @@ export default function AboutPage() {
               className="browser-window"
               style={{
                 padding: '2rem',
-                backgroundColor: '#080808',
-                border: '1px solid #292929',
+                backgroundColor: 'var(--ink)',
+                border: '1px solid var(--border)',
                 borderRadius: '20px',
                 textAlign: 'center'
               }}
@@ -340,14 +340,14 @@ export default function AboutPage() {
                   borderRadius: '50%',
                   objectFit: 'cover',
                   margin: '0 auto 1.25rem auto',
-                  border: '2px solid #FF0000'
+                  border: '2px solid var(--red)'
                 }}
               />
               <h3 style={{ fontSize: '1.25rem', marginBottom: '0.35rem', color: '#FFFFFF' }}>{member.name}</h3>
-              <span className="mono-text" style={{ fontSize: '0.78rem', color: '#FF1616', display: 'block', marginBottom: '1rem' }}>
+              <span className="mono-text" style={{ fontSize: '0.78rem', color: 'var(--red-bright)', display: 'block', marginBottom: '1rem' }}>
                 {member.role}
               </span>
-              <p style={{ fontSize: '0.88rem', color: '#8A8A8A', lineHeight: 1.55 }}>
+              <p style={{ fontSize: '0.88rem', color: 'var(--muted)', lineHeight: 1.55 }}>
                 {member.bio}
               </p>
             </div>
@@ -368,8 +368,8 @@ export default function AboutPage() {
                 key={idx}
                 className="browser-window"
                 style={{
-                  backgroundColor: '#080808',
-                  border: isOpen ? '1px solid #FF0000' : '1px solid #292929',
+                  backgroundColor: 'var(--ink)',
+                  border: isOpen ? '1px solid var(--red)' : '1px solid var(--border)',
                   borderRadius: '14px',
                   overflow: 'hidden'
                 }}
@@ -396,7 +396,7 @@ export default function AboutPage() {
                   <ChevronDown 
                     size={18} 
                     style={{ 
-                      color: '#FF1616',
+                      color: 'var(--red-bright)',
                       transform: isOpen ? 'rotate(180deg)' : 'rotate(0)',
                       transition: 'transform 0.25s ease' 
                     }} 
@@ -404,7 +404,7 @@ export default function AboutPage() {
                 </button>
 
                 {isOpen && (
-                  <div style={{ padding: '0 1.5rem 1.25rem 1.5rem', color: '#D0D0D0', fontSize: '0.92rem', lineHeight: 1.65 }}>
+                  <div style={{ padding: '0 1.5rem 1.25rem 1.5rem', color: 'var(--paper)', fontSize: '0.92rem', lineHeight: 1.65 }}>
                     {faq.a}
                   </div>
                 )}

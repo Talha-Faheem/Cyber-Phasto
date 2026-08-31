@@ -77,11 +77,11 @@ export default function ZeroToProfessionalList({ onNavigate, onOpenContact }) {
     <section 
       id="zero-to-professional-list"
       style={{
-        backgroundColor: '#000000',
+        backgroundColor: 'var(--black)',
         padding: '5rem 0 5.5rem 0',
         position: 'relative',
-        borderTop: '1px solid #292929',
-        borderBottom: '1px solid #292929'
+        borderTop: '1px solid var(--border)',
+        borderBottom: '1px solid var(--border)'
       }}
     >
       <div className="container" style={{ maxWidth: '1000px', margin: '0 auto' }}>
@@ -93,9 +93,9 @@ export default function ZeroToProfessionalList({ onNavigate, onOpenContact }) {
               display: 'inline-block',
               padding: '0.3rem 0.85rem',
               borderRadius: '4px',
-              backgroundColor: 'rgba(255, 0, 0, 0.1)',
-              border: '1px solid rgba(255, 0, 0, 0.3)',
-              color: '#FF0000',
+              backgroundColor: 'var(--red-subtle)',
+              border: '1px solid var(--red-border)',
+              color: 'var(--red)',
               fontFamily: 'var(--font-mono)',
               fontSize: '0.76rem',
               fontWeight: 800,
@@ -115,10 +115,10 @@ export default function ZeroToProfessionalList({ onNavigate, onOpenContact }) {
               letterSpacing: '-0.025em'
             }}
           >
-            From Zero To <span style={{ color: '#FF0000' }}>Professional.</span>
+            From Zero To <span style={{ color: 'var(--red)' }}>Professional.</span>
           </h2>
 
-          <p style={{ color: '#A0A0A0', fontSize: '1.02rem', maxWidth: '680px', margin: '0 auto' }}>
+          <p style={{ color: 'var(--muted)', fontSize: '1.02rem', maxWidth: '680px', margin: '0 auto' }}>
             A structured, sequential 5-stage progression taking you from foundational computer systems to offensive security operations and global placement.
           </p>
         </div>
@@ -129,8 +129,8 @@ export default function ZeroToProfessionalList({ onNavigate, onOpenContact }) {
             <div
               key={item.step}
               style={{
-                backgroundColor: '#0A0C10',
-                border: '1px solid #242730',
+                backgroundColor: 'var(--ink)',
+                border: '1px solid var(--border)',
                 borderRadius: '16px',
                 padding: '1.6rem 2rem',
                 display: 'grid',
@@ -148,7 +148,7 @@ export default function ZeroToProfessionalList({ onNavigate, onOpenContact }) {
                   flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  borderRight: '1px solid #242730',
+                  borderRight: '1px solid var(--border)',
                   paddingRight: '1.5rem'
                 }}
               >
@@ -157,7 +157,7 @@ export default function ZeroToProfessionalList({ onNavigate, onOpenContact }) {
                     fontFamily: 'var(--font-mono)',
                     fontSize: '1.9rem',
                     fontWeight: 800,
-                    color: '#FF0000',
+                    color: 'var(--red)',
                     lineHeight: 1
                   }}
                 >
@@ -168,7 +168,7 @@ export default function ZeroToProfessionalList({ onNavigate, onOpenContact }) {
                     fontFamily: 'var(--font-mono)',
                     fontSize: '0.66rem',
                     fontWeight: 700,
-                    color: '#8A8A8A',
+                    color: 'var(--muted)',
                     letterSpacing: '0.05em',
                     marginTop: '0.25rem'
                   }}
@@ -185,7 +185,7 @@ export default function ZeroToProfessionalList({ onNavigate, onOpenContact }) {
                       fontFamily: 'var(--font-mono)',
                       fontSize: '0.72rem',
                       fontWeight: 800,
-                      color: '#FF1616',
+                      color: 'var(--red-bright)',
                       letterSpacing: '0.08em',
                       textTransform: 'uppercase'
                     }}
@@ -199,8 +199,8 @@ export default function ZeroToProfessionalList({ onNavigate, onOpenContact }) {
                       fontFamily: 'var(--font-mono)',
                       fontWeight: 700,
                       backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
-                      color: '#D0D0D0',
+                      border: '1px solid var(--border)',
+                      color: 'var(--paper)',
                       padding: '0.15rem 0.5rem',
                       borderRadius: '4px'
                     }}
@@ -225,7 +225,7 @@ export default function ZeroToProfessionalList({ onNavigate, onOpenContact }) {
                 <p 
                   style={{
                     fontSize: '0.88rem',
-                    color: '#8A8A8A',
+                    color: 'var(--muted)',
                     lineHeight: 1.55,
                     marginBottom: '0.85rem'
                   }}
@@ -242,9 +242,9 @@ export default function ZeroToProfessionalList({ onNavigate, onOpenContact }) {
                         style={{
                           fontSize: '0.72rem',
                           fontFamily: 'var(--font-mono)',
-                          color: '#C0C0C0',
-                          backgroundColor: '#12151C',
-                          border: '1px solid #292929',
+                          color: 'var(--paper)',
+                          backgroundColor: 'var(--black)',
+                          border: '1px solid var(--border)',
                           padding: '0.2rem 0.55rem',
                           borderRadius: '4px'
                         }}
@@ -254,13 +254,13 @@ export default function ZeroToProfessionalList({ onNavigate, onOpenContact }) {
                     ))}
                   </div>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.78rem', color: '#8A8A8A' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.78rem', color: 'var(--muted)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                      <Clock size={12} style={{ color: '#FF1616' }} />
+                      <Clock size={12} style={{ color: 'var(--red-bright)' }} />
                       <span>{item.duration}</span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                      <BookOpen size={12} style={{ color: '#FF1616' }} />
+                      <BookOpen size={12} style={{ color: 'var(--red-bright)' }} />
                       <span>{item.labs}</span>
                     </div>
                   </div>
@@ -274,8 +274,8 @@ export default function ZeroToProfessionalList({ onNavigate, onOpenContact }) {
                   style={{
                     padding: '0.65rem 1.15rem',
                     borderRadius: '8px',
-                    backgroundColor: '#12151C',
-                    border: '1px solid #292929',
+                    backgroundColor: 'var(--black)',
+                    border: '1px solid var(--border)',
                     color: '#FFFFFF',
                     fontFamily: 'var(--font-mono)',
                     fontSize: '0.82rem',
@@ -290,7 +290,7 @@ export default function ZeroToProfessionalList({ onNavigate, onOpenContact }) {
                   className="roadmap-row-btn"
                 >
                   <span>View Cohort</span>
-                  <ArrowRight size={14} style={{ color: '#FF1616' }} />
+                  <ArrowRight size={14} style={{ color: 'var(--red-bright)' }} />
                 </button>
               </div>
 
@@ -302,12 +302,12 @@ export default function ZeroToProfessionalList({ onNavigate, onOpenContact }) {
 
       <style>{`
         .roadmap-list-row:hover {
-          border-color: #FF0000 !important;
+          border-color: var(--red) !important;
           transform: translateY(-2px);
         }
         .roadmap-list-row:hover .roadmap-row-btn {
-          background-color: #FF0000 !important;
-          border-color: #FF0000 !important;
+          background-color: var(--red) !important;
+          border-color: var(--red) !important;
         }
         .roadmap-list-row:hover .roadmap-row-btn span {
           color: #FFFFFF !important;
@@ -322,7 +322,7 @@ export default function ZeroToProfessionalList({ onNavigate, onOpenContact }) {
           }
           .roadmap-list-row > div:first-child {
             border-right: none !important;
-            border-bottom: 1px solid #242730 !important;
+            border-bottom: 1px solid var(--border) !important;
             padding-right: 0 !important;
             padding-bottom: 0.75rem !important;
             flex-direction: row !important;

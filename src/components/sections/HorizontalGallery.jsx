@@ -84,13 +84,13 @@ export default function HorizontalGallery() {
     <section 
       ref={sectionRef} 
       style={{ 
-        backgroundColor: '#000000', 
+        backgroundColor: 'var(--black)', 
         overflow: 'hidden', 
         position: 'relative', 
         paddingTop: '5rem',
         paddingBottom: '5.5rem',
-        borderTop: '1px solid #292929',
-        borderBottom: '1px solid #292929'
+        borderTop: '1px solid var(--border)',
+        borderBottom: '1px solid var(--border)'
       }}
     >
       {/* Background Cyber Grid */}
@@ -106,10 +106,10 @@ export default function HorizontalGallery() {
             letterSpacing: '-0.03em'
           }}
         >
-          Real Labs. Live Simulations. <span style={{ color: '#FF0000' }}>Zero Fluff.</span>
+          Real Labs. Live Simulations. <span style={{ color: 'var(--red)' }}>Zero Fluff.</span>
         </h2>
 
-        <p style={{ color: '#D0D0D0', fontSize: '1.02rem', maxWidth: '720px', margin: '0 auto' }}>
+        <p style={{ color: 'var(--paper)', fontSize: '1.02rem', maxWidth: '720px', margin: '0 auto' }}>
           Scroll down to see our hands-on workshops, live attack simulations, and university chapter events move in motion.
         </p>
       </div>
@@ -152,9 +152,9 @@ export default function HorizontalGallery() {
                   overflow: 'hidden',
                   position: 'relative',
                   cursor: 'pointer',
-                  border: isHovered ? '1px solid rgba(255, 100, 30, 0.4)' : '1px solid #292929',
+                  border: isHovered ? '1px solid var(--red-border)' : '1px solid var(--border)',
                   boxShadow: isHovered 
-                    ? '0 25px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(224, 78, 28, 0.35)' 
+                    ? '0 25px 60px rgba(0, 0, 0, 0.95), 0 0 35px var(--red-glow)' 
                     : '0 15px 40px rgba(0, 0, 0, 0.75)',
                   transform: isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0) scale(1)',
                   transition: 'all 0.45s cubic-bezier(0.16, 1, 0.3, 1)'
@@ -188,7 +188,7 @@ export default function HorizontalGallery() {
                   }}
                 />
 
-                {/* Fiery Warm Red / Orange Gradient Bottom Overlay on Hover */}
+                {/* Fiery Red Gradient Bottom Overlay on Hover */}
                 <div 
                   style={{
                     position: 'absolute',
@@ -196,10 +196,10 @@ export default function HorizontalGallery() {
                     background: `
                       linear-gradient(
                         to top,
-                        #D84218 0%,
-                        #E04E1C 22%,
-                        rgba(224, 78, 28, 0.65) 45%,
-                        rgba(200, 50, 20, 0.2) 70%,
+                        #B00000 0%,
+                        #FF0205 22%,
+                        rgba(255, 2, 5, 0.65) 45%,
+                        rgba(176, 0, 0, 0.2) 70%,
                         transparent 100%
                       )
                     `,
@@ -224,7 +224,7 @@ export default function HorizontalGallery() {
                     zIndex: 3
                   }}
                 >
-                  {/* Top-Left Orange Pill Badge */}
+                  {/* Top-Left Red Pill Badge */}
                   <div 
                     style={{
                       display: 'inline-flex',
@@ -232,12 +232,12 @@ export default function HorizontalGallery() {
                       gap: '0.35rem',
                       padding: '0.35rem 0.85rem',
                       borderRadius: '999px',
-                      backgroundColor: '#E85A19',
+                      backgroundColor: 'var(--red)',
                       color: '#FFFFFF',
                       fontFamily: 'var(--font-sans)',
                       fontSize: '0.76rem',
                       fontWeight: 700,
-                      boxShadow: '0 4px 15px rgba(232, 90, 25, 0.4)',
+                      boxShadow: '0 4px 15px var(--red-glow)',
                       opacity: isHovered ? 1 : 0,
                       transform: isHovered ? 'translateY(0)' : 'translateY(-10px)',
                       transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)'
@@ -253,7 +253,7 @@ export default function HorizontalGallery() {
                       width: '42px',
                       height: '42px',
                       borderRadius: '50%',
-                      backgroundColor: '#000000',
+                      backgroundColor: 'var(--black)',
                       border: '1px solid rgba(255, 255, 255, 0.15)',
                       color: '#FFFFFF',
                       display: 'flex',

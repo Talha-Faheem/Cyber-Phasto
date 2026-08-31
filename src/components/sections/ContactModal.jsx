@@ -4,7 +4,7 @@ import { X, ShieldCheck, Send, CheckCircle2 } from 'lucide-react';
 const labelStyle = {
   display: 'block',
   fontSize: '0.8rem',
-  color: '#e4e4e7',
+  color: 'var(--paper)',
   marginBottom: '0.35rem',
   fontWeight: 700,
   fontFamily: 'var(--font-mono)'
@@ -16,7 +16,7 @@ const inputStyle = {
   backgroundColor: 'rgba(255, 255, 255, 0.05)',
   backdropFilter: 'blur(10px)',
   WebkitBackdropFilter: 'blur(10px)',
-  border: '1px solid rgba(255, 255, 255, 0.12)',
+  border: '1px solid var(--border)',
   borderRadius: '10px',
   color: '#FFFFFF',
   fontFamily: 'var(--font-sans)',
@@ -105,7 +105,7 @@ export default function ContactModal({ isOpen, onClose }) {
             style={{
               background: 'none',
               border: 'none',
-              color: '#888',
+              color: 'var(--muted)',
               cursor: 'pointer',
               padding: '0.35rem',
               transition: 'color 0.2s ease'
@@ -119,11 +119,11 @@ export default function ContactModal({ isOpen, onClose }) {
         <div style={{ padding: '1.75rem' }}>
           {submitted ? (
             <div style={{ textAlign: 'center', padding: '2rem 1rem' }}>
-              <div style={{ width: '65px', height: '65px', borderRadius: '50%', backgroundColor: 'rgba(255, 2, 5, 0.15)', border: '2px solid #FF0205', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FF0205', margin: '0 auto 1.25rem auto' }}>
+              <div style={{ width: '65px', height: '65px', borderRadius: '50%', backgroundColor: 'var(--red-subtle)', border: '2px solid var(--red)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--red)', margin: '0 auto 1.25rem auto' }}>
                 <CheckCircle2 size={36} />
               </div>
               <h3 style={{ fontSize: '1.45rem', marginBottom: '0.65rem', color: '#FFFFFF' }}>Inquiry Received</h3>
-              <p style={{ color: '#a1a1aa', fontSize: '0.92rem', marginBottom: '1.75rem', lineHeight: 1.6 }}>
+              <p style={{ color: 'var(--muted)', fontSize: '0.92rem', marginBottom: '1.75rem', lineHeight: 1.6 }}>
                 Thank you for reaching out to CyberPashto. An academic advisor will contact you within 12 hours.
               </p>
               <button onClick={resetForm} className="btn primary" style={{ padding: '0.75rem 2rem' }}>
@@ -175,7 +175,7 @@ export default function ContactModal({ isOpen, onClose }) {
                   <select 
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    style={{ ...inputStyle, appearance: 'none', backgroundColor: '#140a0c', cursor: 'pointer' }}
+                    style={{ ...inputStyle, appearance: 'none', backgroundColor: 'var(--ink)', cursor: 'pointer' }}
                   >
                     <option value="Course Enrollment / Admission">Course Enrollment / Admission</option>
                     <option value="Full Stack Web Development">Full Stack Web Development</option>

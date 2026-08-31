@@ -159,12 +159,12 @@ export default function AcademyBenefits({ onOpenContact, onNavigate }) {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{
-        backgroundColor: '#000000',
+        backgroundColor: 'var(--black)',
         padding: '5rem 0',
         position: 'relative',
         overflow: 'hidden',
-        borderTop: '1px solid #292929',
-        borderBottom: '1px solid #292929',
+        borderTop: '1px solid var(--border)',
+        borderBottom: '1px solid var(--border)',
         perspective: '1400px'
       }}
     >
@@ -245,9 +245,9 @@ export default function AcademyBenefits({ onOpenContact, onNavigate }) {
                 padding: '0.45rem 0.85rem',
                 borderRadius: '8px',
                 backgroundColor: 'rgba(8, 8, 8, 0.85)',
-                border: '1px solid #292929',
+                border: '1px solid var(--border)',
                 fontSize: '0.74rem',
-                color: '#8A8A8A',
+                color: 'var(--muted)',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.5rem'
@@ -264,9 +264,9 @@ export default function AcademyBenefits({ onOpenContact, onNavigate }) {
                 padding: '0.45rem 0.9rem',
                 borderRadius: '8px',
                 border: '1px solid',
-                borderColor: autoScan ? current.color : '#292929',
-                backgroundColor: autoScan ? current.bgSubtle : '#080808',
-                color: autoScan ? current.colorBright : '#8A8A8A',
+                borderColor: autoScan ? current.color : 'var(--border)',
+                backgroundColor: autoScan ? current.bgSubtle : 'var(--ink)',
+                color: autoScan ? current.colorBright : 'var(--muted)',
                 fontSize: '0.74rem',
                 fontWeight: 700,
                 cursor: 'pointer',
@@ -529,12 +529,12 @@ export default function AcademyBenefits({ onOpenContact, onNavigate }) {
                   }}
                 >
                   <svg viewBox="0 0 200 150" width="52" height="38">
-                    <path d="M40 50 Q100 20 160 50 L140 30 Q100 15 60 30 Z" fill="#FF0000" />
-                    <rect x="55" y="52" width="90" height="26" rx="8" fill="#FF0000" />
-                    <circle cx="78" cy="65" r="5" fill="#000000" />
-                    <circle cx="122" cy="65" r="5" fill="#000000" />
+                    <path d="M40 50 Q100 20 160 50 L140 30 Q100 15 60 30 Z" fill="var(--red)" />
+                    <rect x="55" y="52" width="90" height="26" rx="8" fill="var(--red)" />
+                    <circle cx="78" cy="65" r="5" fill="var(--black)" />
+                    <circle cx="122" cy="65" r="5" fill="var(--black)" />
                   </svg>
-                  <span style={{ fontSize: '0.92rem', fontWeight: 800, color: '#FF0000', direction: 'rtl', marginTop: '2px' }}>
+                  <span style={{ fontSize: '0.92rem', fontWeight: 800, color: 'var(--red)', direction: 'rtl', marginTop: '2px' }}>
                     سائبر پښتو
                   </span>
                 </div>

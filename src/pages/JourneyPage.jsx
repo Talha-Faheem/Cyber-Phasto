@@ -1,295 +1,397 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
 import { careerPathsData } from '../data/coursesData';
 import HomeBackground from '../components/home/HomeBackground';
 import JourneyHero from '../components/journey/JourneyHero';
 import TrackSelector from '../components/journey/TrackSelector';
 import JourneyTimeline from '../components/journey/JourneyTimeline';
-import DestinationCard from '../components/journey/DestinationCard';
 import PathFinderQuizModal from '../components/journey/PathFinderQuizModal';
 
 export default function JourneyPage({ onOpenContact, onNavigate, initialPathId = 'web-development' }) {
   const [selectedPathId, setSelectedPathId] = useState(initialPathId);
-
   const [isQuizOpen, setIsQuizOpen] = useState(false);
-  const [quizStep, setQuizStep] = useState(1);
-  const [quizAnswers, setQuizAnswers] = useState({ level: '', interest: '', goal: '' });
-  const [quizResult, setQuizResult] = useState(null);
+  const location = useLocation();
 
-  const handleQuizAnswer = (field, value) => {
-    const nextAnswers = { ...quizAnswers, [field]: value };
-    setQuizAnswers(nextAnswers);
-
-    if (quizStep < 3) {
-      setQuizStep(prev => prev + 1);
-    } else {
-      let matchedPath = careerPathsData[0];
-      const interest = nextAnswers.interest || value;
-      if (interest === 'cyber') {
-        matchedPath = careerPathsData.find(p => p.id === 'cybersecurity') || careerPathsData[1];
-      } else if (interest === 'ai') {
-        matchedPath = careerPathsData.find(p => p.id === 'artificial-intelligence' || p.id === 'ai-ml') || careerPathsData[2];
-      } else if (interest === 'data') {
-        matchedPath = careerPathsData.find(p => p.id === 'data-science') || careerPathsData[3];
-      } else if (interest === 'swe') {
-        matchedPath = careerPathsData.find(p => p.id === 'software-engineering') || careerPathsData[4];
-      } else if (interest === 'cloud') {
-        matchedPath = careerPathsData.find(p => p.id === 'cloud-devops') || careerPathsData[5];
-      } else {
-        matchedPath = careerPathsData.find(p => p.id === 'web-development') || careerPathsData[0];
-      }
-      setQuizResult(matchedPath);
-      setQuizStep(4);
+  useEffect(() => {
+    if (location.search.includes('quiz=true') || location.search.includes('quiz=1')) {
+      setIsQuizOpen(true);
     }
-  };
+  }, [location.search]);
 
-  const applyQuizRecommendation = () => {
-    if (quizResult && quizResult.id) {
-      setSelectedPathId(quizResult.id);
-    }
+  const handleSelectQuizPath = (pathId) => {
+    setSelectedPathId(pathId);
     setIsQuizOpen(false);
-    setQuizStep(1);
     setTimeout(() => {
-      const el = document.getElementById('roadmapSection') || document.getElementById('journeyTrack');
+      const el = document.getElementById('roadmap') || document.querySelector('.roadmap');
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }, 150);
   };
 
-  const resetQuiz = () => {
-    setQuizStep(1);
-    setQuizAnswers({ level: '', interest: '', goal: '' });
-    setQuizResult(null);
-  };
-
   const trackRef = useRef(null);
   const svgRef = useRef(null);
-  const pathIdleRef = useRef(null);
+  const pathBaseRef = useRef(null);
   const pathGlowRef = useRef(null);
   const pathActiveRef = useRef(null);
-  const stepsContainerRef = useRef(null);
+  const leadDotRef = useRef(null);
+  const startDotRef = useRef(null);
+  const endDotRef = useRef(null);
   const destinationCardRef = useRef(null);
-  const pathLengthRef = useRef(0);
+  const courseNodeRefs = useRef([]);
+  const pathCacheRef = useRef({ totalLength: 0, nodes: [] });
+  const targetProgressRef = useRef(0);
+  const currentProgressRef = useRef(0);
+  const rafIdRef = useRef(null);
 
   const activePath = careerPathsData.find(p => p.id === selectedPathId) || careerPathsData[0];
 
-  const buildPath = useCallback(() => {
-    if (!trackRef.current || !svgRef.current || !pathIdleRef.current || !pathGlowRef.current || !pathActiveRef.current) return;
+  // Apply visual DOM mutations at any given interpolated progress value (0..1)
+  const applyProgressVisuals = useCallback((progress) => {
+    const roadmap = trackRef.current;
+    const pathActive = pathActiveRef.current;
+    const pathGlow = pathGlowRef.current;
+    const leadDot = leadDotRef.current;
+    const startDot = startDotRef.current;
+    const endDot = endDotRef.current;
+    const destCard = destinationCardRef.current;
+    const { totalLength, nodes } = pathCacheRef.current;
 
-    const track = trackRef.current;
-    const svg = svgRef.current;
-    const trackRect = track.getBoundingClientRect();
-    const w = track.clientWidth;
-    const h = track.scrollHeight;
+    if (!roadmap || !pathActive || totalLength <= 0) return;
 
-    svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+    const clamped = Math.max(0, Math.min(1, progress));
+    const currentLength = clamped * totalLength;
+    const strokeOffset = totalLength - currentLength;
 
-    const stepElements = Array.from(track.querySelectorAll('[data-step]'));
-    if (!stepElements.length) return;
+    // 1. Update SVG Progress Strokes (both active line and neon glow)
+    pathActive.style.strokeDasharray = `${totalLength} ${totalLength}`;
+    pathActive.style.strokeDashoffset = `${strokeOffset}`;
+    if (pathGlow) {
+      pathGlow.style.strokeDasharray = `${totalLength} ${totalLength}`;
+      pathGlow.style.strokeDashoffset = `${strokeOffset}`;
+    }
 
-    const isMobile = window.innerWidth <= 860;
-
-    // Collect entry and exit coordinates for each step
-    const stepsData = stepElements.map((step) => {
-      const entryAnchor = step.querySelector('.step-entry-anchor');
-      const marker = step.querySelector('.step-marker');
-      const card = step.querySelector('.step-card-box');
-
-      const cardRect = card ? card.getBoundingClientRect() : step.getBoundingClientRect();
-      const markerRect = marker ? marker.getBoundingClientRect() : cardRect;
-
-      const entryX = entryAnchor 
-        ? entryAnchor.getBoundingClientRect().left - trackRect.left + (entryAnchor.getBoundingClientRect().width / 2)
-        : cardRect.left - trackRect.left + (cardRect.width / 2);
-      const entryY = entryAnchor 
-        ? entryAnchor.getBoundingClientRect().top - trackRect.top
-        : cardRect.top - trackRect.top;
-
-      const exitX = markerRect.left - trackRect.left + (markerRect.width / 2);
-      const exitY = markerRect.top - trackRect.top + (markerRect.height / 2);
-
-      return {
-        entry: { x: entryX, y: entryY },
-        exit: { x: exitX, y: exitY }
-      };
-    });
-
-    let d = '';
-
-    if (isMobile) {
-      // Mobile clean vertical laser line connecting cards
-      const first = stepsData[0];
-      d = `M ${first.exit.x} ${Math.max(0, first.entry.y - 30)} `;
-      d += `L ${first.exit.x} ${first.exit.y} `;
-
-      for (let i = 1; i < stepsData.length; i++) {
-        const curr = stepsData[i];
-        d += `L ${curr.exit.x} ${curr.exit.y} `;
-      }
-
-      if (destinationCardRef.current) {
-        const destRect = destinationCardRef.current.getBoundingClientRect();
-        const destX = stepsData[stepsData.length - 1].exit.x;
-        const destY = destRect.top - trackRect.top;
-        d += `L ${destX} ${destY} `;
-      }
-    } else {
-      // 2D Map multi-directional circuit track connecting steps
-      // Start slightly above first card
-      const first = stepsData[0];
-      d = `M ${first.entry.x} ${Math.max(0, first.entry.y - 30)} `;
-      d += `L ${first.entry.x} ${first.entry.y} `;
-      d += `L ${first.exit.x} ${first.exit.y} `;
-
-      for (let i = 0; i < stepsData.length - 1; i++) {
-        const currExit = stepsData[i].exit;
-        const nextEntry = stepsData[i + 1].entry;
-        const nextExit = stepsData[i + 1].exit;
-
-        const dx = nextEntry.x - currExit.x;
-        const dy = nextEntry.y - currExit.y;
-
-        if (Math.abs(dx) < 40) {
-          // Direct downward connection (e.g. Course 02 -> Course 03, Course 04 -> Course 05)
-          d += `L ${nextEntry.x} ${nextEntry.y} `;
-        } else if (dx > 40) {
-          // Turn RIGHT 90° with smooth rounded corners (e.g. Course 01 -> Course 02, Course 05 -> Course 06)
-          const yMid = currExit.y + Math.max(20, dy * 0.45);
-          const r = Math.min(18, Math.max(4, Math.abs(dx) / 4), Math.max(4, yMid - currExit.y), Math.max(4, nextEntry.y - yMid));
-          d += `L ${currExit.x} ${yMid - r} `;
-          d += `Q ${currExit.x} ${yMid} ${currExit.x + r} ${yMid} `;
-          d += `L ${nextEntry.x - r} ${yMid} `;
-          d += `Q ${nextEntry.x} ${yMid} ${nextEntry.x} ${yMid + r} `;
-          d += `L ${nextEntry.x} ${nextEntry.y} `;
-        } else {
-          // Turn LEFT 90° with smooth rounded corners (e.g. Course 03 -> Course 04)
-          const yMid = currExit.y + Math.max(20, dy * 0.45);
-          const r = Math.min(18, Math.max(4, Math.abs(dx) / 4), Math.max(4, yMid - currExit.y), Math.max(4, nextEntry.y - yMid));
-          d += `L ${currExit.x} ${yMid - r} `;
-          d += `Q ${currExit.x} ${yMid} ${currExit.x - r} ${yMid} `;
-          d += `L ${nextEntry.x + r} ${yMid} `;
-          d += `Q ${nextEntry.x} ${yMid} ${nextEntry.x} ${yMid + r} `;
-          d += `L ${nextEntry.x} ${nextEntry.y} `;
-        }
-
-        // Trace through the next card from its entry to its exit marker
-        d += `L ${nextExit.x} ${nextExit.y} `;
-      }
-
-      // Connect last step (Course 06) to Destination Card
-      const lastExit = stepsData[stepsData.length - 1].exit;
-      if (destinationCardRef.current) {
-        const destRect = destinationCardRef.current.getBoundingClientRect();
-        const destX = destRect.left - trackRect.left + (destRect.width / 2);
-        const destY = destRect.top - trackRect.top;
-        const dy = destY - lastExit.y;
-
-        if (Math.abs(destX - lastExit.x) < 40) {
-          d += `L ${destX} ${destY} `;
-        } else {
-          const cp1x = lastExit.x;
-          const cp1y = lastExit.y + dy * 0.45;
-          const cp2x = destX;
-          const cp2y = destY - dy * 0.3;
-          d += `C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${destX} ${destY} `;
-        }
+    // 2. Position the Leading Edge Traveler Indicator along the wave
+    if (leadDot) {
+      if (clamped <= 0.003) {
+        leadDot.style.opacity = '0';
       } else {
-        d += `L ${lastExit.x} ${h} `;
+        const pt = pathActive.getPointAtLength(currentLength);
+        leadDot.style.transform = `translate3d(${pt.x}px, ${pt.y}px, 0)`;
+        leadDot.style.opacity = '1';
       }
     }
 
-    pathIdleRef.current.setAttribute('d', d);
-    pathGlowRef.current.setAttribute('d', d);
-    pathActiveRef.current.setAttribute('d', d);
+    // 3. Dynamic Milestone Node & Card State Reactions
+    if (nodes && nodes.length > 0) {
+      nodes.forEach((nodeInfo) => {
+        const isReached = currentLength >= nodeInfo.length - 8;
+        const isCurrent = Math.abs(currentLength - nodeInfo.length) < 36;
 
-    try {
-      const length = pathActiveRef.current.getTotalLength();
-      pathLengthRef.current = length;
+        if (nodeInfo.type === 'start' && startDot) {
+          if (clamped > 0.02) {
+            startDot.className = 'node-dot node-completed';
+          } else {
+            startDot.className = 'node-dot node-current pulse';
+          }
+        } else if (nodeInfo.type === 'end' && endDot) {
+          if (clamped >= 0.96) {
+            endDot.className = 'node-dot end-node node-completed';
+          } else if (clamped >= 0.88) {
+            endDot.className = 'node-dot end-node node-current pulse';
+          } else {
+            endDot.className = 'node-dot end-node node-upcoming';
+          }
+        } else if (nodeInfo.type === 'course') {
+          const nodeEl = courseNodeRefs.current[nodeInfo.courseIdx];
+          if (nodeEl) {
+            if (isCurrent) {
+              nodeEl.className = 'node-dot level-node node-current pulse';
+            } else if (isReached) {
+              nodeEl.className = 'node-dot level-node node-completed';
+            } else {
+              nodeEl.className = 'node-dot level-node node-upcoming';
+            }
+          }
 
-      [pathGlowRef.current, pathActiveRef.current].forEach((p) => {
-        if (p) {
-          p.style.strokeDasharray = `${length}`;
-          p.style.strokeDashoffset = `${length}`;
+          if (nodeInfo.cardId) {
+            const cardEl = document.getElementById(nodeInfo.cardId);
+            if (cardEl) {
+              if (isCurrent) {
+                cardEl.classList.add('card-current');
+                cardEl.classList.remove('card-upcoming');
+              } else if (isReached) {
+                cardEl.classList.add('card-completed');
+                cardEl.classList.remove('card-upcoming', 'card-current');
+              } else {
+                cardEl.classList.add('card-upcoming');
+                cardEl.classList.remove('card-completed', 'card-current');
+              }
+            }
+          }
         }
       });
-    } catch (e) {}
+    }
+
+    // 4. Highlight destination card upon reaching end
+    if (destCard) {
+      if (clamped >= 0.95) {
+        destCard.classList.add('card-completed');
+        destCard.classList.remove('card-upcoming');
+      } else {
+        destCard.classList.add('card-upcoming');
+        destCard.classList.remove('card-completed');
+      }
+    }
   }, []);
 
-  const updateProgress = useCallback(() => {
-    if (!trackRef.current || !pathActiveRef.current || !pathGlowRef.current) return;
-    const length = pathLengthRef.current;
-    if (!length) return;
+  // Compute raw target progress from scroll position
+  const calculateTargetProgress = useCallback(() => {
+    const roadmap = trackRef.current;
+    if (!roadmap) return 0;
 
-    const trackRect = trackRef.current.getBoundingClientRect();
-    const viewportH = window.innerHeight;
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop || window.scrollY || 0;
+    const rect = roadmap.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 800;
 
-    const start = viewportH * 0.85;
-    const end = -trackRef.current.scrollHeight + viewportH * 0.4;
-    const raw = (trackRect.top - start) / (end - start);
-    const progress = Math.min(1, Math.max(0, raw));
+    const roadmapPageY = rect.top + scrollTop;
+    const roadmapHeight = rect.height;
+    const focalPageY = scrollTop + (viewportHeight * 0.46);
 
-    const offset = length * (1 - progress);
-    pathGlowRef.current.style.strokeDashoffset = `${offset}`;
-    pathActiveRef.current.style.strokeDashoffset = `${offset}`;
+    const journeyStartY = roadmapPageY + 24;
+    const journeyEndY = roadmapPageY + roadmapHeight - 110;
+    const totalTravel = Math.max(150, journeyEndY - journeyStartY);
+
+    let progress = (focalPageY - journeyStartY) / totalTravel;
+    return Math.max(0, Math.min(1, progress));
   }, []);
 
-  useEffect(() => {
-    const timer1 = setTimeout(() => {
-      buildPath();
-      updateProgress();
-    }, 60);
+  // Continuous physics lerp animation loop for butter-smooth momentum & fluidity
+  const startAnimationLoop = useCallback(() => {
+    if (rafIdRef.current) return;
 
-    const timer2 = setTimeout(() => {
-      buildPath();
-      updateProgress();
-    }, 300);
+    const tick = () => {
+      const target = targetProgressRef.current;
+      const current = currentProgressRef.current;
+      const diff = target - current;
 
-    const handleResize = () => {
-      buildPath();
-      updateProgress();
+      if (Math.abs(diff) > 0.0001) {
+        // High-end smooth easing dampener (0.1 = ultra silky, fast response without overshoot)
+        currentProgressRef.current = current + diff * 0.1;
+        applyProgressVisuals(currentProgressRef.current);
+        rafIdRef.current = requestAnimationFrame(tick);
+      } else {
+        currentProgressRef.current = target;
+        applyProgressVisuals(target);
+        rafIdRef.current = null;
+      }
     };
 
+    rafIdRef.current = requestAnimationFrame(tick);
+  }, [applyProgressVisuals]);
+
+  // Handle scroll trigger: update target and wake animation loop if sleeping
+  const updateScrollProgress = useCallback((immediate = false) => {
+    const target = calculateTargetProgress();
+    targetProgressRef.current = target;
+
+    if (immediate) {
+      if (rafIdRef.current) {
+        cancelAnimationFrame(rafIdRef.current);
+        rafIdRef.current = null;
+      }
+      currentProgressRef.current = target;
+      applyProgressVisuals(target);
+    } else {
+      startAnimationLoop();
+    }
+  }, [calculateTargetProgress, applyProgressVisuals, startAnimationLoop]);
+
+  // Wave Layout Generator: Wave sweeps across and touches every course card directly
+  const layoutPath = useCallback(() => {
+    const roadmap = trackRef.current;
+    const svg = svgRef.current;
+    if (!roadmap || !svg) return;
+
+    const roadmapRect = roadmap.getBoundingClientRect();
+    const width = roadmapRect.width;
+    const height = roadmapRect.height;
+    if (width === 0 || height === 0) return;
+
+    svg.setAttribute('width', `${width}`);
+    svg.setAttribute('height', `${height}`);
+    svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+
+    const rows = Array.from(roadmap.querySelectorAll('.level-row'));
+    const centerX = width / 2;
+
+    const points = [];
+    const nodeItems = [];
+
+    // 1. Top Start Milestone Node (index 0 - Center Top)
+    const firstRowTop = rows[0] ? (rows[0].getBoundingClientRect().top - roadmapRect.top) : 30;
+    const startY = Math.max(16, firstRowTop - 28);
+    const startPoint = { x: centerX, y: startY };
+    points.push(startPoint);
+    nodeItems.push({ x: startPoint.x, y: startPoint.y, type: 'start', index: 0 });
+
+    const startDot = startDotRef.current;
+    if (startDot) {
+      startDot.style.left = `${startPoint.x}px`;
+      startDot.style.top = `${startPoint.y}px`;
+    }
+
+    // 2. Course Milestone Nodes: Wave sweeps and touches the inner border of each card
+    rows.forEach((row, rIdx) => {
+      const card = row.querySelector('.level-card');
+      if (!card) return;
+      
+      const cardRect = card.getBoundingClientRect();
+      const rowRect = row.getBoundingClientRect();
+      const isLeft = rIdx % 2 === 0;
+      
+      // Node touches the inner edge of the card
+      const nodeX = (isLeft ? cardRect.right : cardRect.left) - roadmapRect.left;
+      const nodeY = (rowRect.top + (rowRect.height / 2)) - roadmapRect.top;
+
+      // Position course milestone node directly touching card edge
+      if (courseNodeRefs.current[rIdx]) {
+        courseNodeRefs.current[rIdx].style.left = `${nodeX}px`;
+        courseNodeRefs.current[rIdx].style.top = `${nodeY}px`;
+      }
+
+      points.push({ x: nodeX, y: nodeY });
+      nodeItems.push({
+        x: nodeX,
+        y: nodeY,
+        type: 'course',
+        index: rIdx + 1,
+        courseIdx: rIdx,
+        cardId: `card-${rIdx + 1}`
+      });
+    });
+
+    // 3. Destination Milestone Node (above destination card)
+    const endDot = endDotRef.current;
+    const destCard = destinationCardRef.current;
+    let endY = height - 50;
+    if (destCard) {
+      const destCardRect = destCard.getBoundingClientRect();
+      endY = Math.max(points[points.length - 1].y + 36, destCardRect.top - roadmapRect.top - 8);
+    }
+    const endPoint = { x: centerX, y: endY };
+    points.push(endPoint);
+    nodeItems.push({ x: endPoint.x, y: endPoint.y, type: 'end', index: nodeItems.length });
+
+    if (endDot) {
+      endDot.style.left = `${endPoint.x}px`;
+      endDot.style.top = `${endPoint.y}px`;
+    }
+
+    if (points.length < 2) return;
+
+    // 4. Construct smooth sweeping S-curves touching every card with vertical tangents
+    let d = `M ${points[0].x} ${points[0].y}`;
+    for (let i = 0; i < points.length - 1; i++) {
+      const p0 = points[i];
+      const p1 = points[i + 1];
+      const dy = p1.y - p0.y;
+      const cp1x = p0.x;
+      const cp1y = p0.y + dy * 0.5;
+      const cp2x = p1.x;
+      const cp2y = p1.y - dy * 0.5;
+      d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p1.x} ${p1.y}`;
+    }
+
+    if (pathBaseRef.current) {
+      pathBaseRef.current.setAttribute('d', d);
+    }
+    if (pathGlowRef.current) {
+      pathGlowRef.current.setAttribute('d', d);
+    }
+    if (pathActiveRef.current) {
+      pathActiveRef.current.setAttribute('d', d);
+
+      const totalLength = pathActiveRef.current.getTotalLength();
+      pathActiveRef.current.style.strokeDasharray = `${totalLength} ${totalLength}`;
+      if (pathGlowRef.current) {
+        pathGlowRef.current.style.strokeDasharray = `${totalLength} ${totalLength}`;
+      }
+
+      // Map each milestone to its exact arc length along the wave
+      const calculatedNodes = nodeItems.map(node => {
+        let low = 0;
+        let high = totalLength;
+        for (let iter = 0; iter < 40; iter++) {
+          const mid = (low + high) / 2;
+          const pt = pathActiveRef.current.getPointAtLength(mid);
+          if (pt.y < node.y) {
+            low = mid;
+          } else {
+            high = mid;
+          }
+        }
+        return {
+          ...node,
+          length: (low + high) / 2
+        };
+      });
+
+      pathCacheRef.current = {
+        totalLength,
+        nodes: calculatedNodes
+      };
+
+      // Initial progress update matching current scroll position immediately
+      updateScrollProgress(true);
+    }
+  }, [updateScrollProgress]);
+
+  // Setup High-Performance Continuous Momentum Scroll Listener
+  useEffect(() => {
+    layoutPath();
+    const t1 = setTimeout(layoutPath, 50);
+    const t2 = setTimeout(layoutPath, 200);
+    const t3 = setTimeout(layoutPath, 500);
+
+    const handleScroll = () => {
+      updateScrollProgress(false);
+    };
+
+    let resizeTimer;
+    const handleResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        layoutPath();
+      }, 60);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    document.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleResize);
-    window.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener('wheel', handleScroll, { passive: true });
+    window.addEventListener('touchmove', handleScroll, { passive: true });
 
     return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(resizeTimer);
+      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
-      window.removeEventListener('scroll', updateProgress);
+      window.removeEventListener('wheel', handleScroll);
+      window.removeEventListener('touchmove', handleScroll);
     };
-  }, [selectedPathId, buildPath, updateProgress]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-          }
-        });
-      },
-      { threshold: 0.25 }
-    );
-
-    if (trackRef.current) {
-      const stepEls = trackRef.current.querySelectorAll('[data-step]');
-      stepEls.forEach((el) => observer.observe(el));
-    }
-    if (destinationCardRef.current) {
-      observer.observe(destinationCardRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [selectedPathId]);
+  }, [selectedPathId, layoutPath, updateScrollProgress]);
 
   return (
-    <div className="journeyPageWrapper bg-[#040404] min-h-screen text-white pb-24 overflow-x-hidden w-full relative">
+    <div className="journeyPageWrapper">
       <HomeBackground />
-      <JourneyHero onOpenQuiz={() => {
-        resetQuiz();
-        setIsQuizOpen(true);
-      }} />
+
+      <JourneyHero 
+        onOpenQuiz={() => setIsQuizOpen(true)} 
+      />
 
       <TrackSelector 
         selectedPathId={selectedPathId}
@@ -297,79 +399,118 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
         activePath={activePath}
       />
 
-      <section className="roadmap-section" id="roadmapSection">
-        <JourneyTimeline 
-          trackRef={trackRef}
-          svgRef={svgRef}
-          pathIdleRef={pathIdleRef}
-          pathGlowRef={pathGlowRef}
-          pathActiveRef={pathActiveRef}
-          stepsContainerRef={stepsContainerRef}
-          activePath={activePath}
-        />
+      <JourneyTimeline 
+        trackRef={trackRef}
+        svgRef={svgRef}
+        pathBaseRef={pathBaseRef}
+        pathGlowRef={pathGlowRef}
+        pathActiveRef={pathActiveRef}
+        leadDotRef={leadDotRef}
+        startDotRef={startDotRef}
+        endDotRef={endDotRef}
+        courseNodeRefs={courseNodeRefs}
+        destinationCardRef={destinationCardRef}
+        activePath={activePath}
+        onOpenContact={onOpenContact}
+      />
 
-        <DestinationCard 
-          destinationCardRef={destinationCardRef}
-          activePath={activePath}
-          onOpenContact={onOpenContact}
-        />
-      </section>
 
       <PathFinderQuizModal 
         isOpen={isQuizOpen}
         onClose={() => setIsQuizOpen(false)}
-        quizStep={quizStep}
-        handleQuizAnswer={handleQuizAnswer}
-        quizResult={quizResult}
-        applyQuizRecommendation={applyQuizRecommendation}
-        resetQuiz={resetQuiz}
+        onSelectPath={handleSelectQuizPath}
       />
 
       <style>{`
         :root {
-          --bg: #0a0505;
-          --line-idle: rgba(255, 255, 255, 0.14);
-          --line-active: #ff3b30;
-          --accent: #ff3b30;
-          --accent-glow: rgba(255, 59, 48, 0.55);
-          --text-primary: #ffffff;
-          --text-muted: #9a9a9a;
-          --card-bg: #150a0a;
-          --card-border: rgba(255, 59, 48, 0.35);
-          --radius: 16px;
+          --bg: var(--black);
+          --bg-soft: var(--black);
+          --card: var(--ink);
+          --card-border: var(--border);
+          --card-border-soft: var(--line);
+          --red: #FF0205;
+          --red-bright: #FF1616;
+          --red-dim: var(--red-dark);
+          --ink: var(--paper);
+          --ink-dim: var(--muted);
+          --ink-faint: #6e6e6e;
+          --mono: var(--font-mono);
+          --sans: var(--font-sans);
         }
 
-        .roadmap-section {
+        .journeyPageWrapper {
+          background:
+            radial-gradient(circle at 1px 1px, rgba(255, 2, 5, 0.12) 1px, transparent 0) 0 0/34px 34px,
+            radial-gradient(1200px 700px at 50% -10%, rgba(255, 2, 5, 0.08), transparent 60%),
+            var(--black);
+          color: var(--paper);
+          font-family: var(--sans);
+          min-height: 100vh;
           position: relative;
-          padding: 24px 16px 40px;
-          max-width: 1040px;
-          margin: 0 auto;
-          width: 100%;
-          box-sizing: border-box;
+          overflow-x: hidden;
+          padding-bottom: 60px;
         }
 
-        .roadmap-eyebrow {
-          color: var(--accent);
-          font-size: 12px;
-          letter-spacing: 3px;
-          font-weight: 700;
-          text-transform: uppercase;
-          margin-bottom: 12px;
+        /* ---------- Journey Hero Section ---------- */
+        .journeyHeroSection {
+          position: relative;
+          padding-top: 130px;
+          padding-bottom: 12px;
+          text-align: center;
+          z-index: 3;
         }
-        .roadmap-title {
-          font-size: clamp(28px, 4vw, 44px);
+
+        .journeyHeroTitle {
+          font-size: clamp(34px, 5.2vw, 56px);
           font-weight: 800;
-          margin-bottom: 12px;
           letter-spacing: -0.03em;
-        }
-        .roadmap-subtitle {
-          color: var(--text-muted);
-          font-size: 16px;
-          max-width: 540px;
-          margin: 0 auto;
-          line-height: 1.6;
+          color: #ffffff;
+          margin: 0 0 16px;
+          line-height: 1.1;
+          font-family: var(--sans);
         }
 
+        .journeyHeroHighlight {
+          color: var(--red);
+          display: inline-block;
+        }
+
+        .journeyHeroSubtitle {
+          color: var(--muted);
+          font-size: clamp(15px, 1.8vw, 17px);
+          line-height: 1.6;
+          max-width: 680px;
+          margin: 0 auto;
+          font-family: var(--sans);
+          font-weight: 400;
+        }
+
+        .journeyHeroQuizPill {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          background: var(--red);
+          color: #ffffff;
+          font-size: 14.5px;
+          font-weight: 700;
+          font-family: var(--sans);
+          padding: 13px 28px;
+          border-radius: 10px;
+          border: 1px solid var(--red-border);
+          cursor: pointer;
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .journeyHeroQuizPill:hover {
+          transform: translateY(-2px);
+          background: #e60003;
+          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+          border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        /* ---------- Track Pills Tabs ---------- */
         .trackPillContainer {
           display: flex;
           align-items: center;
@@ -377,12 +518,14 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           gap: 10px;
           flex-wrap: wrap;
           margin-bottom: 24px;
+          position: relative;
+          z-index: 3;
         }
 
         .trackPill {
           background: #ffffff;
           border: 1px solid #ffffff;
-          color: #000000;
+          color: #090909;
           padding: 10px 20px;
           border-radius: 999px;
           font-size: 13.5px;
@@ -391,13 +534,13 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           display: inline-flex;
           align-items: center;
           gap: 8px;
-          transition: all 0.25s var(--ease-soft);
-          font-family: inherit;
+          transition: all 0.25s ease;
+          font-family: var(--sans);
           box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
         }
 
         .trackPill:hover {
-          background: #f0f0f0;
+          background: #f2f2f2;
           border-color: #ffffff;
           color: #000000;
           transform: translateY(-2px);
@@ -405,484 +548,608 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
         }
 
         .trackPill.active {
-          background: var(--accent);
-          border-color: var(--accent);
-          color: #fff;
-          box-shadow: 0 0 22px rgba(255, 59, 48, 0.6);
+          background: var(--red);
+          border-color: var(--red);
+          color: #ffffff;
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+        }
+
+        .trackActiveDot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #ffffff;
+          box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
         }
 
         .selectedPathSummaryBox {
-          background: #ffffff;
-          color: #090909;
-          border: 1px solid #ffffff;
-          border-radius: 20px;
-          padding: 24px 28px;
+          background: #FFFFFF;
+          color: #111827;
+          border: 1px solid rgba(255, 2, 5, 0.14);
+          border-radius: 16px;
+          padding: 28px 32px;
           display: flex;
           align-items: center;
           justify-content: space-between;
           flex-wrap: wrap;
-          gap: 20px;
-          box-shadow: 0 16px 45px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 255, 255, 0.08);
+          gap: 24px;
+          box-shadow: 0 14px 40px rgba(0, 0, 0, 0.28), 0 0 32px rgba(255, 2, 5, 0.12);
           position: relative;
           overflow: hidden;
-          transition: transform 0.25s ease, box-shadow 0.25s ease;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .selectedPathSummaryBox::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 3.5px;
+          background: linear-gradient(90deg, #FF0205 0%, rgba(255, 2, 5, 0.75) 45%, rgba(255, 2, 5, 0.15) 100%);
         }
 
         .selectedPathSummaryBox:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 255, 255, 0.15);
+          box-shadow: 0 18px 48px rgba(0, 0, 0, 0.32), 0 0 42px rgba(255, 2, 5, 0.18);
         }
 
         .summaryContentLeft {
-          flex: 1 1 480px;
+          flex: 1 1 440px;
           min-width: 280px;
         }
 
         .summaryEyebrowRow {
           display: flex;
           align-items: center;
-          gap: 10px;
-          margin-bottom: 8px;
+          gap: 12px;
+          margin-bottom: 10px;
         }
 
         .summaryTrackBadge {
           display: inline-flex;
           align-items: center;
-          gap: 6px;
-          font-family: var(--font-mono);
-          font-size: 10.5px;
+          font-family: var(--mono);
+          font-size: 11px;
+          font-weight: 700;
+          color: #111827;
+          background: #F3F4F6;
+          border: 1px solid #E5E7EB;
+          padding: 4px 10px;
+          border-radius: 6px;
+          letter-spacing: 0.06em;
+        }
+
+        .summaryTrackTag {
+          font-family: var(--mono);
+          font-size: 11.5px;
           font-weight: 700;
           color: #FF0205;
-          background: rgba(255, 2, 5, 0.08);
-          border: 1px solid rgba(255, 2, 5, 0.22);
-          padding: 3px 9px;
-          border-radius: 999px;
-          letter-spacing: 0.1em;
-        }
-
-        .summaryBadgeDot {
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background: #FF0205;
-          box-shadow: 0 0 6px rgba(255, 2, 5, 0.8);
-          display: inline-block;
-        }
-
-        .summaryTrackIconBadge {
-          color: #71717a;
-          display: inline-flex;
-          align-items: center;
+          letter-spacing: 0.06em;
         }
 
         .summaryTitle {
-          font-size: 24px;
+          font-size: clamp(22px, 2.5vw, 28px);
           font-weight: 800;
-          color: #090909;
-          margin: 0 0 6px;
-          letter-spacing: -0.02em;
-          line-height: 1.25;
+          color: #111827;
+          margin: 0 0 8px;
+          letter-spacing: -0.025em;
+          line-height: 1.2;
+          font-family: var(--sans);
         }
 
         .summaryDesc {
-          color: #52525b;
-          font-size: 13.5px;
+          color: #4B5563;
+          font-size: 14px;
           margin: 0;
-          max-width: 620px;
-          line-height: 1.55;
+          max-width: 580px;
+          line-height: 1.6;
+          font-family: var(--sans);
         }
 
         .summaryMetaContainer {
           display: flex;
-          gap: 12px;
+          gap: 14px;
           flex-wrap: wrap;
           align-items: center;
         }
 
         .summaryMetaCard {
-          background: #f4f4f5;
-          border: 1px solid #e4e4e7;
+          background: #FF0205;
+          background: linear-gradient(135deg, #FF0205 0%, #E00104 100%);
+          border: 1px solid rgba(255, 2, 5, 0.4);
           border-radius: 12px;
-          padding: 10px 14px;
+          padding: 14px 20px;
           display: flex;
           align-items: center;
-          gap: 10px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-          transition: border-color 0.2s ease, transform 0.2s ease;
+          gap: 14px;
+          box-shadow: 0 4px 16px rgba(255, 2, 5, 0.28);
+          position: relative;
+          color: #FFFFFF;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .summaryMetaCard:hover {
-          border-color: #d4d4d8;
-          transform: translateY(-1px);
+          transform: translateY(-2px);
+          box-shadow: 0 8px 24px rgba(255, 2, 5, 0.42);
         }
 
         .metaIconWrap {
-          width: 32px;
-          height: 32px;
-          border-radius: 8px;
+          width: 40px;
+          height: 40px;
+          border-radius: 10px;
+          background: rgba(255, 255, 255, 0.2);
+          border: 1px solid rgba(255, 255, 255, 0.35);
+          color: #FFFFFF;
           display: flex;
           align-items: center;
           justify-content: center;
           flex-shrink: 0;
         }
 
-        .metaIconRed {
-          background: rgba(255, 2, 5, 0.1);
-          color: #FF0205;
-          border: 1px solid rgba(255, 2, 5, 0.2);
-        }
-
-        .metaIconGreen {
-          background: rgba(34, 197, 94, 0.12);
-          color: #16a34a;
-          border: 1px solid rgba(34, 197, 94, 0.25);
-        }
-
         .metaInfoCol {
           display: flex;
           flex-direction: column;
-          gap: 2px;
+          gap: 3px;
+        }
+
+        .metaLabelRow {
+          display: flex;
+          align-items: center;
+          gap: 6px;
         }
 
         .metaLabel {
-          font-family: var(--font-mono);
-          font-size: 9.5px;
+          font-family: var(--mono);
+          font-size: 10.5px;
           font-weight: 700;
-          color: #71717a;
-          letter-spacing: 0.08em;
+          color: rgba(255, 255, 255, 0.82);
+          letter-spacing: 0.06em;
           text-transform: uppercase;
         }
 
         .metaValue {
-          font-size: 13px;
-          font-weight: 800;
-          color: #090909;
-          letter-spacing: -0.01em;
+          font-size: 15px;
+          font-weight: 700;
+          color: #FFFFFF;
+          letter-spacing: -0.015em;
+          font-family: var(--sans);
+          line-height: 1.25;
         }
 
-        .journey-track {
+        /* ---------- Roadmap Compact Wave Shell ---------- */
+        .roadmap {
           position: relative;
-          min-height: 800px;
-          margin-top: 30px;
+          max-width: 1180px;
+          margin: 30px auto 0;
+          padding: 0 24px 30px;
+          width: 100%;
+          box-sizing: border-box;
+          z-index: 2;
         }
 
-        .journey-svg {
+        .path-svg {
           position: absolute;
-          top: 0; 
+          top: 0;
           left: 0;
           width: 100%;
           height: 100%;
+          pointer-events: none;
           overflow: visible;
-          pointer-events: none;
-          z-index: 1;
-        }
-
-        .path-idle {
-          fill: none;
-          stroke: rgba(255, 255, 255, 0.14);
-          stroke-width: 2.5;
-          stroke-dasharray: 6 6;
-          vector-effect: non-scaling-stroke;
-        }
-        .path-glow {
-          fill: none;
-          stroke: #ff3b30;
-          stroke-width: 12;
-          opacity: 0.4;
-          filter: blur(8px);
-          stroke-linecap: round;
-          vector-effect: non-scaling-stroke;
-        }
-        .path-active {
-          fill: none;
-          stroke: #ff3b30;
-          stroke-width: 3;
-          stroke-linecap: round;
-          vector-effect: non-scaling-stroke;
-        }
-
-        .journey-2d-grid {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          column-gap: 36px;
-          row-gap: 28px;
-          position: relative;
-          z-index: 2;
-          align-items: start;
-          width: 100%;
-        }
-
-        .journey-step {
-          position: relative;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          width: 100%;
-          max-width: 470px;
-          margin: 0 auto;
-          opacity: 0;
-          transform: translateY(24px);
-          transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .journey-step-staggered {
-          margin-top: 36px;
-        }
-
-        .journey-step.is-visible {
-          opacity: 1;
-          transform: translateY(0);
-        }
-
-        .step-entry-anchor {
-          width: 2px;
-          height: 2px;
-          opacity: 0;
-          margin-bottom: 2px;
-        }
-
-        .step-card-box {
-          background: #110707;
-          background: linear-gradient(180deg, #150909 0%, #0d0404 100%);
-          border: 1px solid rgba(255, 59, 48, 0.28);
-          border-radius: 14px;
-          padding: 20px 22px;
-          width: 100%;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65), 0 0 15px rgba(255, 59, 48, 0.04);
-          position: relative;
-          transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-        }
-
-        .step-card-box:hover {
-          transform: translateY(-2px);
-          border-color: rgba(255, 59, 48, 0.65);
-          box-shadow: 0 14px 40px rgba(0, 0, 0, 0.8), 0 0 22px rgba(255, 59, 48, 0.2);
-        }
-
-        .step-card-header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 8px;
-        }
-
-        .step-eyebrow {
-          font-family: var(--font-mono);
-          font-size: 10.5px;
-          font-weight: 700;
-          background: linear-gradient(
-            180deg,
-            rgb(255, 2, 5) 28.05%,
-            rgb(255, 100, 100) 100%
-          );
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          display: inline-block;
-          letter-spacing: 0.08em;
-        }
-
-        .step-index-badge {
-          font-family: var(--font-mono);
-          font-size: 10.5px;
-          font-weight: 800;
-          color: rgba(255, 255, 255, 0.4);
-          border: 1px solid rgba(255, 255, 255, 0.12);
-          border-radius: 5px;
-          padding: 1px 6px;
-          background: rgba(255, 255, 255, 0.03);
-        }
-
-        .step-title {
-          font-size: 17.5px;
-          font-weight: 800;
-          color: #fff;
-          margin: 0 0 6px;
-          line-height: 1.3;
-        }
-
-        .step-desc {
-          color: var(--text-muted);
-          font-size: 13px;
-          line-height: 1.5;
-          margin: 0 0 12px;
-        }
-
-        .step-course-tag {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          background: rgba(255, 59, 48, 0.08);
-          border: 1px solid rgba(255, 59, 48, 0.22);
-          padding: 4px 9px;
-          border-radius: 6px;
-          font-size: 11.5px;
-          color: #eee;
-          margin-bottom: 10px;
-          max-width: 100%;
-        }
-
-        .step-skills-wrap {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 5px;
-          margin-bottom: 10px;
-        }
-
-        .step-skill-pill {
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.09);
-          padding: 2.5px 7px;
-          border-radius: 4px;
-          font-size: 10.5px;
-          color: #ccc;
-          font-family: var(--font-mono);
-        }
-
-        .step-project-row {
-          font-size: 11.5px;
-          color: #ff8a80;
-          background: rgba(0, 0, 0, 0.4);
-          padding: 5px 9px;
-          border-radius: 6px;
-          border: 1px dashed rgba(255, 59, 48, 0.28);
-          display: flex;
-          align-items: center;
-          gap: 6px;
-        }
-
-        .step-marker {
-          position: relative;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-top: 8px;
-          margin-bottom: 2px;
-          z-index: 5;
-        }
-
-        .step-marker-dot {
-          width: 15px;
-          height: 15px;
-          border-radius: 50%;
-          background: #000;
-          border: 3px solid var(--accent);
-          box-shadow: 0 0 12px var(--accent-glow);
-          position: relative;
           z-index: 2;
         }
 
-        .step-marker-pulse {
+        /* 1. Base Unreached Path (Dim subtle line) */
+        .path-svg path.spine-base {
+          fill: none;
+          stroke: rgba(255, 2, 5, 0.12);
+          stroke-width: 2;
+          stroke-linecap: round;
+        }
+
+        /* 2. Traveled Neon Red Aura */
+        .path-svg path.spine-glow {
+          fill: none;
+          stroke: var(--red);
+          stroke-width: 9;
+          opacity: 0.32;
+          filter: blur(5px);
+          stroke-linecap: round;
+          will-change: stroke-dashoffset;
+        }
+
+        /* 3. Traveled Sharp Bright Red Stroke */
+        .path-svg path.spine-draw {
+          fill: none;
+          stroke: var(--red-bright);
+          stroke-width: 2.8;
+          stroke-linecap: round;
+          filter: drop-shadow(0 0 8px rgba(255, 22, 22, 0.95));
+          will-change: stroke-dashoffset;
+        }
+
+        /* ---------- Leading Edge Traveler Indicator ---------- */
+        .traveler-dot {
           position: absolute;
-          width: 24px;
-          height: 24px;
+          top: 0;
+          left: 0;
+          width: 16px;
+          height: 16px;
           border-radius: 50%;
-          background: rgba(255, 59, 48, 0.25);
-          animation: markerPulse 2.4s infinite ease-out;
-          z-index: 1;
-        }
-
-        @keyframes markerPulse {
-          0% { transform: scale(0.7); opacity: 0.9; }
-          70% { transform: scale(1.4); opacity: 0; }
-          100% { transform: scale(1.4); opacity: 0; }
-        }
-
-        .step-direction-hint {
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          display: inline-flex;
-          align-items: center;
-          gap: 4px;
-          font-family: var(--font-mono);
-          font-size: 10px;
-          font-weight: 700;
-          color: #ff8a80;
-          background: rgba(255, 59, 48, 0.12);
-          border: 1px solid rgba(255, 59, 48, 0.28);
-          padding: 2px 7px;
-          border-radius: 999px;
-          white-space: nowrap;
-          pointer-events: none;
-        }
-
-        .hint-right {
-          left: 24px;
-        }
-
-        .hint-left {
-          right: 24px;
-        }
-
-        .hint-down {
-          top: 20px;
-          left: 50%;
-          transform: translateX(-50%);
-          padding: 2px 6px;
-        }
-
-        .destination-card {
           background: #ffffff;
-          color: #070707;
-          border-radius: 20px;
-          padding: 36px 28px;
-          text-align: center;
-          max-width: 600px;
-          margin: 40px auto 0;
-          box-shadow: 0 16px 50px rgba(0, 0, 0, 0.8), 0 0 35px rgba(255, 59, 48, 0.18);
+          box-shadow: 0 0 0 3px var(--red-bright), 0 0 16px 4px rgba(255, 22, 22, 0.95), 0 0 28px 6px rgba(255, 2, 5, 0.6);
+          z-index: 10;
+          pointer-events: none;
+          margin-left: -8px;
+          margin-top: -8px;
           opacity: 0;
-          transform: translateY(24px);
-          transition: opacity 0.7s ease, transform 0.7s ease;
-          position: relative;
-          z-index: 3;
-        }
-        .destination-card.is-visible {
-          opacity: 1;
-          transform: translateY(0);
+          transition: opacity 0.2s ease;
+          will-change: transform;
         }
 
-        .destination-marker {
+        .traveler-pulse-ring {
+          position: absolute;
+          inset: -6px;
+          border-radius: 50%;
+          border: 2px solid rgba(255, 22, 22, 0.85);
+          animation: travelerPing 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes travelerPing {
+          0% { transform: scale(0.85); opacity: 1; }
+          100% { transform: scale(2.2); opacity: 0; }
+        }
+
+        /* ---------- Milestone Node Elements ---------- */
+        .node-dot {
+          position: absolute;
+          top: 0;
+          left: 0;
           width: 14px;
           height: 14px;
           border-radius: 50%;
-          background: #ff3b30;
-          border: 3px solid #fff;
-          box-shadow: 0 0 14px rgba(255, 59, 48, 0.8);
-          margin: -44px auto 16px;
+          margin-left: -7px;
+          margin-top: -7px;
+          z-index: 4;
+          pointer-events: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
+          will-change: transform;
         }
 
-        .destination-title {
-          font-size: 26px;
-          font-weight: 900;
-          color: #070707;
-          margin-bottom: 10px;
-          letter-spacing: -0.02em;
+        .node-inner-dot {
+          width: 4.5px;
+          height: 4.5px;
+          border-radius: 50%;
+          background: #ffffff;
+          opacity: 0;
+          transition: opacity 0.3s ease;
         }
-        .destination-desc {
-          color: #555;
-          font-size: 14.5px;
+
+        /* 1. Completed Milestone */
+        .node-dot.node-completed {
+          background: var(--red-bright);
+          border: 2px solid #ffffff;
+          box-shadow: 0 0 0 3px var(--black), 0 0 14px 3px rgba(255, 22, 22, 0.85);
+          opacity: 1;
+        }
+
+        .node-dot.node-completed .node-inner-dot {
+          opacity: 1;
+        }
+
+        /* 2. Current / Active Milestone */
+        .node-dot.node-current {
+          background: var(--red-bright);
+          border: 2px solid #ffffff;
+          box-shadow: 0 0 0 3px var(--black), 0 0 18px 5px rgba(255, 22, 22, 1);
+          transform: scale(1.18);
+          opacity: 1;
+        }
+
+        .node-dot.node-current .node-inner-dot {
+          opacity: 1;
+        }
+
+        .node-dot.pulse {
+          animation: nodeGlowPulse 2.4s ease-in-out infinite;
+        }
+
+        @keyframes nodeGlowPulse {
+          0%, 100% {
+            box-shadow: 0 0 0 3px var(--black), 0 0 14px 3px rgba(255, 22, 22, 0.7);
+          }
+          50% {
+            box-shadow: 0 0 0 3px var(--black), 0 0 22px 6px rgba(255, 22, 22, 1);
+          }
+        }
+
+        /* 3. Upcoming Milestone */
+        .node-dot.node-upcoming {
+          background: #0a0a0a;
+          border: 1.5px solid #2a2a2a;
+          box-shadow: 0 0 0 2px var(--black);
+          opacity: 0.55;
+        }
+
+        /* ---------- Alternating Level Rows ---------- */
+        .level-row {
+          position: relative;
+          display: flex;
+          padding: 24px 0;
+          min-height: 40px;
+          width: 100%;
+          z-index: 3;
+        }
+
+        .level-row.side-left {
+          justify-content: flex-start;
+        }
+
+        .level-row.side-right {
+          justify-content: flex-end;
+        }
+
+        /* ---------- Course Cards - Reddish Tech Theme ---------- */
+        .level-card {
+          width: min(470px, calc(50% - 20px));
+          background: linear-gradient(165deg, rgba(32, 10, 10, 0.94) 0%, rgba(16, 6, 6, 0.98) 100%);
+          border: 1px solid rgba(255, 2, 5, 0.28);
+          border-radius: 16px;
+          padding: 22px 24px 20px;
+          position: relative;
+          z-index: 3;
+          box-shadow: 0 16px 45px rgba(0, 0, 0, 0.75), 0 0 25px rgba(255, 2, 5, 0.08), inset 0 1px 0 rgba(255, 80, 80, 0.15);
+          transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.35s ease, opacity 0.35s ease, background 0.35s ease;
+          overflow: hidden;
+        }
+
+        .level-card-glow {
+          position: absolute;
+          top: -50px;
+          right: -50px;
+          width: 140px;
+          height: 140px;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(255, 2, 5, 0.16) 0%, transparent 70%);
+          pointer-events: none;
+          filter: blur(20px);
+        }
+
+        .level-card.card-completed {
+          opacity: 1;
+          border-color: rgba(255, 2, 5, 0.6);
+          background: linear-gradient(165deg, rgba(38, 12, 12, 0.95) 0%, rgba(20, 8, 8, 0.98) 100%);
+          box-shadow: 0 18px 45px rgba(0, 0, 0, 0.8), 0 0 32px rgba(255, 2, 5, 0.18), inset 0 1px 0 rgba(255, 120, 120, 0.25);
+        }
+
+        .level-card.card-current {
+          opacity: 1;
+          border-color: var(--red-bright);
+          background: linear-gradient(165deg, rgba(46, 14, 14, 0.96) 0%, rgba(24, 8, 8, 0.98) 100%);
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 40px rgba(255, 2, 5, 0.38), inset 0 1px 0 rgba(255, 160, 160, 0.35);
+          transform: translateY(-2px);
+        }
+
+        .level-card.card-upcoming {
+          opacity: 0.65;
+          border-color: rgba(255, 2, 5, 0.18);
+        }
+
+        .level-card:hover {
+          transform: translateY(-3px);
+          border-color: rgba(255, 2, 5, 0.8);
+          box-shadow: 0 22px 55px rgba(0, 0, 0, 0.85), 0 0 35px rgba(255, 2, 5, 0.25), inset 0 1px 0 rgba(255, 140, 140, 0.3);
+          opacity: 1;
+        }
+
+        .level-row.side-left .level-card {
+          margin-right: auto;
+        }
+
+        .level-row.side-right .level-card {
+          margin-left: auto;
+        }
+
+        .level-head {
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          gap: 12px;
+        }
+
+        .level-kicker {
+          font-family: var(--mono);
+          font-size: 12px;
+          letter-spacing: 0.06em;
+          color: var(--red-bright);
+          text-transform: uppercase;
+          font-weight: 600;
+        }
+
+        .level-num {
+          font-family: var(--mono);
+          font-size: 12px;
+          color: var(--muted);
+          border: 1px solid rgba(255, 2, 5, 0.25);
+          border-radius: 6px;
+          padding: 2px 7px;
+          flex-shrink: 0;
+          background: rgba(255, 2, 5, 0.08);
+        }
+
+        .level-title {
+          font-size: 21px;
+          font-weight: 600;
+          margin: 6px 0 8px;
+          letter-spacing: -0.005em;
+          color: #ffffff;
+        }
+
+        .level-desc {
+          font-size: 14px;
           line-height: 1.55;
-          max-width: 500px;
+          color: var(--muted);
+          margin: 0 0 12px;
+        }
+
+        .level-course {
+          display: flex;
+          align-items: center;
+          gap: 9px;
+          font-size: 13px;
+          padding: 9px 12px;
+          border: 1px solid rgba(255, 2, 5, 0.32);
+          border-radius: 8px;
+          background: rgba(255, 2, 5, 0.12);
+          margin-bottom: 10px;
+          color: var(--paper);
+        }
+
+        .level-course b {
+          font-weight: 600;
+          color: #ffffff;
+        }
+
+        .level-course svg {
+          flex-shrink: 0;
+        }
+
+        .tag-row {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px;
+          margin-bottom: 10px;
+        }
+
+        .tag {
+          font-family: var(--mono);
+          font-size: 11.5px;
+          color: #d8d8d8;
+          border: 1px solid rgba(255, 2, 5, 0.22);
+          border-radius: 6px;
+          padding: 4px 8px;
+          background: rgba(255, 2, 5, 0.06);
+        }
+
+        .level-build {
+          display: flex;
+          align-items: center;
+          gap: 9px;
+          font-size: 13px;
+          padding: 9px 12px;
+          border: 1px dashed rgba(255, 2, 5, 0.28);
+          border-radius: 8px;
+          color: var(--muted);
+          background: rgba(0, 0, 0, 0.35);
+        }
+
+        .level-build b {
+          color: var(--paper);
+          font-weight: 600;
+        }
+
+        .level-build svg {
+          flex-shrink: 0;
+        }
+
+        /* ---------- Destination Section ---------- */
+        .destination-row {
+          position: relative;
+          display: flex;
+          justify-content: center;
+          padding: 45px 0 15px;
+          z-index: 3;
+        }
+
+        .destination-card {
+          width: min(640px, 100%);
+          background: var(--paper);
+          color: var(--black);
+          border-radius: 20px;
+          padding: 38px 40px;
+          text-align: center;
+          position: relative;
+          z-index: 3;
+          box-shadow: 0 30px 70px -20px var(--red-glow);
+          transition: all 0.4s ease;
+        }
+
+        .destination-card.card-completed {
+          box-shadow: 0 0 60px rgba(255, 2, 5, 0.45), 0 30px 70px -20px var(--red-glow);
+        }
+
+        .destination-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          font-family: var(--mono);
+          font-size: 11px;
+          font-weight: 700;
+          color: var(--red);
+          background: rgba(255, 2, 5, 0.08);
+          border: 1px solid rgba(255, 2, 5, 0.25);
+          padding: 4px 12px;
+          border-radius: 999px;
+          letter-spacing: 0.1em;
+          margin-bottom: 14px;
+        }
+
+        .destination-card h2 {
+          font-size: clamp(24px, 4vw, 30px);
+          margin: 0 0 12px;
+          font-weight: 700;
+          color: var(--black);
+          letter-spacing: -0.01em;
+        }
+
+        .destination-card p {
+          font-size: 15px;
+          line-height: 1.55;
+          color: #333333;
+          max-width: 460px;
           margin: 0 auto 20px;
         }
-        .destination-cta {
-          background: var(--accent);
-          color: #fff;
-          border: none;
-          padding: 14px 34px;
-          border-radius: 999px;
-          font-size: 15px;
-          font-weight: 800;
-          cursor: pointer;
-          box-shadow: 0 8px 24px rgba(255, 59, 48, 0.4);
-          transition: all 0.25s ease;
-        }
-        .destination-cta:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 12px 32px rgba(255, 59, 48, 0.6);
+
+        .destination-card p b {
+          color: var(--black);
         }
 
+        .cta {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          background: var(--red-bright);
+          color: #ffffff;
+          font-weight: 600;
+          font-size: 15.5px;
+          padding: 14px 26px;
+          border-radius: 10px;
+          text-decoration: none;
+          border: none;
+          cursor: pointer;
+          box-shadow: 0 14px 30px -10px var(--red-glow);
+          transition: all 0.25s ease;
+          font-family: var(--sans);
+        }
+
+        .cta:hover {
+          background: var(--red);
+          transform: translateY(-2px);
+          box-shadow: 0 18px 36px -10px rgba(255, 2, 5, 0.8);
+        }
+
+        footer {
+          text-align: center;
+          padding: 10px 24px 60px;
+          color: var(--muted);
+          font-family: var(--mono);
+          font-size: 12px;
+          letter-spacing: 0.04em;
+        }
+
+        /* ---------- Quiz Modal ---------- */
         .quizModalOverlay {
           position: fixed;
           inset: 0;
@@ -895,9 +1162,10 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           z-index: 99999;
           padding: 20px;
         }
+
         .quizModalContent {
-          background: #120808;
-          border: 1px solid rgba(255, 59, 48, 0.35);
+          background: var(--ink);
+          border: 1px solid var(--red-border);
           border-radius: 24px;
           padding: 36px 32px;
           max-width: 560px;
@@ -905,23 +1173,26 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           position: relative;
           box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95);
         }
+
         .quizCloseBtn {
           position: absolute;
           top: 18px;
           right: 18px;
           background: none;
           border: none;
-          color: #888;
+          color: var(--muted);
           cursor: pointer;
           padding: 4px;
           transition: color 0.2s;
         }
+
         .quizCloseBtn:hover {
-          color: #fff;
+          color: #ffffff;
         }
+
         .quizOptionCard {
-          background: #180d0d;
-          border: 1px solid rgba(255, 255, 255, 0.08);
+          background: #111111;
+          border: 1px solid var(--line);
           border-radius: 12px;
           padding: 14px 18px;
           margin-bottom: 10px;
@@ -931,30 +1202,57 @@ export default function JourneyPage({ onOpenContact, onNavigate, initialPathId =
           cursor: pointer;
           transition: all 0.2s ease;
         }
+
         .quizOptionCard:hover {
-          border-color: var(--accent);
-          background: #201010;
+          border-color: var(--red-bright);
+          background: #161616;
           transform: translateX(4px);
         }
 
-        @media (max-width: 860px) {
-          .journey-2d-grid {
-            grid-template-columns: 1fr !important;
-            row-gap: 28px !important;
+        /* ---------- Responsive Behavior ---------- */
+        @media (max-width: 900px) {
+          .level-card {
+            width: min(390px, calc(50% - 32px));
+            padding: 18px 18px 16px;
           }
-          .journey-step {
-            grid-column: 1 !important;
-            grid-row: auto !important;
-            max-width: 100% !important;
+          .level-title {
+            font-size: 19px;
           }
-          .journey-step-staggered {
-            margin-top: 0 !important;
+        }
+
+        @media (max-width: 760px) {
+          .roadmap {
+            padding: 0 12px 30px;
           }
-          .step-card-box {
-            max-width: 100% !important;
+          .level-row {
+            padding: 16px 0;
           }
-          .step-direction-hint {
-            display: none !important;
+          .level-card {
+            width: calc(100% - 44px);
+          }
+          .level-row.side-left .level-card {
+            margin-right: 0;
+            margin-left: auto;
+          }
+          .level-row.side-right .level-card {
+            margin-left: auto;
+            margin-right: 0;
+          }
+          .destination-card {
+            padding: 28px 20px;
+          }
+        }
+
+        @media (max-width: 520px) {
+          .level-card {
+            width: calc(100% - 36px);
+            padding: 16px 16px 14px;
+          }
+          .level-title {
+            font-size: 18px;
+          }
+          .level-desc {
+            font-size: 13px;
           }
         }
       `}</style>

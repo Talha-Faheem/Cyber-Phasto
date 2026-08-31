@@ -68,7 +68,7 @@ export default function Hero({ onOpenContact, onNavigate }) {
         justifyContent: 'center',
         paddingTop: '5rem',
         paddingBottom: '2rem',
-        backgroundColor: '#000000',
+        backgroundColor: 'var(--black)',
         overflow: 'hidden'
       }}
     >
@@ -96,7 +96,7 @@ export default function Hero({ onOpenContact, onNavigate }) {
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'linear-gradient(to bottom, #000000 0%, transparent 15%, transparent 85%, #000000 100%)',
+          background: 'linear-gradient(to bottom, var(--black) 0%, transparent 15%, transparent 85%, var(--black) 100%)',
           pointerEvents: 'none',
           zIndex: 1
         }} 
@@ -130,7 +130,7 @@ export default function Hero({ onOpenContact, onNavigate }) {
                 color: '#FFFFFF'
               }}
             >
-              LEARN. BUILD. <span style={{ color: '#FF0000' }}>DEFEND.</span>
+              LEARN. BUILD. <span style={{ color: 'var(--red)' }}>DEFEND.</span>
             </h1>
 
             {/* Minimal Subtitle */}
@@ -138,7 +138,7 @@ export default function Hero({ onOpenContact, onNavigate }) {
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontSize: 'clamp(1rem, 1.5vw, 1.15rem)',
-                color: '#D0D0D0',
+                color: 'var(--paper)',
                 lineHeight: 1.55,
                 marginBottom: '1.75rem',
                 maxWidth: '560px'
@@ -164,7 +164,7 @@ export default function Hero({ onOpenContact, onNavigate }) {
                 className="btn btn-secondary"
                 style={{ padding: '0.8rem 1.6rem', fontSize: '0.94rem' }}
               >
-                <Shield size={15} style={{ color: '#FF1616' }} />
+                <Shield size={15} style={{ color: 'var(--red-bright)' }} />
                 <span>Admission Inquiry</span>
               </button>
             </div>
@@ -179,42 +179,42 @@ export default function Hero({ onOpenContact, onNavigate }) {
                 maxWidth: '560px',
                 padding: '1rem 0.85rem',
                 borderRadius: '12px',
-                backgroundColor: '#080808',
-                border: '1px solid #292929'
+                backgroundColor: 'var(--ink)',
+                border: '1px solid var(--border)'
               }}
             >
               <div style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: '1.45rem', fontWeight: 800, color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>
                   <Counter end={50000} suffix="+" duration={1200} />
                 </div>
-                <span style={{ fontSize: '0.7rem', color: '#8A8A8A', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+                <span style={{ fontSize: '0.7rem', color: 'var(--muted)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
                   Learners
                 </span>
               </div>
 
-              <div style={{ textAlign: 'center', borderLeft: '1px solid #292929' }}>
-                <div style={{ fontSize: '1.45rem', fontWeight: 800, color: '#FF1616', fontFamily: 'var(--font-mono)' }}>
+              <div style={{ textAlign: 'center', borderLeft: '1px solid var(--border)' }}>
+                <div style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--red-bright)', fontFamily: 'var(--font-mono)' }}>
                   <Counter end={25} suffix="+" duration={1000} />
                 </div>
-                <span style={{ fontSize: '0.7rem', color: '#8A8A8A', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+                <span style={{ fontSize: '0.7rem', color: 'var(--muted)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
                   Chapters
                 </span>
               </div>
 
-              <div style={{ textAlign: 'center', borderLeft: '1px solid #292929' }}>
+              <div style={{ textAlign: 'center', borderLeft: '1px solid var(--border)' }}>
                 <div style={{ fontSize: '1.45rem', fontWeight: 800, color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>
                   <Counter end={150} suffix="+" duration={1100} />
                 </div>
-                <span style={{ fontSize: '0.7rem', color: '#8A8A8A', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+                <span style={{ fontSize: '0.7rem', color: 'var(--muted)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
                   Audits
                 </span>
               </div>
 
-              <div style={{ textAlign: 'center', borderLeft: '1px solid #292929' }}>
-                <div style={{ fontSize: '1.45rem', fontWeight: 800, color: '#FF1616', fontFamily: 'var(--font-mono)' }}>
+              <div style={{ textAlign: 'center', borderLeft: '1px solid var(--border)' }}>
+                <div style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--red-bright)', fontFamily: 'var(--font-mono)' }}>
                   <Counter end={25000} suffix="+" duration={1200} />
                 </div>
-                <span style={{ fontSize: '0.7rem', color: '#8A8A8A', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+                <span style={{ fontSize: '0.7rem', color: 'var(--muted)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
                   Certified
                 </span>
               </div>
@@ -223,7 +223,7 @@ export default function Hero({ onOpenContact, onNavigate }) {
           </div>
 
           {/* =================================================================
-              RIGHT COLUMN: CARD SWAP SHOWCASE (EVENTS & LABS)
+              RIGHT COLUMN: ROTATING EVENT CARDS (CARDSWAP)
               ================================================================= */}
           <div 
             style={{
@@ -257,8 +257,8 @@ export default function Hero({ onOpenContact, onNavigate }) {
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           padding: '0.5rem 0.85rem',
-                          backgroundColor: '#000000',
-                          borderBottom: '1px solid #292929',
+                          backgroundColor: 'var(--black)',
+                          borderBottom: '1px solid var(--border)',
                           zIndex: 3
                         }}
                       >
@@ -268,11 +268,11 @@ export default function Hero({ onOpenContact, onNavigate }) {
                           style={{
                             fontSize: '0.65rem',
                             fontWeight: 700,
-                            color: '#FF1616',
-                            backgroundColor: 'rgba(255, 0, 0, 0.12)',
+                            color: 'var(--red-bright)',
+                            backgroundColor: 'var(--red-subtle)',
                             padding: '0.15rem 0.5rem',
                             borderRadius: '4px',
-                            border: '1px solid rgba(255, 0, 0, 0.3)'
+                            border: '1px solid var(--red-border)'
                           }}
                         >
                           {card.tag}
@@ -325,7 +325,7 @@ export default function Hero({ onOpenContact, onNavigate }) {
                           <p 
                             style={{ 
                               fontSize: '0.82rem', 
-                              color: '#D0D0D0', 
+                              color: 'var(--paper)', 
                               lineHeight: 1.45,
                               fontFamily: 'var(--font-sans)' 
                             }}

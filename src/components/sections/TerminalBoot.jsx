@@ -56,7 +56,7 @@ export default function TerminalBoot({ onBootComplete }) {
         width: '100%',
         maxWidth: '560px',
         margin: '0 auto',
-        backgroundColor: '#090B0E',
+        backgroundColor: 'var(--ink)',
         borderRadius: '16px',
         border: '1px solid rgba(201, 154, 58, 0.35)',
         boxShadow: '0 20px 50px rgba(0,0,0,0.85), 0 0 30px rgba(201, 154, 58, 0.12)',
@@ -72,8 +72,8 @@ export default function TerminalBoot({ onBootComplete }) {
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '0.65rem 1rem',
-          backgroundColor: '#060709',
-          borderBottom: '1px solid rgba(237, 234, 226, 0.08)'
+          backgroundColor: 'var(--black)',
+          borderBottom: '1px solid var(--border)'
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -98,7 +98,7 @@ export default function TerminalBoot({ onBootComplete }) {
           fontFamily: 'var(--font-mono)',
           fontSize: '0.82rem',
           lineHeight: 1.6,
-          color: '#EDEAE2',
+          color: 'var(--paper)',
           display: 'flex',
           flexDirection: 'column',
           gap: '0.35rem'

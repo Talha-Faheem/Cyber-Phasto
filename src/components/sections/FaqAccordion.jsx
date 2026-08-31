@@ -32,7 +32,7 @@ export default function FaqAccordion() {
   };
 
   return (
-    <section id="faq" className="section-padding" style={{ backgroundColor: '#07080a', position: 'relative' }}>
+    <section id="faq" className="section-padding" style={{ backgroundColor: 'var(--black)', position: 'relative' }}>
       <div className="container" style={{ maxWidth: '850px', margin: '0 auto' }}>
         
         {/* Header */}
@@ -41,7 +41,7 @@ export default function FaqAccordion() {
             Frequently Asked Questions <br />
             <span className="text-gradient-red">From Our Students & Clients</span>
           </h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>
+          <p style={{ color: 'var(--muted)', fontSize: '1.05rem' }}>
             Everything you need to know about our courses, VAPT audits, LMS access, and university chapters.
           </p>
         </div>
@@ -55,12 +55,12 @@ export default function FaqAccordion() {
                 key={idx}
                 className="glass-panel"
                 style={{
-                  backgroundColor: '#0a0b0e',
-                  border: isOpen ? '1px solid var(--accent-red-bright)' : '1px solid var(--border-card)',
+                  backgroundColor: 'var(--ink)',
+                  border: isOpen ? '1px solid var(--red-bright)' : '1px solid var(--border)',
                   borderRadius: '14px',
                   overflow: 'hidden',
                   transition: 'border-color 0.25s ease, box-shadow 0.25s ease',
-                  boxShadow: isOpen ? '0 10px 30px rgba(229, 9, 20, 0.15)' : 'none'
+                  boxShadow: isOpen ? '0 10px 30px var(--red-glow)' : 'none'
                 }}
               >
                 <button
@@ -78,7 +78,7 @@ export default function FaqAccordion() {
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
-                    justify: 'space-between',
+                    justifyContent: 'space-between',
                     gap: '1rem'
                   }}
                 >
@@ -86,7 +86,7 @@ export default function FaqAccordion() {
                   <ChevronDown 
                     size={20} 
                     style={{ 
-                      color: isOpen ? 'var(--accent-red-bright)' : 'var(--text-muted)',
+                      color: isOpen ? 'var(--red-bright)' : 'var(--muted)',
                       transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
                       transition: 'transform 0.25s ease',
                       flexShrink: 0
@@ -98,10 +98,10 @@ export default function FaqAccordion() {
                   <div 
                     style={{
                       padding: '0 1.5rem 1.5rem 1.5rem',
-                      color: 'var(--text-muted)',
+                      color: 'var(--muted)',
                       fontSize: '0.95rem',
                       lineHeight: 1.65,
-                      borderTop: '1px solid var(--border-subtle)',
+                      borderTop: '1px solid var(--border)',
                       paddingTop: '1rem'
                     }}
                   >

@@ -18,7 +18,7 @@ export default function ShieldLogo({ size = 42, className = '' }) {
         <path 
           d="M250 40 L410 110 V230 C410 340 250 440 250 440 C250 440 90 340 90 230 V110 Z" 
           fill="none" 
-          stroke="#FF0000" 
+          stroke="#FF0205" 
           strokeWidth="6" 
           filter="url(#logoRedGlow)" 
           opacity="0.7"
@@ -33,14 +33,14 @@ export default function ShieldLogo({ size = 42, className = '' }) {
 
         <path 
           d="M250 75 L370 128 V220 C370 300 250 380 250 380 C250 380 130 300 130 220 V128 Z" 
-          fill="#000000" 
+          fill="#050505" 
           stroke="#FFFFFF" 
           strokeWidth="4"
         />
 
         <circle cx="250" cy="195" r="22" fill="#FFFFFF"/>
         <path d="M238 195 L262 195 L268 255 L232 255 Z" fill="#FFFFFF"/>
-        <circle cx="250" cy="195" r="8" fill="#FF0000"/>
+        <circle cx="250" cy="195" r="8" fill="#FF0205"/>
 
         <line x1="250" y1="135" x2="250" y2="105" stroke="#FFFFFF" strokeWidth="4"/>
         <circle cx="250" cy="105" r="6" fill="#FF1616"/>

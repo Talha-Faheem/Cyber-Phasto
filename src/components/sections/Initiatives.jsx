@@ -46,7 +46,7 @@ export default function Initiatives() {
   ];
 
   return (
-    <section id="initiatives" style={{ backgroundColor: '#000000', padding: '4.5rem 0', position: 'relative', borderTop: '1px solid #292929' }}>
+    <section id="initiatives" style={{ backgroundColor: 'var(--black)', padding: '4.5rem 0', position: 'relative', borderTop: '1px solid var(--border)' }}>
       <div className="cyber-grid-overlay" style={{ opacity: 0.35 }} />
       <div className="container" style={{ position: 'relative', zIndex: 2 }}>
         
@@ -55,7 +55,7 @@ export default function Initiatives() {
           <h2 style={{ fontSize: 'clamp(2rem, 3.5vw, 3rem)', marginBottom: '0.85rem', color: '#FFFFFF' }}>
             Academic & Community <span className="text-gradient-red">Initiatives</span>
           </h2>
-          <p style={{ color: '#D0D0D0', fontSize: '1.02rem' }}>
+          <p style={{ color: 'var(--paper)', fontSize: '1.02rem' }}>
             Explore the specialized portals and programs powering Pakistan's largest cybersecurity ecosystem.
           </p>
         </div>
@@ -76,13 +76,13 @@ export default function Initiatives() {
                 className="browser-window"
                 style={{
                   padding: '2rem',
-                  backgroundColor: '#080808',
-                  border: item.isPrimary ? '1px solid #FF0000' : '1px solid #292929',
+                  backgroundColor: 'var(--ink)',
+                  border: item.isPrimary ? '1px solid var(--red)' : '1px solid var(--border)',
                   borderRadius: '20px',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-between',
-                  boxShadow: item.isPrimary ? '0 15px 40px rgba(0,0,0,0.85), 0 0 25px rgba(255, 0, 0, 0.15)' : 'none'
+                  boxShadow: item.isPrimary ? '0 15px 40px rgba(0,0,0,0.85), 0 0 25px var(--red-glow)' : 'none'
                 }}
               >
                 <div>
@@ -92,12 +92,12 @@ export default function Initiatives() {
                         width: '48px',
                         height: '48px',
                         borderRadius: '12px',
-                        backgroundColor: 'rgba(255, 0, 0, 0.12)',
-                        border: '1px solid rgba(255, 0, 0, 0.3)',
+                        backgroundColor: 'var(--red-subtle)',
+                        border: '1px solid var(--red-border)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: '#FF1616'
+                        color: 'var(--red-bright)'
                       }}
                     >
                       <IconComp size={24} />
@@ -110,9 +110,9 @@ export default function Initiatives() {
                         fontWeight: 700,
                         padding: '0.2rem 0.55rem',
                         borderRadius: '4px',
-                        backgroundColor: 'rgba(255, 0, 0, 0.12)',
-                        border: '1px solid rgba(255, 0, 0, 0.3)',
-                        color: '#FF1616'
+                        backgroundColor: 'var(--red-subtle)',
+                        border: '1px solid var(--red-border)',
+                        color: 'var(--red-bright)'
                       }}
                     >
                       {item.badge}
@@ -123,18 +123,18 @@ export default function Initiatives() {
                     {item.title}
                   </h3>
 
-                  <span className="mono-text" style={{ fontSize: '0.78rem', color: '#8A8A8A', display: 'block', marginBottom: '1rem' }}>
+                  <span className="mono-text" style={{ fontSize: '0.78rem', color: 'var(--muted)', display: 'block', marginBottom: '1rem' }}>
                     {item.domain}
                   </span>
 
-                  <p style={{ color: '#D0D0D0', fontSize: '0.88rem', lineHeight: 1.6, marginBottom: '1.25rem' }}>
+                  <p style={{ color: 'var(--paper)', fontSize: '0.88rem', lineHeight: 1.6, marginBottom: '1.25rem' }}>
                     {item.desc}
                   </p>
 
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.75rem' }}>
                     {item.highlights.map((h, hIdx) => (
-                      <div key={hIdx} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.82rem', color: '#8A8A8A' }}>
-                        <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#FF0000' }} />
+                      <div key={hIdx} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.82rem', color: 'var(--muted)' }}>
+                        <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: 'var(--red)' }} />
                         <span>{h}</span>
                       </div>
                     ))}

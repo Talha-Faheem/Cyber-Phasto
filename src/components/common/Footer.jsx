@@ -3,11 +3,14 @@ import { Link } from 'react-router-dom';
 import { 
   Instagram, 
   Linkedin, 
-  Youtube
+  Youtube,
+  Facebook,
+  Twitter,
+  Github
 } from 'lucide-react';
 
-export default function Footer({ onOpenContact, onNavigate }) {
-  const [mousePos, setMousePos] = useState({ x: 14.6202, y: 67.1726 });
+export default function Footer({ onOpenContact }) {
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [isHovered, setIsHovered] = useState(false);
   const watermarkRef = useRef(null);
 
@@ -29,35 +32,33 @@ export default function Footer({ onOpenContact, onNavigate }) {
     setIsHovered(true);
   }, []);
 
-  const handleNav = (page) => {
-    if (onNavigate) {
-      onNavigate(page);
-    }
-  };
-
   return (
     <footer 
       style={{
-        backgroundColor: '#000000',
+        backgroundColor: 'var(--black)',
         position: 'relative',
         paddingTop: '0',
         paddingBottom: '3.5rem',
         overflow: 'hidden',
-        borderTop: '1px solid #1A1A1A'
+        borderTop: '1px solid var(--border)'
       }}
     >
+      {/* Background Dot Grid Matrix (32px x 32px) */}
       <div 
+        className="absolute inset-0 pointer-events-none"
         style={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px)',
-          backgroundSize: '22px 22px',
+          backgroundImage: 'radial-gradient(1px 1px, rgba(255, 255, 255, 0.06) 1px, transparent 1px)',
+          backgroundSize: '32px 32px',
           pointerEvents: 'none',
           zIndex: 1
         }}
       />
 
-      {/* Full-width Interactive CYBER PASHTO Laser Spotlight Watermark at Top of Footer */}
+      {/* ===================================================================
+          1. Interactive CYBER PASHTO Giant Watermark (No Underlines)
+          =================================================================== */}
       <div 
         ref={watermarkRef}
         onMouseEnter={() => setIsHovered(true)}
@@ -73,72 +74,83 @@ export default function Footer({ onOpenContact, onNavigate }) {
           userSelect: 'none',
           zIndex: 2, 
           width: '100%',
-          marginBottom: '3.5rem'
+          padding: 'clamp(20px, 4vw, 40px) 0 clamp(16px, 3vw, 32px)'
         }}
       >
+        {/* Ambient Glowing Orb Behind Watermark */}
         <div 
           style={{
             position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: '1px',
-            background: isHovered
-              ? `linear-gradient(90deg, transparent 0%, rgba(229, 0, 0, 0.15) ${Math.max(0, mousePos.x - 25)}%, rgba(255, 2, 5, 0.95) ${mousePos.x}%, rgba(229, 0, 0, 0.15) ${Math.min(100, mousePos.x + 25)}%, transparent 100%)`
-              : 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 25%, rgba(229, 0, 0, 0.35) 50%, rgba(255, 255, 255, 0.08) 75%, transparent 100%)',
-            boxShadow: isHovered
-              ? '0 0 15px rgba(255, 2, 5, 0.85), 0 0 30px rgba(255, 2, 5, 0.45)'
-              : '0 0 10px rgba(229, 0, 0, 0.2)',
-            transition: 'box-shadow 0.3s ease'
+            top: `${mousePos.y}%`,
+            left: `${mousePos.x}%`,
+            transform: 'translate(-50%, -50%)',
+            width: '450px',
+            height: '240px',
+            background: 'radial-gradient(circle, rgba(229, 0, 0, 0.28) 0%, rgba(200, 0, 20, 0.08) 45%, transparent 75%)',
+            filter: 'blur(50px)',
+            pointerEvents: 'none',
+            opacity: isHovered ? 1 : 0,
+            transition: 'opacity 0.35s ease',
+            zIndex: 1
           }}
         />
 
+        {/* Watermark Typography matching reference image media_1788118524746.png */}
         <div 
           style={{
-            fontSize: 'clamp(40px, 12.5vw, 200px)',
-            fontWeight: 900,
-            letterSpacing: '-0.03em',
-            lineHeight: 0.9,
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-            WebkitBackgroundClip: 'text',
-            backgroundImage: isHovered
-              ? `radial-gradient(350px at ${mousePos.x}% ${mousePos.y}%, rgba(229, 0, 0, 0.95) 0%, rgba(229, 0, 0, 0.55) 22%, rgba(229, 40, 0, 0.25) 45%, rgba(255, 255, 255, 0.07) 70%, transparent 100%)`
-              : `radial-gradient(1.90776e-44px at 27.1302% 67.9663%, rgba(229, 0, 0, 0) 0%, rgba(229, 0, 0, 0) 22%, rgba(229, 40, 0, 0) 45%, rgba(255, 255, 255, 0.07) 70%, transparent 100%)`,
-            WebkitTextStroke: '1px rgba(255, 255, 255, 0.18)',
-            textAlign: 'center',
-            whiteSpace: 'nowrap',
-            padding: 'clamp(20px, 4vw, 40px) 0px clamp(16px, 3vw, 32px)',
-            display: 'block',
-            overflow: 'hidden',
+            width: '100%',
             maxWidth: '100vw',
-            opacity: 1,
-            transform: 'none',
-            fontFamily: 'var(--font-sans)'
+            margin: '0 auto',
+            padding: 'clamp(28px, 4.5vw, 56px) 1.5rem clamp(20px, 3.5vw, 44px)',
+            boxSizing: 'border-box',
+            position: 'relative',
+            zIndex: 2,
+            overflow: 'hidden',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
           }}
         >
-          CYBER PASHTO
+          <div
+            style={{
+              fontFamily: "'Montserrat', sans-serif",
+              fontWeight: 900,
+              fontSize: 'clamp(48px, 10.4vw, 168px)',
+              letterSpacing: '-0.015em',
+              lineHeight: 0.95,
+              textTransform: 'uppercase',
+              textAlign: 'center',
+              whiteSpace: 'nowrap',
+              display: 'block',
+              width: '100%',
+              userSelect: 'none',
+              WebkitTextStroke: '1px rgba(255, 255, 255, 0.16)',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              WebkitBackgroundClip: 'text',
+              backgroundImage: isHovered
+                ? `radial-gradient(360px at ${mousePos.x}% ${mousePos.y}%, rgba(229, 0, 0, 0.95) 0%, rgba(229, 0, 0, 0.55) 24%, rgba(229, 0, 0, 0.2) 48%, rgba(255, 255, 255, 0.05) 72%, transparent 100%)`
+                : `radial-gradient(420px at 15% 50%, rgba(229, 0, 0, 0.45) 0%, rgba(180, 0, 0, 0.2) 28%, rgba(255, 255, 255, 0.03) 55%, transparent 75%)`,
+              transition: isHovered ? 'none' : 'background-image 0.4s ease',
+              textRendering: 'geometricPrecision'
+            }}
+          >
+            CYBER PASHTO
+          </div>
         </div>
-
-        <div 
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: '1px',
-            background: isHovered
-              ? `linear-gradient(90deg, transparent 0%, rgba(229, 0, 0, 0.15) ${Math.max(0, mousePos.x - 25)}%, rgba(255, 2, 5, 0.95) ${mousePos.x}%, rgba(229, 0, 0, 0.15) ${Math.min(100, mousePos.x + 25)}%, transparent 100%)`
-              : 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 25%, rgba(229, 0, 0, 0.35) 50%, rgba(255, 255, 255, 0.08) 75%, transparent 100%)',
-            boxShadow: isHovered
-              ? '0 0 15px rgba(255, 2, 5, 0.85), 0 0 30px rgba(255, 2, 5, 0.45)'
-              : '0 0 10px rgba(229, 0, 0, 0.2)',
-            transition: 'box-shadow 0.3s ease'
-          }}
-        />
       </div>
 
-      <div className="container" style={{ position: 'relative', zIndex: 2 }}>
+      {/* ===================================================================
+          2. Lower Footer Content Container
+          =================================================================== */}
+      <div 
+        className="relative z-10" 
+        style={{
+          maxWidth: '1280px',
+          margin: '0 auto',
+          padding: 'clamp(40px, 5vw, 64px) clamp(20px, 4vw, 56px) 0'
+        }}
+      >
         <div 
           style={{
             display: 'grid',
@@ -148,115 +160,115 @@ export default function Footer({ onOpenContact, onNavigate }) {
           }}
           className="footer-columns-grid"
         >
+          {/* Brand Column */}
           <div>
             <div style={{ marginBottom: '1.25rem' }}>
-              <span style={{ 
-                fontFamily: 'var(--font-sans)', 
-                fontWeight: 900, 
-                fontSize: '22px', 
-                letterSpacing: '-0.04em', 
-                textTransform: 'uppercase',
-                lineHeight: 1,
-                display: 'inline-block'
-              }}>
-                <span style={{ color: '#FFFFFF' }}>CYBER</span>
-                <span className="gradient-text">PASHTO.</span>
-              </span>
+              <Link to="/" style={{ textDecoration: 'none' }}>
+                <span style={{ 
+                  fontFamily: 'var(--font-sans)', 
+                  fontWeight: 900, 
+                  fontSize: '22px', 
+                  letterSpacing: '-0.04em', 
+                  textTransform: 'uppercase', 
+                  lineHeight: 1,
+                  display: 'inline-block'
+                }}>
+                  <span style={{ color: '#FFFFFF' }}>CYBER</span>
+                  <span style={{ color: 'var(--red)' }}> PASHTO.</span>
+                </span>
+              </Link>
             </div>
 
-            <p style={{ color: '#8A8A8A', fontSize: '0.86rem', lineHeight: 1.65, marginBottom: '1.5rem', maxWidth: '300px' }}>
-              Pakistan's premier cybersecurity community — empowering the next generation through education, local chapters, and professional services.
+            <p style={{ color: 'var(--muted)', fontSize: '0.86rem', lineHeight: 1.65, marginBottom: '1.5rem', maxWidth: '300px' }}>
+              Pakistan's premier cybersecurity community — empowering the next generation through education, local chapters, and professional defense services.
             </p>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="social-square-btn" title="Instagram">
-                <Instagram size={17} />
+            {/* Social Channels with Reduced Corner Radius */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
+              <a href="https://www.facebook.com/cyberpashto" target="_blank" rel="noopener noreferrer" className="social-square-btn" title="Facebook" aria-label="Facebook">
+                <Facebook size={16} />
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="social-square-btn" title="LinkedIn">
-                <Linkedin size={17} />
+              <a href="https://twitter.com/cyberpashto" target="_blank" rel="noopener noreferrer" className="social-square-btn" title="Twitter" aria-label="Twitter">
+                <Twitter size={16} />
               </a>
-              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="social-square-btn" title="YouTube">
-                <Youtube size={17} />
+              <a href="https://instagram.com/cyberpashto" target="_blank" rel="noopener noreferrer" className="social-square-btn" title="Instagram" aria-label="Instagram">
+                <Instagram size={16} />
+              </a>
+              <a href="https://linkedin.com/company/cyberpashto" target="_blank" rel="noopener noreferrer" className="social-square-btn" title="LinkedIn" aria-label="LinkedIn">
+                <Linkedin size={16} />
+              </a>
+              <a href="https://youtube.com/@cyberpashto" target="_blank" rel="noopener noreferrer" className="social-square-btn" title="YouTube" aria-label="YouTube">
+                <Youtube size={16} />
+              </a>
+              <a href="https://github.com/cyberpashto" target="_blank" rel="noopener noreferrer" className="social-square-btn" title="GitHub" aria-label="GitHub">
+                <Github size={16} />
               </a>
             </div>
           </div>
 
+          {/* Navigation Column */}
           <div>
             <h4 
               className="mono-text" 
               style={{ 
                 fontSize: '0.78rem', 
                 fontWeight: 700,
-                color: '#8A8A8A', 
+                color: 'var(--muted)', 
                 textTransform: 'uppercase', 
                 letterSpacing: '0.12em', 
                 marginBottom: '1.25rem' 
               }}
             >
-              ABOUT
+              EXPLORE ACADEMY
             </h4>
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.88rem' }}>
-              <li>
-                <Link to="/" className="footer-link-clean">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link to="/services" className="footer-link-clean">
-                  Services
-                </Link>
-              </li>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.88rem' }}>
               <li>
                 <Link to="/courses" className="footer-link-clean">
-                  Courses
+                  All Courses &amp; Certifications
                 </Link>
               </li>
               <li>
-                <a href="https://chapters.cyberpashto.com/" target="_blank" rel="noopener noreferrer" className="footer-link-clean">
-                  Community
+                <Link to="/journey" className="footer-link-clean">
+                  Zero to Professional Roadmap
+                </Link>
+              </li>
+              <li>
+                <Link to="/about" className="footer-link-clean">
+                  About Our Movement
+                </Link>
+              </li>
+              <li>
+                <a href="#initiatives" className="footer-link-clean">
+                  Academic Portals &amp; Hackathons
                 </a>
               </li>
               <li>
-                <Link to="/roadmap" className="footer-link-clean">
-                  Journey
-                </Link>
-              </li>
-              <li>
                 <Link to="/contact" className="footer-link-clean">
-                  Contact
+                  Admission Guidance
                 </Link>
               </li>
             </ul>
           </div>
 
+          {/* Services & Training Column */}
           <div>
             <h4 
               className="mono-text" 
               style={{ 
                 fontSize: '0.78rem', 
                 fontWeight: 700,
-                color: '#8A8A8A', 
+                color: 'var(--muted)', 
                 textTransform: 'uppercase', 
                 letterSpacing: '0.12em', 
                 marginBottom: '1.25rem' 
               }}
             >
-              COMPANY
+              SERVICES &amp; LABS
             </h4>
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.88rem' }}>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.88rem' }}>
               <li>
                 <Link to="/services" className="footer-link-clean">
-                  Penetration Testing
-                </Link>
-              </li>
-              <li>
-                <Link to="/services" className="footer-link-clean">
-                  Security Consulting
-                </Link>
-              </li>
-              <li>
-                <Link to="/services" className="footer-link-clean">
-                  Vulnerability Assessment
+                  Penetration Testing (VAPT)
                 </Link>
               </li>
               <li>
@@ -265,63 +277,73 @@ export default function Footer({ onOpenContact, onNavigate }) {
                 </Link>
               </li>
               <li>
-                <button onClick={() => onOpenContact ? onOpenContact() : null} className="footer-link-clean">
-                  Feedback
+                <Link to="/services" className="footer-link-clean">
+                  Cloud Security Audit
+                </Link>
+              </li>
+              <li>
+                <Link to="/services" className="footer-link-clean">
+                  SOC Operations &amp; SIEM
+                </Link>
+              </li>
+              <li>
+                <button 
+                  onClick={() => onOpenContact ? onOpenContact() : null} 
+                  className="footer-link-clean"
+                  style={{ cursor: 'pointer' }}
+                >
+                  Direct Inquiry / Feedback
                 </button>
               </li>
             </ul>
           </div>
 
+          {/* Contact Details Column */}
           <div>
             <h4 
               className="mono-text" 
               style={{ 
                 fontSize: '0.78rem', 
                 fontWeight: 700,
-                color: '#8A8A8A', 
+                color: 'var(--muted)', 
                 textTransform: 'uppercase', 
                 letterSpacing: '0.12em', 
                 marginBottom: '1.25rem' 
               }}
             >
-              CONTACT
+              DIRECT CONTACT
             </h4>
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.88rem' }}>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.88rem' }}>
               <li>
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="footer-link-clean">
-                  Instagram
+                <a href="mailto:support@cyberpashto.com" className="footer-link-clean" style={{ color: 'var(--paper)', wordBreak: 'break-all' }}>
+                  support@cyberpashto.com
                 </a>
               </li>
               <li>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="footer-link-clean">
-                  LinkedIn
+                <a href="https://wa.me/923255636856" target="_blank" rel="noopener noreferrer" className="footer-link-clean" style={{ color: 'var(--paper)' }}>
+                  WhatsApp: 0325-5636856
                 </a>
               </li>
-              <li>
-                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="footer-link-clean">
-                  YouTube
-                </a>
-              </li>
-              <li style={{ marginTop: '0.4rem' }}>
-                <a href="mailto:contact@cyberpashto.com" className="footer-link-clean" style={{ color: '#D0D0D0', wordBreak: 'break-all' }}>
-                  contact@cyberpashto.com
-                </a>
+              <li style={{ color: 'var(--muted)', fontSize: '0.82rem', marginTop: '0.35rem', lineHeight: 1.5 }}>
+                Chakdara &amp; Peshawar, KPK, Pakistan
               </li>
             </ul>
           </div>
         </div>
 
+        {/* Bottom Bar: Copyright & Geolocation */}
         <div 
           style={{
             borderTop: '1px solid rgba(255, 255, 255, 0.08)',
             paddingTop: '1.5rem',
+            paddingBottom: '0.5rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             flexWrap: 'wrap',
             gap: '1rem',
             fontSize: '0.8rem',
-            color: '#6E6E6E'
+            color: 'var(--muted)'
           }}
         >
           <div>
@@ -333,18 +355,18 @@ export default function Footer({ onOpenContact, onNavigate }) {
             style={{ 
               fontSize: '0.74rem', 
               letterSpacing: '0.08em', 
-              color: '#6E6E6E', 
+              color: 'var(--muted)', 
               textTransform: 'uppercase' 
             }}
           >
-            KHYBER PAKHTUNKHWA &nbsp; PAKISTAN
+            KHYBER PAKHTUNKHWA • PAKISTAN
           </div>
         </div>
       </div>
 
       <style>{`
         .footer-link-clean {
-          color: #8A8A8A;
+          color: var(--muted);
           text-decoration: none;
           background: none;
           border: none;
@@ -361,12 +383,12 @@ export default function Footer({ onOpenContact, onNavigate }) {
           transform: translateX(2px);
         }
         .social-square-btn {
-          width: 40px;
-          height: 40px;
-          border-radius: 11px;
+          width: 38px;
+          height: 38px;
+          border-radius: 6px;
           background-color: rgba(255, 255, 255, 0.04);
-          border: 1px solid rgba(255, 255, 255, 0.12);
-          color: #A0A0A0;
+          border: 1px solid var(--border);
+          color: var(--muted);
           display: inline-flex;
           align-items: center;
           justify-content: center;
@@ -378,10 +400,10 @@ export default function Footer({ onOpenContact, onNavigate }) {
           margin: auto;
         }
         .social-square-btn:hover {
-          background-color: rgba(255, 0, 0, 0.18);
-          border-color: #FF0000;
+          background-color: var(--red-subtle);
+          border-color: var(--red);
           color: #FFFFFF;
-          box-shadow: 0 0 16px rgba(255, 0, 0, 0.4);
+          box-shadow: 0 0 16px var(--red-glow);
           transform: translateY(-2px);
         }
         @media (max-width: 900px) {

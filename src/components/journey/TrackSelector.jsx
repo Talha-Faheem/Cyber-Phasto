@@ -1,26 +1,25 @@
 import React from 'react';
 import { 
-  Code, 
+  Code2, 
   ShieldCheck, 
-  Brain, 
-  Database, 
   Cpu, 
+  Database, 
+  Terminal, 
   Cloud, 
-  Sparkles, 
   Clock, 
-  GraduationCap 
+  Briefcase 
 } from 'lucide-react';
 import { careerPathsData } from '../../data/coursesData';
 
 const getTrackIcon = (iconName) => {
   switch (iconName) {
-    case 'code': return <Code size={18} />;
-    case 'shield': return <ShieldCheck size={18} />;
-    case 'brain': return <Brain size={18} />;
-    case 'database': return <Database size={18} />;
-    case 'cpu': return <Cpu size={18} />;
-    case 'cloud': return <Cloud size={18} />;
-    default: return <Sparkles size={18} />;
+    case 'code': return <Code2 size={16} />;
+    case 'shield': return <ShieldCheck size={16} />;
+    case 'brain': return <Cpu size={16} />;
+    case 'database': return <Database size={16} />;
+    case 'cpu': return <Terminal size={16} />;
+    case 'cloud': return <Cloud size={16} />;
+    default: return <Code2 size={16} />;
   }
 };
 
@@ -30,51 +29,70 @@ export default function TrackSelector({
   activePath
 }) {
   return (
-    <section style={{ padding: '36px 0 20px', position: 'relative', zIndex: 3 }}>
+    <section style={{ padding: '24px 0 24px', position: 'relative', zIndex: 3 }}>
       <div className="container">
+        
+        {/* Track Selector Tabs */}
         <div className="trackPillContainer">
           {careerPathsData.map((path) => {
             const isSelected = path.id === selectedPathId;
             return (
               <button
                 key={path.id}
+                type="button"
                 onClick={() => setSelectedPathId(path.id)}
                 className={`trackPill ${isSelected ? 'active' : ''}`}
               >
                 <span className="trackPillIcon">{getTrackIcon(path.icon)}</span>
                 <span>{path.title}</span>
+                {isSelected && <span className="trackActiveDot" />}
               </button>
             );
           })}
         </div>
 
+        {/* Clean White Modern Roadmap Summary Box */}
         <div className="selectedPathSummaryBox">
           <div className="summaryContentLeft">
+            <div className="summaryEyebrowRow">
+              <span className="summaryTrackBadge">
+                ACTIVE ROADMAP
+              </span>
+            </div>
+
             <h2 className="summaryTitle">
               {activePath.title}
             </h2>
+            
             <p className="summaryDesc">
               {activePath.description}
             </p>
           </div>
 
+          {/* Clean Spec Indicators (Duration & Career Outcome) */}
           <div className="summaryMetaContainer">
-            <div className="summaryMetaCard">
-              <div className="metaIconWrap metaIconRed">
-                <Clock size={16} />
+            {/* 1. Duration Module */}
+            <div className="summaryMetaCard durationCard">
+              <div className="metaIconWrap">
+                <Clock size={18} strokeWidth={2} />
               </div>
               <div className="metaInfoCol">
-                <span className="metaLabel">ESTIMATED DURATION</span>
+                <div className="metaLabelRow">
+                  <span className="metaLabel">ESTIMATED TIMELINE</span>
+                </div>
                 <span className="metaValue">{activePath.duration}</span>
               </div>
             </div>
 
-            <div className="summaryMetaCard">
-              <div className="metaIconWrap metaIconGreen">
-                <GraduationCap size={16} />
+            {/* 2. Target Outcome Module */}
+            <div className="summaryMetaCard outcomeCard">
+              <div className="metaIconWrap">
+                <Briefcase size={18} strokeWidth={2} />
               </div>
               <div className="metaInfoCol">
-                <span className="metaLabel">TARGET OUTCOME</span>
+                <div className="metaLabelRow">
+                  <span className="metaLabel">CAREER OUTCOME</span>
+                </div>
                 <span className="metaValue">{activePath.finalRole}</span>
               </div>
             </div>

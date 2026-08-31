@@ -67,19 +67,19 @@ export default function InfiniteReviews() {
   return (
     <section 
       style={{ 
-        backgroundColor: '#000000', 
+        backgroundColor: 'var(--black)', 
         padding: '4.5rem 0', 
         overflow: 'hidden', 
         position: 'relative', 
-        borderTop: '1px solid #292929',
-        borderBottom: '1px solid #292929' 
+        borderTop: '1px solid var(--border)',
+        borderBottom: '1px solid var(--border)' 
       }}
     >
       <div className="container" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
         <h2 style={{ fontSize: 'clamp(2rem, 3.8vw, 3.2rem)', marginBottom: '0.85rem', color: '#FFFFFF' }}>
-          Trusted by <span style={{ color: '#FF0000' }}>50,000+ Defenders</span>
+          Trusted by <span style={{ color: 'var(--red)' }}>50,000+ Defenders</span>
         </h2>
-        <p style={{ color: '#D0D0D0', fontSize: '1.02rem' }}>
+        <p style={{ color: 'var(--paper)', fontSize: '1.02rem' }}>
           Hear from graduates, chapter leads, and security executives building their careers with Cyber Pashto.
         </p>
       </div>
@@ -102,7 +102,7 @@ export default function InfiniteReviews() {
             bottom: 0,
             left: 0,
             width: 'clamp(80px, 15vw, 240px)',
-            background: 'linear-gradient(to right, #000000 25%, rgba(0, 0, 0, 0.8) 60%, transparent 100%)',
+            background: 'linear-gradient(to right, #050505 25%, rgba(5, 5, 5, 0.8) 60%, transparent 100%)',
             zIndex: 10,
             pointerEvents: 'none'
           }}
@@ -116,7 +116,7 @@ export default function InfiniteReviews() {
             bottom: 0,
             right: 0,
             width: 'clamp(80px, 15vw, 240px)',
-            background: 'linear-gradient(to left, #000000 25%, rgba(0, 0, 0, 0.8) 60%, transparent 100%)',
+            background: 'linear-gradient(to left, #050505 25%, rgba(5, 5, 5, 0.8) 60%, transparent 100%)',
             zIndex: 10,
             pointerEvents: 'none'
           }}
@@ -133,9 +133,9 @@ export default function InfiniteReviews() {
                   width: '380px',
                   flexShrink: 0,
                   padding: '1.5rem',
-                  backgroundColor: '#080808',
-                  border: '1px solid #292929',
-                  borderRadius: '16px'
+                  backgroundColor: 'var(--ink)',
+                  border: '1px solid var(--border)',
+                  borderRadius: '8px'
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
@@ -143,25 +143,25 @@ export default function InfiniteReviews() {
                     <img 
                       src={r.avatar} 
                       alt={r.name}
-                      style={{ width: '42px', height: '42px', borderRadius: '50%', objectFit: 'cover', border: '1px solid #FF0000' }} 
+                      style={{ width: '42px', height: '42px', borderRadius: '50%', objectFit: 'cover', border: '1px solid var(--red)' }} 
                     />
                     <div>
                       <h4 style={{ fontSize: '0.98rem', fontWeight: 700, color: '#FFFFFF' }}>{r.name}</h4>
-                      <span style={{ fontSize: '0.75rem', color: '#8A8A8A' }}>{r.role}</span>
+                      <span style={{ fontSize: '0.75rem', color: 'var(--muted)' }}>{r.role}</span>
                     </div>
                   </div>
-                  <span className="mono-text" style={{ fontSize: '0.68rem', color: '#FF1616', backgroundColor: 'rgba(255, 0, 0, 0.12)', padding: '0.2rem 0.5rem', borderRadius: '4px', border: '1px solid rgba(255, 0, 0, 0.3)' }}>
+                  <span className="mono-text" style={{ fontSize: '0.68rem', color: 'var(--red-bright)', backgroundColor: 'var(--red-subtle)', padding: '0.2rem 0.5rem', borderRadius: '4px', border: '1px solid var(--red-border)' }}>
                     {r.tag}
                   </span>
                 </div>
 
                 <div style={{ display: 'flex', gap: '2px', marginBottom: '0.75rem' }}>
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={14} fill="#FF1616" color="#FF1616" />
+                    <Star key={i} size={14} fill="var(--red-bright)" color="var(--red-bright)" />
                   ))}
                 </div>
 
-                <p style={{ color: '#D0D0D0', fontSize: '0.88rem', lineHeight: 1.55 }}>
+                <p style={{ color: 'var(--paper)', fontSize: '0.88rem', lineHeight: 1.55 }}>
                   "{r.review}"
                 </p>
               </div>
@@ -180,9 +180,9 @@ export default function InfiniteReviews() {
                   width: '380px',
                   flexShrink: 0,
                   padding: '1.5rem',
-                  backgroundColor: '#080808',
-                  border: '1px solid #292929',
-                  borderRadius: '16px'
+                  backgroundColor: 'var(--ink)',
+                  border: '1px solid var(--border)',
+                  borderRadius: '8px'
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
@@ -190,25 +190,25 @@ export default function InfiniteReviews() {
                     <img 
                       src={r.avatar} 
                       alt={r.name}
-                      style={{ width: '42px', height: '42px', borderRadius: '50%', objectFit: 'cover', border: '1px solid #FF0000' }} 
+                      style={{ width: '42px', height: '42px', borderRadius: '50%', objectFit: 'cover', border: '1px solid var(--red)' }} 
                     />
                     <div>
                       <h4 style={{ fontSize: '0.98rem', fontWeight: 700, color: '#FFFFFF' }}>{r.name}</h4>
-                      <span style={{ fontSize: '0.75rem', color: '#8A8A8A' }}>{r.role}</span>
+                      <span style={{ fontSize: '0.75rem', color: 'var(--muted)' }}>{r.role}</span>
                     </div>
                   </div>
-                  <span className="mono-text" style={{ fontSize: '0.68rem', color: '#FF1616', backgroundColor: 'rgba(255, 0, 0, 0.12)', padding: '0.2rem 0.5rem', borderRadius: '4px', border: '1px solid rgba(255, 0, 0, 0.3)' }}>
+                  <span className="mono-text" style={{ fontSize: '0.68rem', color: 'var(--red-bright)', backgroundColor: 'var(--red-subtle)', padding: '0.2rem 0.5rem', borderRadius: '4px', border: '1px solid var(--red-border)' }}>
                     {r.tag}
                   </span>
                 </div>
 
                 <div style={{ display: 'flex', gap: '2px', marginBottom: '0.75rem' }}>
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={14} fill="#FF1616" color="#FF1616" />
+                    <Star key={i} size={14} fill="var(--red-bright)" color="var(--red-bright)" />
                   ))}
                 </div>
 
-                <p style={{ color: '#D0D0D0', fontSize: '0.88rem', lineHeight: 1.55 }}>
+                <p style={{ color: 'var(--paper)', fontSize: '0.88rem', lineHeight: 1.55 }}>
                   "{r.review}"
                 </p>
               </div>

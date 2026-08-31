@@ -36,7 +36,7 @@ export default function ComparisonTable() {
   ];
 
   return (
-    <section style={{ backgroundColor: '#000000', padding: '4.5rem 0', position: 'relative', borderTop: '1px solid #292929' }}>
+    <section style={{ backgroundColor: 'var(--black)', padding: '4.5rem 0', position: 'relative', borderTop: '1px solid var(--border)' }}>
       <div className="cyber-grid-overlay" style={{ opacity: 0.3 }} />
 
       <div className="container" style={{ position: 'relative', zIndex: 2 }}>
@@ -46,7 +46,7 @@ export default function ComparisonTable() {
           <h2 style={{ fontSize: 'clamp(2rem, 3.8vw, 3.2rem)', marginBottom: '0.85rem', color: '#FFFFFF' }}>
             What Extra <span className="text-gradient-red">Cyber Pashto</span> Gives You
           </h2>
-          <p style={{ color: '#D0D0D0', fontSize: '1.02rem' }}>
+          <p style={{ color: 'var(--paper)', fontSize: '1.02rem' }}>
             Why leading security researchers and university students choose Cyber Pashto over generic video marketplaces.
           </p>
         </div>
@@ -57,8 +57,8 @@ export default function ComparisonTable() {
           style={{
             maxWidth: '1000px',
             margin: '0 auto',
-            backgroundColor: '#080808',
-            border: '1px solid #292929',
+            backgroundColor: 'var(--ink)',
+            border: '1px solid var(--border)',
             borderRadius: '20px',
             overflow: 'hidden'
           }}
@@ -69,16 +69,16 @@ export default function ComparisonTable() {
               display: 'grid',
               gridTemplateColumns: '2fr 1.2fr 2.5fr',
               padding: '1.25rem 1.75rem',
-              backgroundColor: '#000000',
-              borderBottom: '1px solid #292929',
+              backgroundColor: 'var(--black)',
+              borderBottom: '1px solid var(--border)',
               fontWeight: 700,
               fontSize: '0.85rem',
               fontFamily: 'var(--font-mono)'
             }}
           >
-            <div style={{ color: '#8A8A8A' }}>CORE CAPABILITY</div>
-            <div style={{ color: '#8A8A8A', textAlign: 'center' }}>GENERIC PLATFORMS</div>
-            <div style={{ color: '#FF1616', textAlign: 'center' }}>CYBER PASHTO ACADEMY</div>
+            <div style={{ color: 'var(--muted)' }}>CORE CAPABILITY</div>
+            <div style={{ color: 'var(--muted)', textAlign: 'center' }}>GENERIC PLATFORMS</div>
+            <div style={{ color: 'var(--red-bright)', textAlign: 'center' }}>CYBER PASHTO ACADEMY</div>
           </div>
 
           {/* Rows */}
@@ -89,7 +89,7 @@ export default function ComparisonTable() {
                 display: 'grid',
                 gridTemplateColumns: '2fr 1.2fr 2.5fr',
                 padding: '1.15rem 1.75rem',
-                borderBottom: idx === comparisonItems.length - 1 ? 'none' : '1px solid #292929',
+                borderBottom: idx === comparisonItems.length - 1 ? 'none' : '1px solid var(--border)',
                 backgroundColor: idx % 2 === 0 ? 'rgba(255, 255, 255, 0.01)' : 'transparent',
                 alignItems: 'center',
                 fontSize: '0.88rem'

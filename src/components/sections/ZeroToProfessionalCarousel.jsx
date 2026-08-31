@@ -92,11 +92,11 @@ export default function ZeroToProfessionalCarousel({ onNavigate, onOpenContact }
     <section 
       id="zero-to-professional-carousel"
       style={{
-        backgroundColor: '#05070A',
+        backgroundColor: 'var(--black)',
         padding: '5rem 0',
         position: 'relative',
-        borderTop: '1px solid #292929',
-        borderBottom: '1px solid #292929'
+        borderTop: '1px solid var(--border)',
+        borderBottom: '1px solid var(--border)'
       }}
     >
       <div className="container" style={{ maxWidth: '1140px', margin: '0 auto' }}>
@@ -122,7 +122,7 @@ export default function ZeroToProfessionalCarousel({ onNavigate, onOpenContact }
                 margin: 0
               }}
             >
-              Interactive Stage <span style={{ color: '#FF0000' }}>Carousel</span>
+              Interactive Stage <span style={{ color: 'var(--red)' }}>Carousel</span>
             </h2>
           </div>
 
@@ -132,11 +132,11 @@ export default function ZeroToProfessionalCarousel({ onNavigate, onOpenContact }
               style={{
                 fontFamily: 'var(--font-mono)',
                 fontSize: '0.88rem',
-                color: '#8A8A8A',
+                color: 'var(--muted)',
                 fontWeight: 700
               }}
             >
-              <span style={{ color: '#FF0000', fontWeight: 800 }}>{carouselItems[activeIndex].step}</span> / 05
+              <span style={{ color: 'var(--red)', fontWeight: 800 }}>{carouselItems[activeIndex].step}</span> / 05
             </div>
 
             <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -147,8 +147,8 @@ export default function ZeroToProfessionalCarousel({ onNavigate, onOpenContact }
                   width: '42px',
                   height: '42px',
                   borderRadius: '8px',
-                  backgroundColor: '#0E1015',
-                  border: '1px solid #292929',
+                  backgroundColor: 'var(--ink)',
+                  border: '1px solid var(--border)',
                   color: '#FFFFFF',
                   display: 'flex',
                   alignItems: 'center',
@@ -168,8 +168,8 @@ export default function ZeroToProfessionalCarousel({ onNavigate, onOpenContact }
                   width: '42px',
                   height: '42px',
                   borderRadius: '8px',
-                  backgroundColor: '#0E1015',
-                  border: '1px solid #292929',
+                  backgroundColor: 'var(--ink)',
+                  border: '1px solid var(--border)',
                   color: '#FFFFFF',
                   display: 'flex',
                   alignItems: 'center',
@@ -188,8 +188,8 @@ export default function ZeroToProfessionalCarousel({ onNavigate, onOpenContact }
         {/* Carousel Showcase Stage */}
         <div 
           style={{
-            backgroundColor: '#0A0C10',
-            border: '1px solid #292929',
+            backgroundColor: 'var(--ink)',
+            border: '1px solid var(--border)',
             borderRadius: '20px',
             overflow: 'hidden',
             display: 'grid',
@@ -198,7 +198,7 @@ export default function ZeroToProfessionalCarousel({ onNavigate, onOpenContact }
           }}
         >
           {/* Left: Image / Visual Block */}
-          <div style={{ position: 'relative', minHeight: '280px', backgroundColor: '#000000' }}>
+          <div style={{ position: 'relative', minHeight: '280px', backgroundColor: 'var(--black)' }}>
             <img 
               src={carouselItems[activeIndex].image} 
               alt={carouselItems[activeIndex].title}
@@ -212,7 +212,7 @@ export default function ZeroToProfessionalCarousel({ onNavigate, onOpenContact }
               style={{
                 position: 'absolute',
                 inset: 0,
-                background: 'linear-gradient(to right, transparent 0%, #0A0C10 95%), linear-gradient(to top, #0A0C10 0%, transparent 60%)'
+                background: 'linear-gradient(to right, transparent 0%, rgba(9, 9, 9, 0.95) 95%), linear-gradient(to top, rgba(9, 9, 9, 0.9) 0%, transparent 60%)'
               }}
             />
           </div>
@@ -232,7 +232,7 @@ export default function ZeroToProfessionalCarousel({ onNavigate, onOpenContact }
                   fontFamily: 'var(--font-mono)',
                   fontSize: '0.76rem',
                   fontWeight: 800,
-                  color: '#FF1616',
+                  color: 'var(--red-bright)',
                   letterSpacing: '0.08em',
                   textTransform: 'uppercase',
                   marginBottom: '0.5rem'
@@ -257,7 +257,7 @@ export default function ZeroToProfessionalCarousel({ onNavigate, onOpenContact }
               <p 
                 style={{
                   fontSize: '0.92rem',
-                  color: '#A0A0A0',
+                  color: 'var(--muted)',
                   lineHeight: 1.6,
                   marginBottom: '1.5rem'
                 }}
@@ -273,9 +273,9 @@ export default function ZeroToProfessionalCarousel({ onNavigate, onOpenContact }
                     style={{
                       fontSize: '0.74rem',
                       fontFamily: 'var(--font-mono)',
-                      color: '#E0E0E0',
-                      backgroundColor: '#141822',
-                      border: '1px solid #292929',
+                      color: 'var(--paper)',
+                      backgroundColor: 'var(--black)',
+                      border: '1px solid var(--border)',
                       padding: '0.25rem 0.65rem',
                       borderRadius: '4px'
                     }}
@@ -295,16 +295,16 @@ export default function ZeroToProfessionalCarousel({ onNavigate, onOpenContact }
                 flexWrap: 'wrap',
                 gap: '1rem',
                 paddingTop: '1.25rem',
-                borderTop: '1px solid #242730'
+                borderTop: '1px solid var(--border)'
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '0.82rem', color: '#8A8A8A' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '0.82rem', color: 'var(--muted)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                  <Clock size={14} style={{ color: '#FF1616' }} />
+                  <Clock size={14} style={{ color: 'var(--red-bright)' }} />
                   <span>{carouselItems[activeIndex].duration}</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                  <BookOpen size={14} style={{ color: '#FF1616' }} />
+                  <BookOpen size={14} style={{ color: 'var(--red-bright)' }} />
                   <span>{carouselItems[activeIndex].labs}</span>
                 </div>
               </div>
@@ -314,8 +314,8 @@ export default function ZeroToProfessionalCarousel({ onNavigate, onOpenContact }
                 style={{
                   padding: '0.65rem 1.35rem',
                   borderRadius: '8px',
-                  backgroundColor: '#FF0000',
-                  border: '1px solid #FF0000',
+                  backgroundColor: 'var(--red)',
+                  border: '1px solid var(--red)',
                   color: '#FFFFFF',
                   fontFamily: 'var(--font-mono)',
                   fontSize: '0.85rem',
@@ -345,7 +345,7 @@ export default function ZeroToProfessionalCarousel({ onNavigate, onOpenContact }
                 width: dotIdx === activeIndex ? '28px' : '8px',
                 height: '8px',
                 borderRadius: '4px',
-                backgroundColor: dotIdx === activeIndex ? '#FF0000' : '#292929',
+                backgroundColor: dotIdx === activeIndex ? 'var(--red)' : 'var(--border)',
                 border: 'none',
                 cursor: 'pointer',
                 transition: 'all 0.25s ease'
@@ -359,8 +359,8 @@ export default function ZeroToProfessionalCarousel({ onNavigate, onOpenContact }
 
       <style>{`
         .carousel-ctrl-btn:hover {
-          background-color: #FF0000 !important;
-          border-color: #FF0000 !important;
+          background-color: var(--red) !important;
+          border-color: var(--red) !important;
         }
       `}</style>
     </section>
