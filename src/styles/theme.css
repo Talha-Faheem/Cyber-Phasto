@@ -113,6 +113,11 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   display: inline-block;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+  vertical-align: baseline;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 .hide {
@@ -697,8 +702,8 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
 
 .hero h1 {
   font-size: clamp(54px, 8.5vw, 122px);
-  line-height: 0.84;
-  letter-spacing: -0.07em;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
   max-width: 1120px;
   margin: 27px 0;
   font-weight: 800;
@@ -713,6 +718,11 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   display: inline-block;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+  vertical-align: baseline;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 .heroCopy {
@@ -1024,13 +1034,14 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
   letter-spacing: 0.2em;
   text-transform: uppercase;
   margin-bottom: 8px;
+  padding-bottom: 0.04em;
 }
 .title {
   font-size: clamp(30px, 5.5vw, 76px);
-  line-height: 1.05;
-  letter-spacing: -0.035em;
+  line-height: 1.18;
+  letter-spacing: -0.025em;
   text-align: center;
-  max-width: 900px;
+  max-width: 920px;
   margin: 17px auto;
   font-weight: 800;
   padding: 0 16px;
@@ -1234,8 +1245,8 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
   text-align: left;
   margin: 0 0 20px;
   font-size: clamp(42px, 5.8vw, 76px);
-  line-height: 0.92;
-  letter-spacing: -0.055em;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
   font-weight: 800;
   color: #080808;
 }
@@ -1501,8 +1512,8 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
 
 .cinematicTypo1 {
   font-size: clamp(48px, 8vw, 115px);
-  line-height: 0.88;
-  letter-spacing: -0.07em;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
   font-weight: 900;
   margin: 0 auto 50px;
   max-width: 1000px;
@@ -1734,8 +1745,8 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
 
 .courseStackCard h3 {
   font-size: clamp(24px, 2.6vw, 38px);
-  line-height: 0.96;
-  letter-spacing: -0.04em;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
   margin: 6px 0 10px;
   font-weight: 800;
 }
@@ -2613,8 +2624,8 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
 
 .final h2 {
   font-size: clamp(46px, 7.8vw, 108px);
-  line-height: 0.88;
-  letter-spacing: -0.06em;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
   margin: 18px auto;
   max-width: 1000px;
   font-weight: 900;
@@ -2630,6 +2641,11 @@ h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, label {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   display: inline-block;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+  vertical-align: baseline;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 .final p {
