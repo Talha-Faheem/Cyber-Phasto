@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import Navbar from './components/common/Navbar';
-import HomePage from './pages/HomePage';
 import CoursesPage from './pages/CoursesPage';
-import AboutPage from './pages/AboutPage';
+import HomePage from './pages/HomePage';
+// import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
-import ContactPage2 from './pages/ContactPage2';
 import JourneyPage from './pages/JourneyPage';
-import ServicesPage from './pages/ServicesPage';
-import ContactModal from './components/sections/ContactModal';
+// import ServicesPage from './pages/ServicesPage';
+import ContactModal from './components/common/ContactModal';
 import Footer from './components/common/Footer';
 import './styles/theme.css';
 
@@ -35,13 +34,11 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<HomePage onOpenContact={() => setIsContactOpen(true)} />} />
           <Route path="/courses" element={<CoursesPage onOpenContact={() => setIsContactOpen(true)} />} />
-          <Route path="/roadmap" element={<JourneyPage onOpenContact={() => setIsContactOpen(true)} />} />
+          
           <Route path="/journey" element={<JourneyPage onOpenContact={() => setIsContactOpen(true)} />} />
-          <Route path="/about" element={<AboutPage onOpenContact={() => setIsContactOpen(true)} />} />
+          
           <Route path="/contact" element={<ContactPage />} />
-          <Route path="/contact-2" element={<ContactPage2 />} />
-          <Route path="/contact2" element={<ContactPage2 />} />
-          <Route path="/services" element={<ServicesPage onOpenContact={() => setIsContactOpen(true)} />} />
+         
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>

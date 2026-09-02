@@ -1,13 +1,13 @@
-import React, { useState, useRef, useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import { 
-  Instagram, 
-  Linkedin, 
-  Youtube,
+import {
   Facebook,
+  Github,
+  Instagram,
+  Linkedin,
   Twitter,
-  Github
+  Youtube
 } from 'lucide-react';
+import { useCallback, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Footer({ onOpenContact }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -135,16 +135,23 @@ export default function Footer({ onOpenContact }) {
           }}
         />
 
-        {/* Spotlight Typography matching user provided exact design taking full width */}
+        {/* Spotlight Typography matching user provided exact design taking full width in ONE line */}
         <div 
-          className="spotlight-text font-black text-center whitespace-nowrap block w-full tracking-tighter transition-all duration-300 ease-out" 
+          className="spotlight-text font-black text-center whitespace-nowrap w-full tracking-tighter transition-all duration-300 ease-out" 
           style={{
             fontFamily: "'Poppins', sans-serif",
             fontWeight: 900,
-            lineHeight: 0.92,
+            lineHeight: 0.95,
             letterSpacing: '-0.04em',
-            fontSize: 'clamp(36px, 12.8vw, 230px)',
+            fontSize: 'clamp(28px, 10.8vw, 195px)',
             width: '100%',
+            maxWidth: '100%',
+            whiteSpace: 'nowrap',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+            overflow: 'hidden',
             padding: 'clamp(14px, 2.5vw, 32px) 0 clamp(10px, 2vw, 24px)',
             backgroundClip: 'text',
             WebkitBackgroundClip: 'text',
@@ -463,6 +470,11 @@ export default function Footer({ onOpenContact }) {
           color: #FFFFFF;
           box-shadow: 0 0 16px var(--red-glow);
           transform: translateY(-2px);
+        }
+        .spotlight-text {
+          white-space: nowrap !important;
+          word-break: keep-all !important;
+          overflow-wrap: normal !important;
         }
         @media (max-width: 900px) {
           .footer-columns-grid {

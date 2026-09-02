@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 
 export default function Navbar({ onOpenContact }) {
   const [isVisible, setIsVisible] = useState(true);
@@ -76,9 +76,8 @@ export default function Navbar({ onOpenContact }) {
           <nav className="sheryians-nav-pill" aria-label="Main Navigation">
             <NavLink to="/" end className={({ isActive }) => isActive ? 'active' : ''}>Home</NavLink>
             <NavLink to="/courses" className={({ isActive }) => isActive ? 'active' : ''}>Courses</NavLink>
-            <NavLink to="/roadmap" className={({ isActive }) => isActive ? 'active' : ''}>Journey</NavLink>
+            <NavLink to="/journey" className={({ isActive }) => isActive ? 'active' : ''}>Journey</NavLink>
             <NavLink to="/contact" className={({ isActive }) => isActive ? 'active' : ''}>Contact Us</NavLink>
-            <NavLink to="/contact-2" className={({ isActive }) => isActive ? 'active' : ''}>Contact-2</NavLink>
           </nav>
 
           <button onClick={handleApplyClick} className="sheryians-apply-btn">
@@ -106,7 +105,6 @@ export default function Navbar({ onOpenContact }) {
           <NavLink to="/courses" onClick={() => setMobileOpen(false)}>Courses</NavLink>
           <NavLink to="/roadmap" onClick={() => setMobileOpen(false)}>Journey</NavLink>
           <NavLink to="/contact" onClick={() => setMobileOpen(false)}>Contact Us</NavLink>
-          <NavLink to="/contact-2" onClick={() => setMobileOpen(false)}>Contact-2</NavLink>
           
           <button 
             type="button"

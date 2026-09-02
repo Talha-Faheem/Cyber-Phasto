@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import HomeBackground from '../components/home/HomeBackground';
 import { 
   CheckCircle2, 
@@ -204,22 +203,22 @@ export default function ContactPage() {
               <div className="info-block" style={{ marginBottom: 0 }}>
                 <h4 className="info-block-title">Stay Connected</h4>
                 <div className="social-icons-row">
-                  <a href="https://www.facebook.com/cyberpashto" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="Facebook">
+                  <a href="https://www.facebook.com/cyberpashto" target="_blank" rel="noopener noreferrer" className="social-icon-btn" title="Facebook" aria-label="Facebook">
                     <Facebook size={16} />
                   </a>
-                  <a href="https://twitter.com/cyberpashto" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="Twitter">
+                  <a href="https://twitter.com/cyberpashto" target="_blank" rel="noopener noreferrer" className="social-icon-btn" title="Twitter" aria-label="Twitter">
                     <Twitter size={16} />
                   </a>
-                  <a href="https://www.instagram.com/cyberpashto" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="Instagram">
+                  <a href="https://www.instagram.com/cyberpashto" target="_blank" rel="noopener noreferrer" className="social-icon-btn" title="Instagram" aria-label="Instagram">
                     <Instagram size={16} />
                   </a>
-                  <a href="https://www.linkedin.com/company/cyberpashto" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="LinkedIn">
+                  <a href="https://www.linkedin.com/company/cyberpashto" target="_blank" rel="noopener noreferrer" className="social-icon-btn" title="LinkedIn" aria-label="LinkedIn">
                     <Linkedin size={16} />
                   </a>
-                  <a href="https://youtube.com/@cyberpashto" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="YouTube">
+                  <a href="https://youtube.com/@cyberpashto" target="_blank" rel="noopener noreferrer" className="social-icon-btn" title="YouTube" aria-label="YouTube">
                     <Youtube size={16} />
                   </a>
-                  <a href="https://github.com/cyberpashto" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="GitHub">
+                  <a href="https://github.com/cyberpashto" target="_blank" rel="noopener noreferrer" className="social-icon-btn" title="GitHub" aria-label="GitHub">
                     <Github size={16} />
                   </a>
                 </div>
@@ -531,27 +530,33 @@ export default function ContactPage() {
         .social-icons-row {
           display: flex;
           align-items: center;
-          gap: 10px;
+          gap: 0.65rem;
           flex-wrap: wrap;
           margin-top: 6px;
         }
 
         .social-icon-btn {
-          width: 36px;
-          height: 36px;
-          border-radius: 50%;
+          width: 38px;
+          height: 38px;
+          border-radius: 6px;
           background-color: rgba(0, 0, 0, 0.35);
           color: #FFFFFF;
           border: 1px solid rgba(255, 255, 255, 0.2);
-          display: flex;
+          display: inline-flex;
           align-items: center;
           justify-content: center;
           text-decoration: none;
-          transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+          transition: all 0.25s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .social-icon-btn svg {
+          display: block;
+          margin: auto;
         }
 
         .social-icon-btn:hover {
           background-color: #FFFFFF;
+          border-color: #FFFFFF;
           color: var(--red);
           transform: translateY(-2px);
           box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);

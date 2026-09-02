@@ -7,7 +7,7 @@ import TrackSelector from '../components/journey/TrackSelector';
 import JourneyTimeline from '../components/journey/JourneyTimeline';
 import PathFinderQuizModal from '../components/journey/PathFinderQuizModal';
 
-export default function JourneyPage({ onOpenContact, onNavigate, initialPathId = 'web-development' }) {
+export default function JourneyPage({ onOpenContact, initialPathId = 'web-development' }) {
   const [selectedPathId, setSelectedPathId] = useState(initialPathId);
   const [isQuizOpen, setIsQuizOpen] = useState(false);
   const location = useLocation();

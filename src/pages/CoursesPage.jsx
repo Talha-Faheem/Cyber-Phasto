@@ -10,7 +10,7 @@ import CoursesHero from '../components/courses/CoursesHero';
 import PopularTracksPaperSection from '../components/courses/PopularTracksPaperSection';
 import { coursesData } from '../data/coursesData';
 
-export default function CoursesPage({ onOpenContact, onNavigate }) {
+export default function CoursesPage({ onOpenContact }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All Courses');
   const [sortOption, setSortOption] = useState('recommended');

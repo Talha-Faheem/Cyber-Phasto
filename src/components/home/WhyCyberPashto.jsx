@@ -1,5 +1,5 @@
 import React from 'react';
-import AnimatedCounter from '../common/AnimatedCounter';
+import Counter from '../common/Counter';
 
 export default function WhyCyberPashto() {
   return (
@@ -18,7 +18,7 @@ export default function WhyCyberPashto() {
             <div className="metric">
               <div className="mono red">01 / LEARN</div>
               <div>
-                <AnimatedCounter target={1000} suffix="+" />
+                <Counter end={1000} suffix="+" />
                 <p>Learners & community members</p>
               </div>
             </div>
@@ -26,7 +26,7 @@ export default function WhyCyberPashto() {
             <div className="metric">
               <div className="mono red">02 / BUILD</div>
               <div>
-                <AnimatedCounter target={100} suffix="+" />
+                <Counter end={100} suffix="+" />
                 <p>Practical projects & resources</p>
               </div>
             </div>
@@ -34,7 +34,7 @@ export default function WhyCyberPashto() {
             <div className="metric">
               <div className="mono red">03 / CONNECT</div>
               <div>
-                <AnimatedCounter target={25} suffix="+" />
+                <Counter end={25} suffix="+" />
                 <p>Sessions, workshops & events</p>
               </div>
             </div>

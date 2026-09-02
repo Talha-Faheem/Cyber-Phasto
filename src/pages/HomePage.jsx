@@ -13,7 +13,7 @@ import StudentReviews from '../components/home/StudentReviews';
 import FaqSection from '../components/home/FaqSection';
 import FinalCta from '../components/home/FinalCta';
 
-export default function HomePage({ onOpenContact, onNavigate }) {
+export default function HomePage({ onOpenContact }) {
   const [openFaq, setOpenFaq] = useState(null);
 
   const galleryRef = useRef(null);
