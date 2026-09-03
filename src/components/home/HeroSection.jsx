@@ -9,6 +9,8 @@ export default function HeroSection({ onOpenContact }) {
           src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbzhleXkwMWd1ZnA4ZXJnd2E1M2JteGpwZ2dsMm1wZXh2MXNkcnZseSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/JUXtbHuixcZKeGJEro/giphy.gif"
           alt="Cyber Background Loop" 
           className="heroBackgroundVideo"
+          loading="lazy"
+          decoding="async"
           onError={(e) => {
             e.currentTarget.src = "https://i.giphy.com/JUXtbHuixcZKeGJEro.gif";
           }}

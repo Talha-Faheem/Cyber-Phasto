@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import HomeBackground from '../components/home/HomeBackground';
 import HeroSection from '../components/home/HeroSection';
 import WhyCyberPashto from '../components/home/WhyCyberPashto';
@@ -31,195 +33,185 @@ export default function HomePage({ onOpenContact }) {
 
   useEffect(() => {
     let ctx;
-    let timerId;
     let refreshTimerId;
+    let resizeTimer;
 
-    const initAnimation = () => {
-      const gsap = window.gsap;
-      const ScrollTrigger = window.ScrollTrigger;
-      if (!gsap || !ScrollTrigger) {
-        timerId = setTimeout(initAnimation, 80);
-        return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    const isMobile = window.innerWidth <= 850;
+    const stackOffset1 = isMobile ? -12 : -18;
+    const stackOffset2 = isMobile ? -24 : -36;
+    const stackOffset3 = isMobile ? -36 : -54;
+
+    const card1 = card1Ref.current;
+    const card2 = card2Ref.current;
+    const card3 = card3Ref.current;
+    const card4 = card4Ref.current;
+    const section = coursesSectionRef.current;
+
+    if (!card1 || !card2 || !card3 || !card4 || !section) return;
+
+    ctx = gsap.context(() => {
+      const expSection = experienceSectionRef.current;
+      const expTrack = galleryRef.current;
+      if (expSection && expTrack && !isMobile) {
+        gsap.fromTo(
+          expTrack,
+          { x: 220 },
+          {
+            x: -380,
+            ease: "none",
+            scrollTrigger: {
+              trigger: expSection,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1.2,
+              invalidateOnRefresh: true
+            }
+          }
+        );
       }
 
-      gsap.registerPlugin(ScrollTrigger);
+      gsap.set(card1, { y: 0, scale: 1, filter: "brightness(1)", zIndex: 10, opacity: 1 });
+      gsap.set(card2, { y: "102%", scale: 0.98, filter: "brightness(0.92)", zIndex: 20, opacity: 1 });
+      gsap.set(card3, { y: "114%", scale: 0.96, filter: "brightness(0.86)", zIndex: 30, opacity: 1 });
+      gsap.set(card4, { y: "126%", scale: 0.94, filter: "brightness(0.80)", zIndex: 40, opacity: 1 });
 
-      const isMobile = window.innerWidth <= 850;
-      const stackOffset1 = isMobile ? -12 : -18;
-      const stackOffset2 = isMobile ? -24 : -36;
-      const stackOffset3 = isMobile ? -36 : -54;
+      const totalDistance = window.innerHeight * (isMobile ? 2.0 : 2.4);
 
-      const card1 = card1Ref.current;
-      const card2 = card2Ref.current;
-      const card3 = card3Ref.current;
-      const card4 = card4Ref.current;
-      const section = coursesSectionRef.current;
-
-      if (!card1 || !card2 || !card3 || !card4 || !section) return;
-
-      ctx = gsap.context(() => {
-        const expSection = experienceSectionRef.current;
-        const expTrack = galleryRef.current;
-        if (expSection && expTrack && !isMobile) {
-          gsap.fromTo(
-            expTrack,
-            { x: 220 },
-            {
-              x: -380,
-              ease: "none",
-              scrollTrigger: {
-                trigger: expSection,
-                start: "top bottom",
-                end: "bottom top",
-                scrub: 1.2,
-                invalidateOnRefresh: true
-              }
-            }
-          );
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",
+          end: () => "+=" + totalDistance,
+          pin: true,
+          scrub: 0.8,
+          anticipatePin: 1,
+          invalidateOnRefresh: true
         }
+      });
 
-        gsap.set(card1, { y: 0, scale: 1, filter: "brightness(1)", zIndex: 10, opacity: 1 });
-        gsap.set(card2, { y: "102%", scale: 0.98, filter: "brightness(0.92)", zIndex: 20, opacity: 1 });
-        gsap.set(card3, { y: "114%", scale: 0.96, filter: "brightness(0.86)", zIndex: 30, opacity: 1 });
-        gsap.set(card4, { y: "126%", scale: 0.94, filter: "brightness(0.80)", zIndex: 40, opacity: 1 });
+      tl.to(card2, {
+        y: 0,
+        scale: 1,
+        filter: "brightness(1)",
+        duration: 1.2,
+        ease: "power2.out"
+      }, "step1")
+      .to(card1, {
+        y: stackOffset1,
+        scale: 0.97,
+        filter: "brightness(0.88)",
+        duration: 1.2,
+        ease: "power2.out"
+      }, "step1")
+      .to({}, { duration: 0.25 });
 
-        const totalDistance = window.innerHeight * (isMobile ? 2.0 : 2.4);
+      tl.to(card3, {
+        y: 0,
+        scale: 1,
+        filter: "brightness(1)",
+        duration: 1.2,
+        ease: "power2.out"
+      }, "step2")
+      .to(card2, {
+        y: stackOffset1,
+        scale: 0.97,
+        filter: "brightness(0.88)",
+        duration: 1.2,
+        ease: "power2.out"
+      }, "step2")
+      .to(card1, {
+        y: stackOffset2,
+        scale: 0.94,
+        filter: "brightness(0.74)",
+        duration: 1.2,
+        ease: "power2.out"
+      }, "step2")
+      .to({}, { duration: 0.25 });
 
-        const tl = gsap.timeline({
+      tl.to(card4, {
+        y: 0,
+        scale: 1,
+        filter: "brightness(1)",
+        duration: 1.2,
+        ease: "power2.out"
+      }, "step3")
+      .to(card3, {
+        y: stackOffset1,
+        scale: 0.97,
+        filter: "brightness(0.88)",
+        duration: 1.2,
+        ease: "power2.out"
+      }, "step3")
+      .to(card2, {
+        y: stackOffset2,
+        scale: 0.94,
+        filter: "brightness(0.74)",
+        duration: 1.2,
+        ease: "power2.out"
+      }, "step3")
+      .to(card1, {
+        y: stackOffset3,
+        scale: 0.91,
+        filter: "brightness(0.60)",
+        duration: 1.2,
+        ease: "power2.out"
+      }, "step3")
+      .to({}, { duration: 0.25 });
+
+      tl.to([card1, card2, card3, card4], {
+        y: "-=20",
+        opacity: 0.9,
+        duration: 0.6,
+        ease: "power1.inOut"
+      }, "exit");
+
+      const pathsSection = document.querySelector("#paths");
+      if (pathsSection) {
+        gsap.from(pathsSection.querySelectorAll(".title, .sub"), {
+          y: 40,
+          opacity: 0,
+          stagger: 0.1,
+          duration: 0.85,
+          ease: "power2.out",
           scrollTrigger: {
-            trigger: section,
-            start: "top top",
-            end: () => "+=" + totalDistance,
-            pin: true,
-            scrub: 0.8,
-            anticipatePin: 1,
-            invalidateOnRefresh: true
+            trigger: pathsSection,
+            start: "top 80%",
+            once: true
           }
         });
 
-        tl.to(card2, {
-          y: 0,
-          scale: 1,
-          filter: "brightness(1)",
-          duration: 1.2,
-          ease: "power2.out"
-        }, "step1")
-        .to(card1, {
-          y: stackOffset1,
-          scale: 0.97,
-          filter: "brightness(0.88)",
-          duration: 1.2,
-          ease: "power2.out"
-        }, "step1")
-        .to({}, { duration: 0.25 });
+        gsap.from(pathsSection.querySelectorAll(".path"), {
+          y: 50,
+          opacity: 0,
+          stagger: 0.08,
+          duration: 0.8,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: pathsSection.querySelector(".pathGrid"),
+            start: "top 85%",
+            once: true
+          }
+        });
+      }
 
-        tl.to(card3, {
-          y: 0,
-          scale: 1,
-          filter: "brightness(1)",
-          duration: 1.2,
-          ease: "power2.out"
-        }, "step2")
-        .to(card2, {
-          y: stackOffset1,
-          scale: 0.97,
-          filter: "brightness(0.88)",
-          duration: 1.2,
-          ease: "power2.out"
-        }, "step2")
-        .to(card1, {
-          y: stackOffset2,
-          scale: 0.94,
-          filter: "brightness(0.74)",
-          duration: 1.2,
-          ease: "power2.out"
-        }, "step2")
-        .to({}, { duration: 0.25 });
-
-        tl.to(card4, {
-          y: 0,
-          scale: 1,
-          filter: "brightness(1)",
-          duration: 1.2,
-          ease: "power2.out"
-        }, "step3")
-        .to(card3, {
-          y: stackOffset1,
-          scale: 0.97,
-          filter: "brightness(0.88)",
-          duration: 1.2,
-          ease: "power2.out"
-        }, "step3")
-        .to(card2, {
-          y: stackOffset2,
-          scale: 0.94,
-          filter: "brightness(0.74)",
-          duration: 1.2,
-          ease: "power2.out"
-        }, "step3")
-        .to(card1, {
-          y: stackOffset3,
-          scale: 0.91,
-          filter: "brightness(0.60)",
-          duration: 1.2,
-          ease: "power2.out"
-        }, "step3")
-        .to({}, { duration: 0.25 });
-
-        tl.to([card1, card2, card3, card4], {
-          y: "-=20",
-          opacity: 0.9,
-          duration: 0.6,
-          ease: "power1.inOut"
-        }, "exit");
-
-        const pathsSection = document.querySelector("#paths");
-        if (pathsSection) {
-          gsap.from(pathsSection.querySelectorAll(".title, .sub"), {
-            y: 40,
-            opacity: 0,
-            stagger: 0.1,
-            duration: 0.85,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: pathsSection,
-              start: "top 80%",
-              once: true
-            }
-          });
-
-          gsap.from(pathsSection.querySelectorAll(".path"), {
-            y: 50,
-            opacity: 0,
-            stagger: 0.08,
-            duration: 0.8,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: pathsSection.querySelector(".pathGrid"),
-              start: "top 85%",
-              once: true
-            }
-          });
-        }
-
-        refreshTimerId = setTimeout(() => {
-          ScrollTrigger.refresh();
-        }, 150);
-      });
-    };
-
-    initAnimation();
+      refreshTimerId = setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 150);
+    });
 
     const handleResize = () => {
-      if (window.ScrollTrigger) {
-        window.ScrollTrigger.refresh();
-      }
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 200);
     };
     window.addEventListener('resize', handleResize);
 
     return () => {
-      if (timerId) clearTimeout(timerId);
       if (refreshTimerId) clearTimeout(refreshTimerId);
+      if (resizeTimer) clearTimeout(resizeTimer);
       window.removeEventListener('resize', handleResize);
       if (ctx) ctx.revert();
     };

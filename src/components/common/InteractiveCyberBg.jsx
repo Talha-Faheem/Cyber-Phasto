@@ -5,7 +5,9 @@ export default function InteractiveCyberBg() {
   const containerRef = useRef(null);
   const mouseRef = useRef({ x: -1000, y: -1000, isHovered: false });
   const ripplesRef = useRef([]);
-  const [spotlightPos, setSpotlightPos] = useState({ x: 50, y: 30, visible: false });
+  const spotlightPosRef = useRef({ x: 50, y: 30, visible: false });
+  const spotlightDivRef = useRef(null);
+  const isVisibleRef = useRef(true);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -74,16 +76,24 @@ export default function InteractiveCyberBg() {
         mouseRef.current.y = y;
         mouseRef.current.isHovered = true;
 
-        setSpotlightPos({
+        spotlightPosRef.current = {
           x: (x / rect.width) * 100,
           y: (y / rect.height) * 100,
           visible: true
-        });
+        };
+        if (spotlightDivRef.current) {
+          spotlightDivRef.current.style.background = `radial-gradient(650px circle at ${spotlightPosRef.current.x}% ${spotlightPosRef.current.y}%, rgba(255, 2, 5, 0.16) 0%, rgba(255, 2, 5, 0.04) 45%, transparent 75%)`;
+          spotlightDivRef.current.style.transition = 'none';
+        }
       } else {
         mouseRef.current.isHovered = false;
         mouseRef.current.x = -1000;
         mouseRef.current.y = -1000;
-        setSpotlightPos(prev => ({ ...prev, visible: false }));
+        spotlightPosRef.current.visible = false;
+        if (spotlightDivRef.current) {
+          spotlightDivRef.current.style.background = `radial-gradient(circle at 50% 25%, rgba(255, 2, 5, 0.14) 0%, transparent 65%)`;
+          spotlightDivRef.current.style.transition = 'background 0.6s ease';
+        }
       }
     };
 
@@ -91,7 +101,11 @@ export default function InteractiveCyberBg() {
       mouseRef.current.isHovered = false;
       mouseRef.current.x = -1000;
       mouseRef.current.y = -1000;
-      setSpotlightPos(prev => ({ ...prev, visible: false }));
+      spotlightPosRef.current.visible = false;
+      if (spotlightDivRef.current) {
+        spotlightDivRef.current.style.background = `radial-gradient(circle at 50% 25%, rgba(255, 2, 5, 0.14) 0%, transparent 65%)`;
+        spotlightDivRef.current.style.transition = 'background 0.6s ease';
+      }
     };
 
     const handleClick = (e) => {
@@ -119,6 +133,10 @@ export default function InteractiveCyberBg() {
     let lastTime = performance.now();
 
     const render = (time) => {
+      if (!isVisibleRef.current) {
+        animationFrameId = null;
+        return;
+      }
       lastTime = time;
 
       ctx.clearRect(0, 0, width, height);
@@ -219,15 +237,16 @@ export default function InteractiveCyberBg() {
           ctx.fillText(p.symbol, p.x, p.y);
           ctx.restore();
         } else {
+          if (p.isRed) {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius * 3, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255, 2, 5, 0.12)';
+            ctx.fill();
+          }
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
           ctx.fillStyle = p.color;
-          if (p.isRed) {
-            ctx.shadowColor = '#FF0205';
-            ctx.shadowBlur = 8;
-          } else {
-            ctx.shadowBlur = 0;
-          }
+          ctx.shadowBlur = 0;
           ctx.fill();
         }
 
@@ -256,11 +275,16 @@ export default function InteractiveCyberBg() {
       // Draw subtle mouse cursor halo if hovered
       if (mouse.isHovered) {
         ctx.save();
+        
+        ctx.beginPath();
+        ctx.arc(mouse.x, mouse.y, 12, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 2, 5, 0.15)';
+        ctx.fill();
+
         ctx.beginPath();
         ctx.arc(mouse.x, mouse.y, 4, 0, Math.PI * 2);
         ctx.fillStyle = '#FF0205';
-        ctx.shadowColor = '#FF0205';
-        ctx.shadowBlur = 12;
+        ctx.shadowBlur = 0;
         ctx.fill();
 
         ctx.beginPath();
@@ -274,10 +298,20 @@ export default function InteractiveCyberBg() {
       animationFrameId = requestAnimationFrame(render);
     };
 
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisibleRef.current = entry.isIntersecting;
+      if (entry.isIntersecting && !animationFrameId) {
+        lastTime = performance.now();
+        animationFrameId = requestAnimationFrame(render);
+      }
+    });
+    observer.observe(container);
+
     animationFrameId = requestAnimationFrame(render);
 
     return () => {
       cancelAnimationFrame(animationFrameId);
+      observer.disconnect();
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseleave', handleMouseLeave);
@@ -326,13 +360,12 @@ export default function InteractiveCyberBg() {
 
       {/* Dynamic Mouse Spotlight Glow */}
       <div 
+        ref={spotlightDivRef}
         style={{
           position: 'absolute',
           inset: 0,
-          background: spotlightPos.visible
-            ? `radial-gradient(650px circle at ${spotlightPos.x}% ${spotlightPos.y}%, rgba(255, 2, 5, 0.16) 0%, rgba(255, 2, 5, 0.04) 45%, transparent 75%)`
-            : `radial-gradient(circle at 50% 25%, rgba(255, 2, 5, 0.14) 0%, transparent 65%)`,
-          transition: spotlightPos.visible ? 'none' : 'background 0.6s ease',
+          background: `radial-gradient(circle at 50% 25%, rgba(255, 2, 5, 0.14) 0%, transparent 65%)`,
+          transition: 'background 0.6s ease',
           pointerEvents: 'none'
         }}
       />

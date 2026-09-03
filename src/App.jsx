@@ -9,6 +9,7 @@ import JourneyPage from './pages/JourneyPage';
 // import ServicesPage from './pages/ServicesPage';
 import ContactModal from './components/common/ContactModal';
 import Footer from './components/common/Footer';
+import SmoothScroller from './components/common/SmoothScroller';
 import './styles/theme.css';
 
 function ScrollToTop() {
@@ -56,7 +57,9 @@ function AppContent() {
 export default function App() {
   return (
     <BrowserRouter>
-      <AppContent />
+      <SmoothScroller>
+        <AppContent />
+      </SmoothScroller>
     </BrowserRouter>
   );
 }

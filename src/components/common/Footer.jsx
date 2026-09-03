@@ -11,15 +11,54 @@ import { Link } from 'react-router-dom';
 
 export default function Footer({ onOpenContact }) {
   const [isHovered, setIsHovered] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+  const mousePosRef = useRef({ x: 50, y: 50 });
   const watermarkRef = useRef(null);
+  const topLineRef = useRef(null);
+  const bottomLineRef = useRef(null);
+  const spotlightOrbRef = useRef(null);
+  const spotlightTextRef = useRef(null);
+  const topDotRef = useRef(null);
+  const bottomDotRef = useRef(null);
+  const rAFRef = useRef(null);
+
+  const updateDOM = () => {
+    const { x, y } = mousePosRef.current;
+    
+    if (topLineRef.current) {
+      topLineRef.current.style.background = `linear-gradient(90deg, transparent 0%, rgba(255, 2, 5, 0.15) ${Math.max(0, x - 30)}%, #FF0205 ${x}%, rgba(255, 2, 5, 0.15) ${Math.min(100, x + 30)}%, transparent 100%)`;
+    }
+    if (bottomLineRef.current) {
+      bottomLineRef.current.style.background = `linear-gradient(90deg, transparent 0%, rgba(255, 2, 5, 0.15) ${Math.max(0, x - 30)}%, #FF0205 ${x}%, rgba(255, 2, 5, 0.15) ${Math.min(100, x + 30)}%, transparent 100%)`;
+    }
+    if (topDotRef.current) {
+      topDotRef.current.style.left = `${x}%`;
+    }
+    if (bottomDotRef.current) {
+      bottomDotRef.current.style.left = `${x}%`;
+    }
+    if (spotlightOrbRef.current) {
+      spotlightOrbRef.current.style.left = `${x}%`;
+      spotlightOrbRef.current.style.top = `${y}%`;
+    }
+    if (spotlightTextRef.current) {
+      spotlightTextRef.current.style.backgroundImage = `radial-gradient(460px circle at ${x}% ${y}%, #FF0205 0%, rgba(255, 2, 5, 0.45) 42%, transparent 75%)`;
+    }
+    rAFRef.current = null;
+  };
+
+  const scheduleUpdate = () => {
+    if (!rAFRef.current) {
+      rAFRef.current = requestAnimationFrame(updateDOM);
+    }
+  };
 
   const handleMouseMove = useCallback((e) => {
     if (!watermarkRef.current) return;
     const rect = watermarkRef.current.getBoundingClientRect();
     const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
     const y = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
-    setMousePos({ x, y });
+    mousePosRef.current = { x, y };
+    scheduleUpdate();
   }, []);
 
   const handleTouchMove = useCallback((e) => {
@@ -28,8 +67,9 @@ export default function Footer({ onOpenContact }) {
     const touch = e.touches[0];
     const x = Math.max(0, Math.min(100, ((touch.clientX - rect.left) / rect.width) * 100));
     const y = Math.max(0, Math.min(100, ((touch.clientY - rect.top) / rect.height) * 100));
-    setMousePos({ x, y });
+    mousePosRef.current = { x, y };
     setIsHovered(true);
+    scheduleUpdate();
   }, []);
 
   return (
@@ -84,6 +124,7 @@ export default function Footer({ onOpenContact }) {
       >
         {/* Top Horizontal Laser Glow Line */}
         <div 
+          ref={topLineRef}
           style={{
             position: 'absolute',
             top: 0,
@@ -91,7 +132,7 @@ export default function Footer({ onOpenContact }) {
             right: 0,
             height: '1px',
             background: isHovered
-              ? `linear-gradient(90deg, transparent 0%, rgba(255, 2, 5, 0.15) ${Math.max(0, mousePos.x - 30)}%, #FF0205 ${mousePos.x}%, rgba(255, 2, 5, 0.15) ${Math.min(100, mousePos.x + 30)}%, transparent 100%)`
+              ? `linear-gradient(90deg, transparent 0%, rgba(255, 2, 5, 0.15) 20%, #FF0205 50%, rgba(255, 2, 5, 0.15) 80%, transparent 100%)`
               : 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 25%, rgba(229, 0, 0, 0.35) 50%, rgba(255, 255, 255, 0.08) 75%, transparent 100%)',
             boxShadow: isHovered
               ? '0 0 15px rgba(255, 2, 5, 0.85), 0 0 30px rgba(255, 2, 5, 0.45)'
@@ -101,10 +142,11 @@ export default function Footer({ onOpenContact }) {
         >
           {/* Glowing Red Dot on the line that smoothly glides with cursor */}
           <div 
+            ref={topDotRef}
             style={{
               position: 'absolute',
               top: '-2.5px',
-              left: `${mousePos.x}%`,
+              left: '50%',
               transform: 'translateX(-50%)',
               width: '6px',
               height: '6px',
@@ -119,10 +161,11 @@ export default function Footer({ onOpenContact }) {
 
         {/* Dynamic Glowing Ambient Spotlight Orb that follows cursor */}
         <div 
+          ref={spotlightOrbRef}
           style={{
             position: 'absolute',
-            top: `${mousePos.y}%`,
-            left: `${mousePos.x}%`,
+            top: '50%',
+            left: '50%',
             transform: 'translate(-50%, -50%)',
             width: '450px',
             height: '240px',
@@ -137,6 +180,7 @@ export default function Footer({ onOpenContact }) {
 
         {/* Spotlight Typography matching user provided exact design taking full width in ONE line */}
         <div 
+          ref={spotlightTextRef}
           className="spotlight-text font-black text-center whitespace-nowrap w-full tracking-tighter transition-all duration-300 ease-out" 
           style={{
             fontFamily: "'Poppins', sans-serif",
@@ -158,7 +202,7 @@ export default function Footer({ onOpenContact }) {
             WebkitTextFillColor: 'transparent',
             WebkitTextStroke: isHovered ? '1.2px rgba(255, 2, 5, 0.55)' : '1px rgba(255, 255, 255, 0.22)',
             backgroundImage: isHovered
-              ? `radial-gradient(460px circle at ${mousePos.x}% ${mousePos.y}%, #FF0205 0%, rgba(255, 2, 5, 0.45) 42%, transparent 75%)`
+              ? `radial-gradient(460px circle at 50% 50%, #FF0205 0%, rgba(255, 2, 5, 0.45) 42%, transparent 75%)`
               : 'none',
             userSelect: 'none',
             position: 'relative',
@@ -171,6 +215,7 @@ export default function Footer({ onOpenContact }) {
 
         {/* Bottom Horizontal Laser Glow Line */}
         <div 
+          ref={bottomLineRef}
           style={{
             position: 'absolute',
             bottom: 0,
@@ -178,7 +223,7 @@ export default function Footer({ onOpenContact }) {
             right: 0,
             height: '1px',
             background: isHovered
-              ? `linear-gradient(90deg, transparent 0%, rgba(255, 2, 5, 0.15) ${Math.max(0, mousePos.x - 30)}%, #FF0205 ${mousePos.x}%, rgba(255, 2, 5, 0.15) ${Math.min(100, mousePos.x + 30)}%, transparent 100%)`
+              ? `linear-gradient(90deg, transparent 0%, rgba(255, 2, 5, 0.15) 20%, #FF0205 50%, rgba(255, 2, 5, 0.15) 80%, transparent 100%)`
               : 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 25%, rgba(229, 0, 0, 0.35) 50%, rgba(255, 255, 255, 0.08) 75%, transparent 100%)',
             boxShadow: isHovered
               ? '0 0 15px rgba(255, 2, 5, 0.85), 0 0 30px rgba(255, 2, 5, 0.45)'
@@ -188,10 +233,11 @@ export default function Footer({ onOpenContact }) {
         >
           {/* Glowing Red Dot on the bottom line that smoothly glides with cursor */}
           <div 
+            ref={bottomDotRef}
             style={{
               position: 'absolute',
               bottom: '-2.5px',
-              left: `${mousePos.x}%`,
+              left: '50%',
               transform: 'translateX(-50%)',
               width: '6px',
               height: '6px',
