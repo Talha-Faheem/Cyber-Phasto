@@ -1,9 +1,8 @@
-import React from 'react';
 import InteractiveCyberBg from '../common/InteractiveCyberBg';
 
 export default function CoursesHero() {
   return (
-    <section className="coursesHero">
+    <section className="coursesHero ">
       <InteractiveCyberBg />
       
       <div className="container" style={{ position: 'relative', zIndex: 2, pointerEvents: 'none' }}>
